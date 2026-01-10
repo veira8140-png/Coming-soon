@@ -26,6 +26,35 @@ import {
     GridIcon 
 } from './components/Icons';
 
+function DateTimeDisplay() {
+    const [now, setNow] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => setNow(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const dateStr = now.toLocaleDateString(undefined, { 
+        weekday: 'short', 
+        month: 'short', 
+        day: 'numeric' 
+    });
+    const timeStr = now.toLocaleTimeString(undefined, { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true 
+    });
+
+    return (
+        <div className="datetime-display">
+            <span className="date-part">{dateStr}</span>
+            <span className="divider">|</span>
+            <span className="time-part">{timeStr}</span>
+        </div>
+    );
+}
+
 function App() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [currentSessionIndex, setCurrentSessionIndex] = useState<number>(-1);
@@ -82,7 +111,7 @@ function App() {
                   contents: { 
                       role: 'user', 
                       parts: [{ 
-                          text: 'Generate 20 professional, creative, diverse AI business assistant UI component prompts (e.g. "executive analytics dashboard", "B2B client portal"). Return ONLY a raw JSON array of strings. IP SAFEGUARD: Avoid referencing specific famous artists, movies, or brands.' 
+                          text: 'Generate 20 professional, elite AI business assistant UI component prompts (e.g. "real-time market analytics", "executive portfolio summary"). Return ONLY a raw JSON array of strings. No commentary.' 
                       }] 
                   }
               });
@@ -156,17 +185,12 @@ function App() {
         const ai = new GoogleGenAI({ apiKey });
 
         const prompt = `
-You are Veira, a premier AI business assistant. Generate 3 ELITE BUSINESS CONCEPTUAL VARIATIONS of: "${currentSession.prompt}".
-
-**STRICT IP SAFEGUARD:**
-No names of artists. 
-Instead, describe the *Corporate Identity* and *Professional Polish* of the UI.
+You are Veira, the elite business assistant. Generate 3 PROFESSIONAL CONCEPTUAL VARIATIONS for: "${currentSession.prompt}".
 
 **YOUR TASK:**
 For EACH variation:
-- Invent a unique professional design persona.
-- Rewrite the prompt to fully adopt that metaphor's visual language (e.g. "Swiss Precision", "Liquid Enterprise", "Glass Executive").
-- Generate high-fidelity HTML/CSS tailored for a business assistant context.
+- Create a distinct professional design persona (e.g. "Swiss Minimalist", "Executive Dark Mode", "High-Contrast Analytic").
+- Generate high-fidelity HTML/CSS (using modern Tailwind-like utility styles in standard CSS) for a business tool context.
 
 Required JSON Output Format (stream ONE object per line):
 \`{ "name": "Persona Name", "html": "..." }\`
@@ -175,7 +199,6 @@ Required JSON Output Format (stream ONE object per line):
         const responseStream = await ai.models.generateContentStream({
             model: 'gemini-3-flash-preview',
              contents: [{ parts: [{ text: prompt }], role: 'user' }],
-             config: { temperature: 1.0 }
         });
 
         for await (const variation of parseJsonStream(responseStream)) {
@@ -246,13 +269,8 @@ Required JSON Output Format (stream ONE object per line):
         const ai = new GoogleGenAI({ apiKey });
 
         const stylePrompt = `
-You are Veira, the AI business assistant. Generate 3 distinct, professional design directions for the request: "${trimmedInput}".
-
-**STRICT IP SAFEGUARD:**
-Never use artist or brand names. Use business metaphors (e.g., "Precision Analytics", "Fluid Productivity", "Legacy Corporate").
-
-**GOAL:**
-Return ONLY a raw JSON array of 3 *NEW*, creative names for these directions (e.g. ["Executive Slate Grid", "Minimalist Insight Layer", "Hyper-Responsive CRM Core"]).
+You are Veira, the AI business assistant. Propose 3 professional design directions for: "${trimmedInput}".
+Return ONLY a raw JSON array of 3 strings (e.g. ["Executive Slate", "Glass Productivity", "Deep Analytic Grid"]).
         `.trim();
 
         const styleResponse = await ai.models.generateContent({
@@ -268,19 +286,12 @@ Return ONLY a raw JSON array of 3 *NEW*, creative names for these directions (e.
             try {
                 generatedStyles = JSON.parse(jsonMatch[0]);
             } catch (e) {
-                console.warn("Failed to parse styles, using fallbacks");
+                generatedStyles = ["Executive", "Modern", "Classic"];
             }
         }
 
-        if (!generatedStyles || generatedStyles.length < 3) {
-            generatedStyles = [
-                "Executive Slate Grid",
-                "Minimalist Insight Layer",
-                "Corporate Precision"
-            ];
-        }
-        
-        generatedStyles = generatedStyles.slice(0, 3);
+        generatedStyles = (generatedStyles || []).slice(0, 3);
+        while(generatedStyles.length < 3) generatedStyles.push("Professional " + (generatedStyles.length + 1));
 
         setSessions(prev => prev.map(s => {
             if (s.id !== sessionId) return s;
@@ -296,18 +307,9 @@ Return ONLY a raw JSON array of 3 *NEW*, creative names for these directions (e.
         const generateArtifact = async (artifact: Artifact, styleInstruction: string) => {
             try {
                 const prompt = `
-You are Veira. Create a stunning, high-fidelity business tool UI component for: "${trimmedInput}".
-
-**CONCEPTUAL DIRECTION: ${styleInstruction}**
-
-**VISUAL EXECUTION RULES:**
-1. **Professional Aesthetic**: Use a clean, corporate-ready visual language.
-2. **Materiality**: Use modern professional metaphors (glass, polished metal, deep ink, high-contrast digital paper).
-3. **Typography**: Use professional pairings (e.g., Inter, SF Pro, or elegant serifs for headings).
-4. **Functionality**: Ensure the component looks ready for high-stakes business decisions.
-5. **IP SAFEGUARD**: No artist names or trademarks. 
-
-Return ONLY RAW HTML. No markdown fences.
+You are Veira. Create a high-fidelity business tool UI component for: "${trimmedInput}".
+DIRECTION: ${styleInstruction}.
+Return ONLY RAW HTML/CSS. No markdown fences. Ensure professional aesthetic.
           `.trim();
           
                 const responseStream = await ai.models.generateContentStream({
@@ -351,7 +353,7 @@ Return ONLY RAW HTML. No markdown fences.
                     sess.id === sessionId ? {
                         ...sess,
                         artifacts: sess.artifacts.map(art => 
-                            art.id === artifact.id ? { ...art, html: `<div style="color: #ff6b6b; padding: 20px;">Error: ${e.message}</div>`, status: 'error' } : art
+                            art.id === artifact.id ? { ...art, html: `<div style="color: #ff6b6b; padding: 20px;">Error generating component.</div>`, status: 'error' } : art
                         )
                     } : sess
                 ));
@@ -369,8 +371,6 @@ Return ONLY RAW HTML. No markdown fences.
   }, [inputValue, isLoading, sessions.length]);
 
   const handleSurpriseMe = () => {
-      // In business mode, "Coming soon" usually implies future expansion, 
-      // but we'll keep the "Surprise Me" functionality as a hidden power user feature.
       const currentPrompt = placeholders[placeholderIndex];
       setInputValue(currentPrompt);
       handleSendMessage(currentPrompt);
@@ -403,7 +403,6 @@ Return ONLY RAW HTML. No markdown fences.
   }, [currentSessionIndex, focusedArtifactIndex]);
 
   const isLoadingDrawer = isLoading && drawerState.mode === 'variations' && componentVariations.length === 0;
-
   const hasStarted = sessions.length > 0 || isLoading;
   const currentSession = sessions[currentSessionIndex];
 
@@ -422,9 +421,7 @@ Return ONLY RAW HTML. No markdown fences.
 
   return (
     <>
-        <a href="https://x.com/oduooor_" target="_blank" rel="noreferrer" className={`creator-credit ${hasStarted ? 'hide-on-mobile' : ''}`}>
-            created by @oduooor_
-        </a>
+        <DateTimeDisplay />
 
         <SideDrawer 
             isOpen={drawerState.isOpen} 
@@ -461,8 +458,8 @@ Return ONLY RAW HTML. No markdown fences.
                 gap={24} 
                 radius={1.5} 
                 color="rgba(255, 255, 255, 0.02)" 
-                glowColor="rgba(255, 255, 255, 0.15)" 
-                speedScale={0.5} 
+                glowColor="rgba(255, 255, 255, 0.12)" 
+                speedScale={0.4} 
             />
 
             <div className={`stage-container ${focusedArtifactIndex !== null ? 'mode-focus' : 'mode-split'}`}>
@@ -543,7 +540,7 @@ Return ONLY RAW HTML. No markdown fences.
                         <input 
                             ref={inputRef}
                             type="text" 
-                            placeholder="Describe a business tool..."
+                            placeholder="Ask Veira..."
                             value={inputValue} 
                             onChange={handleInputChange} 
                             onKeyDown={handleKeyDown} 
