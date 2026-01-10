@@ -4,12 +4,12 @@
 */
 
 export const INITIAL_PLACEHOLDERS = [
-    "Design an executive KPI dashboard",
-    "Show me a real-time sales pipeline",
-    "Create a professional B2B client portal",
-    "Build a corporate budget planning tool",
-    "Make a sleek CRM contact card",
-    "Generate an automated invoice overview",
-    "Design a market sentiment analyst tool",
-    "Ask Veira for anything"
+    "Enterprise KPI Command Center",
+    "Real-time Revenue Intelligence",
+    "Customer Lifecycle Dashboard",
+    "Predictive Sales Pipeline",
+    "Multi-cloud Asset Manager",
+    "Corporate Strategy Map",
+    "B2B Client Engagement Portal",
+    "Executive Risk Overview"
 ];

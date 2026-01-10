@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -40,35 +41,57 @@ export default function DottedGlowBackground({
     if (!ctx) return;
 
     let raf = 0;
+    let resizeRaf = 0;
     let stopped = false;
 
     const dpr = Math.max(1, window.devicePixelRatio || 1);
 
     const resize = () => {
-      const { width, height } = container.getBoundingClientRect();
-      el.width = Math.max(1, Math.floor(width * dpr));
-      el.height = Math.max(1, Math.floor(height * dpr));
-      el.style.width = `${width}px`;
-      el.style.height = `${height}px`;
-      ctx.scale(dpr, dpr);
+      // Use requestAnimationFrame to decouple resize handling from the observer loop
+      // This prevents "ResizeObserver loop completed with undelivered notifications"
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        if (stopped || !container || !el) return;
+        
+        const rect = container.getBoundingClientRect();
+        const { width, height } = rect;
+        
+        const nextWidth = Math.max(1, Math.floor(width * dpr));
+        const nextHeight = Math.max(1, Math.floor(height * dpr));
+        
+        // Only update if dimensions actually changed
+        if (el.width !== nextWidth || el.height !== nextHeight) {
+          el.width = nextWidth;
+          el.height = nextHeight;
+          
+          // Reset transform and scale for high DPI
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          
+          // Re-generate dots based on new dimensions
+          regenDots();
+        }
+      });
     };
 
-    const ro = new ResizeObserver(resize);
+    const ro = new ResizeObserver(() => {
+      resize();
+    });
+
     ro.observe(container);
-    setTimeout(resize, 0);
 
     let dots: { x: number; y: number; phase: number; speed: number }[] = [];
 
     const regenDots = () => {
-      dots = [];
+      if (!container) return;
       const { width, height } = container.getBoundingClientRect();
+      const newDots = [];
       const cols = Math.ceil(width / gap) + 2;
       const rows = Math.ceil(height / gap) + 2;
       for (let i = -1; i < cols; i++) {
         for (let j = -1; j < rows; j++) {
           const x = i * gap + (j % 2 === 0 ? 0 : gap * 0.5);
           const y = j * gap;
-          dots.push({
+          newDots.push({
             x,
             y,
             phase: Math.random() * Math.PI * 2,
@@ -76,13 +99,15 @@ export default function DottedGlowBackground({
           });
         }
       }
+      dots = newDots;
     };
 
     regenDots();
-    window.addEventListener("resize", regenDots);
+    resize();
 
     const draw = (now: number) => {
-      if (stopped) return;
+      if (stopped || !container) return;
+      
       const { width, height } = container.getBoundingClientRect();
       ctx.clearRect(0, 0, width, height);
       ctx.globalAlpha = opacity;
@@ -104,6 +129,7 @@ export default function DottedGlowBackground({
         } else {
            ctx.fillStyle = color;
            ctx.shadowBlur = 0;
+           ctx.shadowColor = 'transparent';
         }
         ctx.globalAlpha = opacity * (intensity > 0.7 ? 1 : 0.3 + intensity * 0.5); 
         ctx.fill();
@@ -117,14 +143,31 @@ export default function DottedGlowBackground({
     return () => {
       stopped = true;
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", regenDots);
+      cancelAnimationFrame(resizeRaf);
       ro.disconnect();
     };
   }, [gap, radius, color, glowColor, opacity, speedMin, speedMax, speedScale]);
 
   return (
-    <div ref={containerRef} className={className} style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-      <canvas ref={canvasRef} style={{ display: "block" }} />
+    <div 
+      ref={containerRef} 
+      className={className} 
+      style={{ 
+        position: "absolute", 
+        inset: 0, 
+        zIndex: 0, 
+        pointerEvents: 'none',
+        overflow: 'hidden' 
+      }}
+    >
+      <canvas 
+        ref={canvasRef} 
+        style={{ 
+          display: "block", 
+          width: '100%', 
+          height: '100%' 
+        }} 
+      />
     </div>
   );
 }
