@@ -367,6 +367,7 @@ body {
 @media (max-width: 1024px) {
     .nav-center { display: none; }
     .mobile-toggle { display: block; }
+    .hide-mobile { display: none !important; }
 }
 
 @media (max-width: 900px) {
