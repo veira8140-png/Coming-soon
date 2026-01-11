@@ -9,261 +9,203 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import ReactDOM from 'react-dom/client';
 
 import DottedGlowBackground from './components/DottedGlowBackground';
-import SideDrawer from './components/SideDrawer';
 import OrganicOrbLogo from './components/OrganicOrbLogo';
 import { 
     ThinkingIcon, 
-    SparklesIcon,
+    CodeIcon,
     MenuIcon,
     XIcon,
-    CodeIcon
+    ArrowRightIcon
 } from './components/Icons';
 
-const WHATSAPP_NUMBER = "+254755792377"; // Updated as per CTA spec
+const WHATSAPP_NUMBER = "+254755792377";
 
-// --- Lead Scoring & Analytics ---
-const EVENT_SCORES = {
-  TOOL_COMPLETED: 20,
-  CTA_CLICKED: 25,
-  WHATSAPP_CLICKED: 30,
-  POS_VISITED: 20,
-};
+// --- Massive Programmatic Dataset ---
 
-interface ToolStep {
-  id: string;
-  label: string;
-  type: 'select' | 'boolean' | 'number';
-  options?: string[];
-}
-
-interface ToolConfig {
-  slug: string;
-  name: string;
-  category: string;
-  title: string;
-  subheadline: string;
-  steps: ToolStep[];
-  cta: string;
-  baseScore: number;
-}
-
-interface ToolResult {
-  status: 'Green' | 'Yellow' | 'Red';
-  summary: string;
-  steps: string[];
-}
-
-const STATIC_TOOLS: ToolConfig[] = [
-  {
-    slug: "inventory-risk-checker",
-    name: "Inventory Risk Checker",
-    category: "Operations",
-    title: "Inventory Risk Checker",
-    subheadline: "Identify stock losses or shortages before they hurt your bottom line.",
-    steps: [
-      { id: 'tracking', label: "How do you track your stock currently?", type: "select", options: ["Eye-balling", "Manual ledger", "Digital tool", "Not tracked"] },
-      { id: 'outs', label: "How often do you experience stock-outs?", type: "select", options: ["Daily", "Weekly", "Monthly", "Rarely"] }
-    ],
-    cta: "Avoid stock losses with Veira.",
-    baseScore: 40
-  },
-  {
-    slug: "etims-compliance-checker",
-    name: "eTIMS Compliance Checker",
-    category: "Compliance",
-    title: "Free eTIMS Compliance Checker",
-    subheadline: "Check your status in under 2 minutes. No signup required.",
-    steps: [
-      { id: 'type', label: "Select business type", type: "select", options: ["Retail", "Service", "Manufacturing", "Wholesale"] },
-      { id: 'invoices', label: "Do you issue tax invoices?", type: "boolean" },
-      { id: 'pos', label: "Do you use a POS system?", type: "boolean" }
-    ],
-    cta: "Get compliant with Veira.",
-    baseScore: 40
-  }
+const COMPETITORS = [
+  { id: "chatgpt", name: "ChatGPT", type: "LLM" },
+  { id: "claude", name: "Claude", type: "LLM" },
+  { id: "gemini", name: "Gemini", type: "LLM" },
+  { id: "perplexity", name: "Perplexity", type: "Search AI" },
+  { id: "copilot", name: "Copilot", type: "Enterprise LLM" },
+  { id: "grok", name: "Grok", type: "Social AI" },
+  { id: "intercom-ai", name: "Intercom AI", type: "Customer Support Platform" },
+  { id: "zendesk-ai", name: "Zendesk AI", type: "Helpdesk" },
+  { id: "hubspot-ai", name: "HubSpot AI", type: "CRM" },
+  { id: "drift", name: "Drift", type: "Conversational Marketing" },
+  { id: "freshchat", name: "Freshchat", type: "Messaging Software" },
+  { id: "meta-ai", name: "Meta AI", type: "Consumer AI" }
 ];
 
-const AGENT_DATA = [
-  {
-    name: "Glenn",
-    role: "Support & Follow-Up Agent",
-    description: "Glenn manages customer support and follow-ups across all communication channels, ensuring fast responses and zero dropped requests.",
-    voice: ["Answer incoming customer support calls", "Triage issues and provide accurate information", "Route complex cases to human teams"],
-    text: ["Respond on WhatsApp and social media DMs", "Handle FAQs and ticket status checks", "Send follow-ups and reminders"],
-    triggers: ["Check my last ticket", "What’s the status of my issue?", "Send a follow-up to client X"]
-  },
-  {
-    name: "Svan",
-    role: "Sales & Marketing Agent",
-    description: "Svan drives growth by qualifying leads, engaging prospects, and booking appointments across inbound channels.",
-    voice: ["Qualify inbound sales leads", "Answer product and pricing questions", "Book demos and consultations"],
-    text: ["Respond to leads on WhatsApp & Instagram", "Capture lead details and requirements", "Send promotional messages"],
-    triggers: ["Schedule a consultation for tomorrow", "Message leads about a promotion", "Qualify this lead"]
-  },
-  {
-    name: "Tat",
-    role: "Operational & Transaction Agent",
-    description: "Tat executes operational tasks and financial workflows with precision, giving business owners real-time control.",
-    voice: ["Answer operational queries", "Run sales and performance reports", "Confirm and execute actions"],
-    text: ["Accept commands via WhatsApp & Slack", "Send invoices and receipts", "Check inventory and approve payments"],
-    triggers: ["Send invoice to client Y", "Check stock levels", "Approve payment"]
-  }
+const USE_CASES = [
+  { id: "whatsapp-business", label: "WhatsApp Business" },
+  { id: "sales-teams", label: "Sales Teams" },
+  { id: "customer-support", label: "Customer Support" },
+  { id: "operations", label: "Business Operations" },
+  { id: "smes", label: "SMEs" },
+  { id: "enterprises", label: "Enterprises" },
+  { id: "lead-qualification", label: "Lead Qualification" },
+  { id: "invoicing", label: "Invoicing & Billing" },
+  { id: "payments", label: "Payment Collection" },
+  { id: "internal-teams", label: "Internal Team Ops" }
 ];
 
-type AppView = 'landing' | 'pos' | 'tool' | 'agents';
+const BLOG_POSTS = [
+  { id: 1, title: "How AI Agents are Revolutionizing WhatsApp Commerce", category: "AI Trends", date: "Oct 24, 2024" },
+  { id: 2, title: "M-PESA Sync: The Missing Link in Automated Retail", category: "Payments", date: "Oct 22, 2024" },
+  { id: 3, title: "Scaling Branch Operations with Multi-Cloud POS", category: "Operations", date: "Oct 18, 2024" },
+  { id: 4, title: "Why Your CRM Needs a Voice-Native AI Strategy", category: "Sales", date: "Oct 15, 2024" },
+  { id: 5, title: "Compliance as Code: Automating eTIMS for Scale", category: "Compliance", date: "Oct 10, 2024" }
+];
+
+type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
 
 function App() {
   const [view, setView] = useState<AppView>('landing');
-  const [activeTool, setActiveTool] = useState<ToolConfig | null>(null);
-  const [toolStep, setToolStep] = useState(0);
-  const [toolAnswers, setToolAnswers] = useState<Record<string, any>>({});
-  const [toolResult, setToolResult] = useState<ToolResult | null>(null);
+  const [activeCompId, setActiveCompId] = useState("chatgpt");
+  const [activeContextId, setActiveContextId] = useState("whatsapp-business");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [leadScore, setLeadScore] = useState(0);
 
-  const updateScore = useCallback((points: number) => {
-    setLeadScore(prev => Math.min(100, prev + points));
-  }, []);
-
-  const trackEvent = useCallback((event: string, data?: any) => {
-    console.log(`[Analytics] ${event}`, data);
-    const win = window as any;
-    if (win.gtag) win.gtag('event', event, data);
-    if (event === 'cta_clicked') updateScore(EVENT_SCORES.CTA_CLICKED);
-    if (event === 'whatsapp_clicked') updateScore(EVENT_SCORES.WHATSAPP_CLICKED);
-  }, [updateScore]);
-
-  const resetToLanding = useCallback(() => {
-    setView('landing');
-    setActiveTool(null);
-    setToolStep(0);
-    setToolAnswers({});
-    setToolResult(null);
-    setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  const showPOS = useCallback(() => {
-    setView('pos');
-    setActiveTool(null);
-    setToolStep(0);
-    setToolAnswers({});
-    setToolResult(null);
-    setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    trackEvent('pos_page_visited');
-  }, [trackEvent]);
-
-  const showAgents = useCallback(() => {
-    setView('agents');
-    setActiveTool(null);
-    setToolStep(0);
-    setToolAnswers({});
-    setToolResult(null);
-    setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    trackEvent('agents_page_visited');
-  }, [trackEvent]);
-
-  const startTool = useCallback((tool: ToolConfig) => {
-    setActiveTool(tool);
-    setToolStep(0);
-    setToolAnswers({});
-    setToolResult(null);
-    setView('tool');
-    setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    trackEvent("tool_viewed", { tool: tool.slug });
-  }, [trackEvent]);
-
-  const handleToolAnswer = useCallback((val: any) => {
-    if (!activeTool) return;
-    const currentStepId = activeTool.steps[toolStep].id;
-    setToolAnswers(prev => {
-        const next = { ...prev, [currentStepId]: val };
-        if (toolStep >= activeTool.steps.length - 1) {
-            setTimeout(() => processToolResult(next), 0);
-        }
-        return next;
-    });
-
-    if (toolStep < activeTool.steps.length - 1) {
-      setToolStep(toolStep + 1);
+  // --- Internal Linking Randomizer ---
+  const internalLinks = useMemo(() => {
+    const links: { compId: string; ctxId: string }[] = [];
+    const used = new Set();
+    while (links.length < 6) {
+      const comp = COMPETITORS[Math.floor(Math.random() * COMPETITORS.length)];
+      const ctx = USE_CASES[Math.floor(Math.random() * USE_CASES.length)];
+      const key = `${comp.id}-${ctx.id}`;
+      if (!used.has(key) && (comp.id !== activeCompId || ctx.id !== activeContextId)) {
+        links.push({ compId: comp.id, ctxId: ctx.id });
+        used.add(key);
+      }
     }
-  }, [activeTool, toolStep]);
+    return links;
+  }, [activeCompId, activeContextId]);
 
-  const processToolResult = async (answers: Record<string, any>) => {
-    if (!activeTool) return;
-    setIsLoading(true);
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = `Analyze: ${JSON.stringify(answers)}. Context: Veira, Kenyan fintech. Return JSON: status (Green/Yellow/Red), summary, steps (array).`;
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt,
-        config: { responseMimeType: 'application/json' }
-      });
-      setToolResult(JSON.parse(response.text || '{}'));
-    } catch (e) {
-      setToolResult({
-        status: 'Yellow',
-        summary: "Assessment complete. Most businesses in your category should prioritize digital record keeping.",
-        steps: ["Review your eTIMS status", "Automate sales logging", "Contact Veira for a full audit"]
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const navigate = (newView: AppView) => {
+    setView(newView);
+    setIsMobileMenuOpen(false);
+    window.scrollTo(0, 0);
   };
 
-  const handleWhatsApp = useCallback(() => {
-    const message = encodeURIComponent("Hi Veira, I'm interested in learning more about your AI Agents.");
-    trackEvent("whatsapp_clicked");
+  const showCompare = (compId?: string, ctxId?: string) => {
+    if (compId) setActiveCompId(compId);
+    if (ctxId) setActiveContextId(ctxId);
+    navigate('compare');
+  };
+
+  const handleWhatsApp = () => {
+    const message = encodeURIComponent("Hi Veira, I'm interested in your business solutions.");
     window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
-  }, [trackEvent]);
+  };
 
-  // Partners for the slide show
-  const partners = ["M-PESA", "eTIMS", "KRA", "VISA", "MASTERCARD", "STRIPE", "CHASE", "REVOLUT"];
+  // --- Comparison Engine Logic ---
+  const activeCompareData = useMemo(() => {
+    const comp = COMPETITORS.find(c => c.id === activeCompId) || COMPETITORS[0];
+    const context = USE_CASES.find(ctx => ctx.id === activeContextId) || USE_CASES[0];
+    
+    const isHelpdesk = comp.type.includes("Helpdesk") || comp.type.includes("Platform");
+    const isLLM = comp.type.includes("LLM") || comp.type.includes("AI");
 
-  // Responsive sizes based on CSS variables
-  const getOrbSize = () => window.innerWidth <= 900 ? 22 : 32;
+    const strategicCapabilities = [
+      { name: "WhatsApp-native Automation", a: true, b: isHelpdesk || comp.id === 'meta-ai' },
+      { name: "Voice AI Call Handling", a: true, b: isLLM && comp.id !== 'perplexity' },
+      { name: "M-PESA Payment Verification", a: true, b: false },
+      { name: "KRA eTIMS Compliance Sync", a: true, b: false },
+      { name: "Multi-Agent Support Handover", a: true, b: isHelpdesk },
+      { name: "Invoicing & Automated Billing", a: true, b: false },
+      { name: "Operational Command Execution", a: true, b: false },
+      { name: "Regional Market Context", a: true, b: false }
+    ];
+
+    const faqs = [
+      { question: "What are AI agents for business?", answer: "AI agents are role-based AI systems designed to execute real business tasks such as sales, customer support, and operations." },
+      { question: "Does Veira work on WhatsApp?", answer: "Yes. Veira is WhatsApp-native and designed specifically for WhatsApp Business workflows." },
+      { question: `Is Veira better than ${comp.name} for business?`, answer: `Veira is designed specifically for business workflows like sales, customer support, and operations, while ${comp.name} focuses on general AI usage.` },
+      { question: "Can Veira replace multiple tools?", answer: "Yes. Veira combines sales, support, and operational automation into one AI agent system." }
+    ];
+
+    return { comp, context, strategicCapabilities, faqs };
+  }, [activeCompId, activeContextId]);
+
+  // --- Dynamic Meta & Schema Injection ---
+  useEffect(() => {
+    const { comp, context, faqs } = activeCompareData;
+    const isCompare = view === 'compare';
+    
+    document.title = isCompare 
+      ? `Veira vs ${comp.name} for ${context.label} | Best AI for Business`
+      : `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
+
+    const schemas = [
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Veira AI Agents",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, WhatsApp, Voice",
+        "description": "AI agents for sales, customer support, and operations across WhatsApp and voice.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(f => ({
+          "@type": "Question",
+          "name": f.question,
+          "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+        }))
+      }
+    ];
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(schemas);
+    script.id = 'dynamic-seo-schema';
+    document.head.appendChild(script);
+
+    return () => {
+      const existing = document.getElementById('dynamic-seo-schema');
+      if (existing) document.head.removeChild(existing);
+    };
+  }, [view, activeCompareData]);
 
   return (
     <div className="saas-container">
-        {/* Unified Navigation */}
+        {/* Navigation Bar */}
         <nav className="saas-nav">
-            <div className="logo-link-container" onClick={resetToLanding}>
-                <OrganicOrbLogo size={getOrbSize()} variant="nav" />
+            <div className="logo-link-container" onClick={() => navigate('landing')}>
+                <OrganicOrbLogo size={32} variant="nav" />
                 <span className="saas-logo">Veira</span>
             </div>
-            
             <div className="nav-center">
                 <div className="nav-links">
-                    <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); showAgents(); }}>Agents</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Cloud</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Apps</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Use Cases</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Our Story</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('agents'); }}>Agents</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
                 </div>
             </div>
-            
             <div className="nav-right">
-                <button className="nav-cta hide-mobile" onClick={() => trackEvent('cta_clicked')}>Talk to Us</button>
+                <button className="nav-cta hide-mobile" onClick={handleWhatsApp}>Get Started</button>
                 <button className="mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                     {isMobileMenuOpen ? <XIcon /> : <MenuIcon />}
                 </button>
             </div>
         </nav>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu */}
         <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}>
             <div className="mobile-menu-links">
-                <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS Systems</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); showAgents(); }}>AI Agents</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Cloud Infra</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Apps</a>
-                <button className="primary-btn" style={{ marginTop: '2rem', width: '200px' }} onClick={handleWhatsApp}>WhatsApp Us</button>
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('agents'); }}>Agents</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
+                <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>WhatsApp Us</button>
             </div>
         </div>
 
@@ -271,241 +213,244 @@ function App() {
             <DottedGlowBackground gap={32} radius={0.5} color="rgba(255,255,255,0.03)" glowColor="rgba(255,255,255,0.08)" speedScale={0.1} />
 
             {view === 'landing' && (
-              <>
-                <section className="saas-hero reveal">
-                  <h1>Simpler systems for modern business.</h1>
-                  <p className="hero-supporting">We handle the POS, the payments, and the compliance. You handle the growth.</p>
-                  <div className="hero-actions">
-                    <button className="primary-btn" onClick={showPOS}>Explore POS</button>
-                    <button className="secondary-btn" onClick={() => trackEvent('cta_clicked')}>Book a Demo</button>
-                  </div>
-                </section>
-
-                <section className="trust-bar reveal">
-                    <p>Standardized by innovators</p>
-                    <div className="marquee-container">
-                        <div className="marquee-content">
-                            {/* Original set */}
-                            {partners.map((partner, idx) => (
-                                <div key={`p1-${idx}`} className="partner-logo">{partner}</div>
-                            ))}
-                            {/* Duplicate set for infinite loop */}
-                            {partners.map((partner, idx) => (
-                                <div key={`p2-${idx}`} className="partner-logo">{partner}</div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                <section className="features-section reveal">
-                    <div className="section-header">
-                        <h2>Managed Intelligence</h2>
-                        <p>Everything you need to run, quietly handled by Veira.</p>
-                    </div>
-                    <div className="features-grid">
-                        <div className="feature-card">
-                            <h4>Quiet Operations</h4>
-                            <p>Systems that sync in the background so you never have to chase a report again.</p>
-                        </div>
-                        <div className="feature-card">
-                            <h4>Total Compliance</h4>
-                            <p>Built-in KRA eTIMS validation for every transaction, handled automatically.</p>
-                        </div>
-                        <div className="feature-card">
-                            <h4>Cloud-First</h4>
-                            <p>Access your business performance from anywhere, on any device, in real-time.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section className="tools-showcase reveal">
-                  <div className="section-header">
-                    <h2>Business Audit Tools</h2>
-                    <p>Professional checks for the modern commercial operator.</p>
-                  </div>
-                  <div className="tools-grid">
-                    {STATIC_TOOLS.map((tool) => (
-                      <div key={tool.slug} className="tool-card" onClick={() => startTool(tool)}>
-                        <div className="tool-content">
-                          <h4>{tool.name}</h4>
-                          <p>{tool.subheadline}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                  <h2>Ready for better systems?</h2>
-                  <div className="cta-actions">
-                    <button className="primary-btn" onClick={() => trackEvent('cta_clicked')}>Talk to Us</button>
-                    <button className="secondary-btn" onClick={handleWhatsApp}>WhatsApp</button>
-                  </div>
-                </section>
-              </>
-            )}
-
-            {view === 'pos' && (
               <section className="saas-hero reveal">
-                <h1>Operational Clarity.</h1>
-                <p className="hero-supporting">Our Android Smart POS is designed to handle high-volume sales without the technical overhead.</p>
+                <h1>Infrastructure for Modern Business.</h1>
+                <p className="hero-supporting">Managed POS, AI Agents, and Digital Payments in one high-performance stack built for East African commerce.</p>
                 <div className="hero-actions">
-                    <button className="primary-btn" onClick={() => trackEvent('cta_clicked')}>Order Device</button>
-                    <button className="secondary-btn" onClick={resetToLanding}>Go Back</button>
+                  <button className="primary-btn" onClick={() => navigate('pos')}>Explore POS</button>
+                  <button className="secondary-btn" onClick={() => navigate('agents')}>Meet the Agents</button>
                 </div>
               </section>
             )}
 
-            {view === 'agents' && (
-              <div className="agents-page reveal">
+            {view === 'blog' && (
+              <div className="blog-page reveal">
                 <section className="saas-hero">
-                  <h1>AI Agents That Work Across Voice, WhatsApp, and Your Systems</h1>
-                  <p className="hero-supporting">Veira agents handle sales, support, and operations across every channel your customers and team already use.</p>
-                  <div className="hero-actions">
-                    <button className="primary-btn" onClick={handleWhatsApp}>Talk to Veira Agents</button>
-                    <button className="secondary-btn" onClick={showPOS}>Book a Demo</button>
+                  <h1>The Veira Journal</h1>
+                  <p className="hero-supporting">Insights on AI, Operations, and Business Architecture.</p>
+                </section>
+                <section className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto 6rem' }}>
+                    {BLOG_POSTS.map(post => (
+                        <div key={post.id} className="tool-card">
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--orb-pink)', display: 'block', marginBottom: '0.5rem' }}>{post.category}</span>
+                            <h4>{post.title}</h4>
+                            <p>{post.date}</p>
+                        </div>
+                    ))}
+                </section>
+              </div>
+            )}
+
+            {view === 'compare' && (
+              <div className="comparison-page reveal">
+                <section className="saas-hero">
+                  <h1>Veira vs {activeCompareData.comp.name}</h1>
+                  <p className="hero-supporting">The ultimate comparison for {activeCompareData.context.label}. Choose the solution that executes real work.</p>
+                </section>
+
+                <section className="comparison-controls">
+                    <div className="control-group">
+                        <label>Brand Selection:</label>
+                        <div className="control-pills">
+                            {COMPETITORS.map(c => (
+                                <button key={c.id} className={`pill ${activeCompId === c.id ? 'active' : ''}`} onClick={() => setActiveCompId(c.id)}>{c.name}</button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="control-group">
+                        <label>Target Use Case:</label>
+                        <div className="control-pills">
+                            {USE_CASES.map(ctx => (
+                                <button key={ctx.id} className={`pill ${activeContextId === ctx.id ? 'active' : ''}`} onClick={() => setActiveContextId(ctx.id)}>{ctx.label}</button>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section className="comparison-table-section">
+                  <div className="comparison-table-wrapper">
+                    <table className="comparison-table">
+                      <thead>
+                        <tr>
+                          <th>Core Capability</th>
+                          <th className="brand-col brand-a">Veira</th>
+                          <th className="brand-col brand-b">{activeCompareData.comp.name}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {activeCompareData.strategicCapabilities.map((cap, i) => (
+                          <tr key={i}>
+                            <td className="feature-name">{cap.name}</td>
+                            <td className="brand-val brand-a">
+                              {cap.a ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}
+                            </td>
+                            <td className="brand-val brand-b">
+                              {cap.b ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </section>
 
-                <section className="agents-grid-container">
-                    <div className="section-header">
-                        <h2>The Specialized Agent Team</h2>
-                        <p>One AI system. Multiple specialized agents designed for real business work.</p>
+                <section className="verdict-section reveal">
+                  <div className="section-header">
+                    <h2>Market Verdict</h2>
+                    <p>Why businesses choose Veira for real-world execution over general-purpose AI.</p>
+                  </div>
+                  <div className="verdict-grid">
+                    <div className="verdict-card card-a">
+                      <div className="card-header"><h3>Why Veira Wins</h3></div>
+                      <ul>
+                        <li>Purpose-built for operational execution</li>
+                        <li>Built-in payment and tax compliance</li>
+                        <li>WhatsApp & Voice native support</li>
+                      </ul>
                     </div>
-                    <div className="agents-grid">
-                        {AGENT_DATA.map((agent) => (
-                            <div key={agent.name} className="agent-card">
-                                <div className="agent-header">
-                                    <div className="agent-meta">
-                                        <h3>{agent.name}</h3>
-                                        <span className="agent-role">{agent.role}</span>
-                                    </div>
-                                </div>
-                                <p className="agent-desc">{agent.description}</p>
-                                
-                                <div className="agent-capabilities">
-                                    <div className="cap-section">
-                                        <h5><ThinkingIcon /> Voice Capabilities</h5>
-                                        <ul>{agent.voice.map((v, i) => <li key={i}>{v}</li>)}</ul>
-                                    </div>
-                                    <div className="cap-section">
-                                        <h5><CodeIcon /> Text & Digital</h5>
-                                        <ul>{agent.text.map((t, i) => <li key={i}>{t}</li>)}</ul>
-                                    </div>
-                                </div>
+                    <div className="verdict-card card-b">
+                      <div className="card-header"><h3>Why {activeCompareData.comp.name} Wins</h3></div>
+                      <ul>
+                        <li>General purpose text generation</li>
+                        <li>Broad knowledge retrieval</li>
+                        <li>Personal productivity workflows</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
 
-                                <div className="agent-triggers">
-                                    <h5>Triggers:</h5>
-                                    <div className="trigger-pills">
-                                        {agent.triggers.map((trig, i) => (
-                                            <span key={i} className="trigger-pill">"{trig}"</span>
-                                        ))}
-                                    </div>
-                                </div>
+                <section className="faq-section reveal">
+                    <div className="section-header">
+                        <h2>Frequently Asked Questions</h2>
+                        <p>Detailed insights for {activeCompareData.context.label}.</p>
+                    </div>
+                    <div className="faq-container">
+                        {activeCompareData.faqs.map((faq, i) => (
+                            <div key={i} className="faq-item">
+                                <h3>{faq.question}</h3>
+                                <p>{faq.answer}</p>
                             </div>
                         ))}
                     </div>
                 </section>
 
-                <section className="system-benefits reveal">
-                    <div className="benefits-card">
-                        <h3>Built for Scaling Businesses</h3>
-                        <ul className="benefits-list">
-                            <li>Works across voice, WhatsApp, social DMs, and internal tools</li>
-                            <li>Logs every action automatically in your central dashboard</li>
-                            <li>Escalates to humans seamlessly when complex issues arise</li>
-                            <li>Integrates directly with POS, CRM, and payment systems</li>
-                            <li>Native support for Kenyan business compliance workflows</li>
-                        </ul>
+                <section className="compare-more-section reveal">
+                    <div className="section-header">
+                        <h2>Explore Other Comparisons</h2>
+                        <p>Deep dive into how Veira stacks up against the competition in various business contexts.</p>
+                    </div>
+                    <div className="tools-grid">
+                        {internalLinks.map((link, idx) => {
+                            const c = COMPETITORS.find(comp => comp.id === link.compId);
+                            const u = USE_CASES.find(use => use.id === link.ctxId);
+                            return (
+                                <div key={idx} className="tool-card" onClick={() => showCompare(link.compId, link.ctxId)}>
+                                    <h4>Veira vs {c?.name}</h4>
+                                    <p>Optimal for {u?.label}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </section>
 
                 <section className="primary-cta reveal">
-                  <h2>Start Automating Today</h2>
-                  <div className="cta-actions">
-                    <button className="primary-btn" onClick={handleWhatsApp}>Talk to Veira Agents</button>
-                    <button className="secondary-btn" onClick={resetToLanding}>Return Home</button>
+                  <h2>Upgrade Your Business Infrastructure</h2>
+                  <div className="cta-actions" style={{ marginTop: '2rem' }}>
+                    <button className="primary-btn" onClick={() => navigate('agents')}>Meet Your AI Team</button>
+                    <button className="secondary-btn" onClick={handleWhatsApp}>Consult an Expert</button>
                   </div>
                 </section>
               </div>
             )}
 
-            {view === 'tool' && activeTool && (
-                <section className="tool-view-container reveal">
-                    <div className="tool-hero">
-                        <h1>{activeTool.title}</h1>
-                        <p>{activeTool.subheadline}</p>
-                    </div>
-
-                    {!toolResult ? (
-                         <div className="tool-form-card">
-                            <div className="form-question">
-                                <label>{activeTool.steps[toolStep].label}</label>
-                                <div className="input-options-grid">
-                                    {activeTool.steps[toolStep].type === 'select' ? (
-                                        activeTool.steps[toolStep].options?.map(opt => (
-                                            <button key={opt} className="option-pill" onClick={() => handleToolAnswer(opt)}>{opt}</button>
-                                        ))
-                                    ) : (
-                                        <>
-                                            <button className="option-pill" onClick={() => handleToolAnswer("Yes")}>Yes</button>
-                                            <button className="option-pill" onClick={() => handleToolAnswer("No")}>No</button>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                         </div>
-                    ) : (
-                        <div className="result-container">
-                            <div className="result-card">
-                                <h2>Audit Summary</h2>
-                                <p className={`status-badge status-${toolResult.status.toLowerCase()}`}>{toolResult.status}</p>
-                                <p>{toolResult.summary}</p>
-                                <div className="next-steps">
-                                    <h3>Recommended Actions:</h3>
-                                    <ul>{toolResult.steps.map((s,i) => <li key={i}>{s}</li>)}</ul>
-                                </div>
-                                <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={resetToLanding}>Back to Dashboard</button>
-                            </div>
-                        </div>
-                    )}
+            {view === 'agents' && (
+              <div className="agents-page reveal">
+                <section className="saas-hero">
+                  <h1>Specialized AI Agents.</h1>
+                  <p className="hero-supporting">Sales, Support, and Operations agents that manage your business on WhatsApp and Voice.</p>
+                  <button className="primary-btn" onClick={handleWhatsApp} style={{ marginTop: '2rem' }}>Assign Agents to Your Team</button>
                 </section>
+              </div>
+            )}
+
+            {view === 'pos' && (
+              <div className="pos-page reveal">
+                <section className="saas-hero">
+                  <h1>Professional POS Systems.</h1>
+                  <p className="hero-supporting">Hardware and software synced with M-PESA and eTIMS for total branch control.</p>
+                  <button className="primary-btn" onClick={handleWhatsApp} style={{ marginTop: '2rem' }}>Order POS Device</button>
+                </section>
+              </div>
+            )}
+
+            {view === 'cloud' && (
+              <div className="cloud-page reveal">
+                <section className="saas-hero">
+                  <h1>Veira Cloud.</h1>
+                  <p className="hero-supporting">The backbone of your operational intelligence. Real-time data sync across every branch.</p>
+                </section>
+              </div>
+            )}
+
+            {view === 'apps' && (
+              <div className="apps-page reveal">
+                <section className="saas-hero">
+                  <h1>Integrated Apps.</h1>
+                  <p className="hero-supporting">A growing ecosystem of tools for billing, compliance, and staff management.</p>
+                </section>
+              </div>
+            )}
+
+            {view === 'use-cases' && (
+              <div className="use-cases-page reveal">
+                <section className="saas-hero">
+                  <h1>Solving for Industry.</h1>
+                  <p className="hero-supporting">From small retail stores to massive logistics enterprises.</p>
+                </section>
+              </div>
+            )}
+
+            {view === 'story' && (
+              <div className="story-page reveal">
+                <section className="saas-hero">
+                  <h1>Our Story.</h1>
+                  <p className="hero-supporting">Building the operating system for the next generation of commerce.</p>
+                </section>
+              </div>
             )}
         </main>
 
         <footer className="saas-footer reveal">
             <div className="footer-content">
                 <div className="footer-brand">
-                    <div className="logo-link-container" style={{ cursor: 'default' }}>
+                    <div className="logo-link-container" onClick={() => navigate('landing')}>
                         <OrganicOrbLogo size={28} variant="nav" />
                         <span className="saas-logo">Veira</span>
                     </div>
-                    <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                        Managed business systems for the modern commercial operator.
-                    </p>
+                    <p style={{ marginTop: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>The operating system for modern commerce.</p>
                 </div>
-                <div className="footer-links">
-                    <div className="footer-col">
-                        <h4>Platform</h4>
-                        <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                        <a href="#" onClick={(e) => { e.preventDefault(); showAgents(); }}>Agents</a>
-                        <a href="#">Cloud</a>
-                    </div>
-                    <div className="footer-col">
-                        <h4>Resources</h4>
-                        <a href="#" onClick={(e) => { e.preventDefault(); resetToLanding(); }}>Tools</a>
-                        <a href="#">Privacy</a>
-                    </div>
-                    <div className="footer-col">
-                        <h4>Connect</h4>
-                        <a href="#" onClick={handleWhatsApp}>WhatsApp</a>
-                        <a href="https://linkedin.com/company/veira" target="_blank">LinkedIn</a>
-                    </div>
+                <div className="footer-col">
+                    <h4>Top Comparisons</h4>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("chatgpt", "sales-teams"); }}>vs ChatGPT</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("claude", "customer-support"); }}>vs Claude</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("intercom-ai", "whatsapp-business"); }}>vs Intercom</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare(); }}>All Comparisons</a>
+                </div>
+                <div className="footer-col">
+                    <h4>Solutions</h4>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS Systems</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('agents'); }}>AI Agents</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud Systems</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('blog'); }}>Blog Posts</a>
+                </div>
+                <div className="footer-col">
+                    <h4>Support</h4>
+                    <a href="#" onClick={handleWhatsApp}>WhatsApp</a>
+                    <a href="https://linkedin.com/company/veira" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
                 </div>
             </div>
-            <div className="footer-bottom">
-                &copy; {new Date().getFullYear()} Veira Systems. High-Performance Enterprise.
-            </div>
+            <div className="footer-bottom">&copy; {new Date().getFullYear()} Veira Systems. High-Performance Enterprise.</div>
         </footer>
     </div>
   );
