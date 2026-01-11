@@ -93,6 +93,76 @@ const FAQItem: React.FC<{ faq: FAQ }> = ({ faq }) => {
 // --- All Blog Posts ---
 const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "free-etims-compliant-pos-kenya",
+    meta: {
+      title: "Free ETIMS-Compliant POS System in Kenya for Restaurants & Retail | Veira",
+      description: "Get a free ETIMS-compliant POS system in Kenya. Veira offers Android POS hardware support, cloud dashboard, WhatsApp sales reports, fraud prevention, and no monthly fees.",
+      primaryKeyword: "free etims compliant pos kenya",
+    },
+    content: {
+      headline: "Free ETIMS-Compliant POS System in Kenya: The Complete Guide for Restaurants & Retail Businesses",
+      subheadline: "Modernize your business with ETIMS integration, Android hardware, and real-time cloud reporting.",
+      sections: [
+        {
+          id: "what-is-pos",
+          title: "What Is a POS System and Why It Matters in Kenya",
+          body: "A Point of Sale (POS) system is the heart of any modern business. In Kenya, moving away from manual ledgers to a digital POS helps you track every shilling, manage stock accurately, and understand your best-selling items. For restaurants and retail shops, it reduces errors and provides the data needed to grow.",
+          internalLinks: ["/pos"]
+        },
+        {
+          id: "etims-compliance",
+          title: "What Is ETIMS and Why Your POS Must Be ETIMS Compliant",
+          body: "KRA's Electronic Tax Invoice Management System (eTIMS) is now a requirement for businesses in Kenya. An eTIMS-compliant POS system automatically generates valid tax invoices and syncs them with KRA in real-time. This saves you from the manual work of logging into the portal for every sale and ensures your business remains compliant.",
+          internalLinks: ["/ai-tools/etims-compliance-checker"]
+        },
+        {
+          id: "free-pos-future",
+          title: "Why Free POS Systems Are the Future for Kenyan Businesses",
+          body: "Upfront software costs and heavy monthly fees shouldn't stop you from running a professional business. Free-to-start POS systems like Veira align our success with yours. By removing monthly subscriptions and focusing on value, we allow Kenyan entrepreneurs to scale without financial burden.",
+          internalLinks: ["/pos"]
+        },
+        {
+          id: "who-is-it-for",
+          title: "Who Veira POS Is Built For",
+          body: "Our system is tailored for the high-paced environment of Kenyan commerce. Whether you are running a busy restaurant in Nairobi, a high-volume retail store, a local supermarket, or a specialized clinic, the system adapts to your workflow. We support multi-branch operations and diverse payment methods including M-PESA and cards.",
+          internalLinks: ["/pos"]
+        },
+        {
+          id: "features",
+          title: "Key Features of Veira POS",
+          body: "Veira isn't just a sales tool; it's a complete business management suite. Our key features include full eTIMS compliance, support for Android Smart POS hardware, a real-time cloud-based dashboard, and our signature daily WhatsApp sales reports. We also provide robust inventory management, staff fraud prevention, and smart analytics to help you spot trends before they become problems.",
+          internalLinks: ["/pos"]
+        },
+        {
+          id: "why-switch",
+          title: "Why Businesses Are Switching to Veira POS",
+          body: "Kenyan business owners are switching because they want simplicity. They are tired of complicated software that breaks or requires expensive tech support. Veira offers a managed experience—we handle the setup, the updates, and the compliance so you can focus on your customers.",
+          internalLinks: ["/pos"]
+        },
+        {
+          id: "get-started",
+          title: "How to Get Started with Veira POS",
+          body: "Ready to simplify your operations? The process is simple. Book a free demo via WhatsApp, and our team will show you how the system works. Once you're ready, we help set up your Android POS hardware and train your staff. You could be up and running in as little as 48 hours.",
+          internalLinks: ["/talk-to-us"]
+        }
+      ],
+      faqs: [
+        {
+          question: "Is a free POS system reliable for my business?",
+          answer: "Yes. Veira uses enterprise-grade cloud infrastructure. Our 'free' model means we don't charge monthly software fees; we align our revenue with your success through payment processing."
+        },
+        {
+          question: "Do I need to buy expensive hardware to use Veira?",
+          answer: "No. Veira supports a wide range of affordable Android Smart POS devices. We can even help you source the right hardware at competitive prices."
+        },
+        {
+          question: "How does the eTIMS integration work?",
+          answer: "The POS system is pre-configured to communicate with KRA. When you make a sale, the system generates the eTIMS invoice automatically in the background."
+        }
+      ]
+    }
+  },
+  {
     slug: "pos-system-for-small-businesses-kenya",
     meta: {
       title: "POS System for Small Businesses in Kenya That Handles Everything for You",
@@ -655,7 +725,7 @@ function App() {
                     <p style={{ maxWidth: '600px', margin: '1rem auto' }}>We process payments for you and charge a simple percentage of revenue. This means we only succeed when your business does.</p>
                   </div>
                   <div className="testimonial-card" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', border: '1px solid #fff' }}>
-                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', letter-spacing: '0.1em' }}>Revenue Based</span>
+                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.1em' }}>Revenue Based</span>
                     <div style={{ fontSize: '4rem', fontWeight: '800', margin: '1.5rem 0' }}>1.5%</div>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Everything included, no hidden fees.</p>
                     <div style={{ textAlign: 'left', display: 'inline-block', margin: '0 auto' }}>
