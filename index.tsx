@@ -1,3 +1,4 @@
+'use client';
 
 /**
  * @license
@@ -60,100 +61,7 @@ const BLOG_POSTS = [
   { id: 5, title: "Compliance as Code: Automating eTIMS for Scale", category: "Compliance", date: "Oct 10, 2024", excerpt: "How to stay ahead of regulatory requirements without slowing down your sales floor." }
 ];
 
-const POS_CONTENT = {
-  meta: {
-    title: "Free ETIMS Compliant POS System in Kenya | Android POS by Veira",
-    description: "Get a free ETIMS compliant Android POS system for restaurants, retail, clinics, law firms, service businesses, bars and clubs. Daily WhatsApp reports and cloud dashboard included."
-  },
-  hero: {
-    headline: "A Simple POS That Helps You Run Your Business",
-    subheadline: "Record sales, manage staff, track inventory and receive clear reports without complicated software.",
-    primaryCTA: "Get Started",
-    secondaryCTA: "Talk to Us"
-  },
-  intro: {
-    title: "What Is Veira POS",
-    text: "Veira POS is a modern Android POS system delivered as a service. It helps businesses handle sales, payments and reporting in a simple and reliable way. Everything is set up for you and works out of the box."
-  },
-  features: {
-    title: "What You Get",
-    items: [
-      "ETIMS compliant and KRA ready",
-      "Android POS devices for fast checkout",
-      "Cloud based dashboard you can access anywhere",
-      "Daily sales reports sent directly to WhatsApp",
-      "Staff and inventory management",
-      "Fraud prevention and basic business insights"
-    ]
-  },
-  pricing: {
-    title: "Simple Pricing",
-    text: "There is no monthly software fee. Veira charges a small transaction fee when you process payments. This helps us maintain the system, improve security and support your business."
-  },
-  whoItsFor: {
-    title: "Who Veira POS Is For",
-    businesses: [
-      "Restaurants and cafes",
-      "Retail shops and mini marts",
-      "Law firms",
-      "Service based businesses",
-      "Clinics and medical practices",
-      "Bars and clubs",
-      "Pharmacies",
-      "Growing small and medium businesses"
-    ]
-  },
-  benefits: {
-    title: "Why Businesses Choose Veira POS",
-    items: [
-      "Easy to use with little training needed",
-      "Works well for both product and service businesses",
-      "Clear reports sent automatically to WhatsApp",
-      "Reliable ETIMS compliance",
-      "One system connected to cloud and support"
-    ]
-  },
-  howItWorks: {
-    title: "How It Works",
-    steps: [
-      "We help you set up the POS",
-      "You start recording sales and payments",
-      "Reports are sent automatically to your WhatsApp",
-      "You monitor everything from one dashboard"
-    ]
-  },
-  faq: {
-    title: "Frequently Asked Questions",
-    items: [
-      {
-        question: "Is the Veira POS really free",
-        answer: "Yes. There is no monthly software fee. Veira only charges a small transaction fee when payments are processed."
-      },
-      {
-        question: "Is Veira POS ETIMS compliant",
-        answer: "Yes. Veira POS is fully ETIMS compliant and ready for KRA requirements."
-      },
-      {
-        question: "Can service businesses like law firms or clinics use the POS",
-        answer: "Yes. Veira POS supports service based billing, invoicing and reporting, making it suitable for law firms, clinics and other service businesses."
-      },
-      {
-        question: "Do I get reports on WhatsApp",
-        answer: "Yes. Veira sends daily sales reports directly to your WhatsApp so you can track performance easily."
-      },
-      {
-        question: "Does the POS work on Android devices",
-        answer: "Yes. Veira POS is designed for Android POS hardware and handheld devices."
-      }
-    ]
-  }
-};
-
 const AGENTS_CONTENT = {
-  meta: {
-    title: "AI Business Assistants for WhatsApp, Sales and Support | Veira Agents",
-    description: "Veira provides AI business assistants that help handle sales, customer support, follow ups, invoicing and reports across WhatsApp, calls and business systems."
-  },
   hero: {
     headline: "AI Assistants That Help Run Your Business",
     subheadline: "Veira agents help you reply to customers, follow up on leads, send invoices and handle daily business tasks automatically.",
@@ -253,10 +161,6 @@ const AGENTS_CONTENT = {
 };
 
 const CLOUD_CONTENT = {
-  meta: {
-    title: "Veira Cloud | The Calm Behind Your Business",
-    description: "Veira Cloud quietly keeps your business organised. Sales, reports, customers and activity from POS, AI agents, apps and websites in one simple place."
-  },
   opening: {
     headline: "Most Business Stress Comes From Not Knowing",
     body: "Not knowing how sales are doing today. Not knowing if something was missed. Not knowing whether the numbers you heard are correct. Veira Cloud exists to remove that uncertainty."
@@ -347,10 +251,6 @@ const CLOUD_CONTENT = {
 };
 
 const APPS_CONTENT = {
-  meta: {
-    title: "Veira Apps & Websites | Simple Software That Just Works",
-    description: "Veira designs modern apps and websites that feel effortless. Built to be fast, clear, and quietly powerful for real businesses."
-  },
   hero: {
     headline: "Software Should Feel Obvious",
     body: "The best apps do not need instructions. They respond instantly. They look calm. They feel inevitable. Veira builds apps and websites that work the way people expect them to."
@@ -390,10 +290,6 @@ const APPS_CONTENT = {
 };
 
 const STORY_CONTENT = {
-  meta: {
-    title: "Our Story | Veira",
-    description: "Veira builds calm, reliable software for real businesses and commits 10% of annual net profit to fighting gender based violence and supporting survivors."
-  },
   story: {
     opening: {
       headline: "Why Veira Exists",
@@ -422,10 +318,6 @@ const STORY_CONTENT = {
 };
 
 const USE_CASES_PAGE_CONTENT = {
-  meta: {
-    title: "Use Cases | How Businesses Use Veira Every Day",
-    description: "See how restaurants, retail shops, clinics, law firms, service businesses, bars and clubs use Veira POS, Cloud, AI agents, apps and websites to run calmer operations."
-  },
   hero: {
     headline: "Built For How Work Actually Happens",
     body: "Every business looks different on the surface. But behind the scenes, the problems are often the same. Too many tools. Too many messages. Too much uncertainty. Veira is designed to simplify what happens every day."
@@ -474,10 +366,6 @@ const USE_CASES_PAGE_CONTENT = {
 };
 
 const CONTACT_PAGE_CONTENT = {
-  meta: {
-    title: "Talk to Us | Veira",
-    description: "Get in touch with Veira for POS systems, AI agents, cloud platforms, and custom software solutions."
-  },
   hero: {
     headline: "Let's Talk About Your Business.",
     body: "We prefer conversations over forms. Reach out via WhatsApp or email, and we'll help you find the right systems for your operations."
@@ -498,41 +386,39 @@ const CONTACT_PAGE_CONTENT = {
   ]
 };
 
-type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog' | 'contact';
+// Route Keys strictly from JSON
+type RouteKey = 'home' | 'pos' | 'agents' | 'cloud' | 'apps' | 'useCases' | 'ourStory' | 'talkToUs';
 
-// Map views to paths for SEO/Canonical logic
-const ROUTE_PATH_MAP: Record<AppView, string> = {
-  landing: '/',
-  pos: '/pos',
-  agents: '/agents',
-  cloud: '/cloud',
-  apps: '/apps',
-  'use-cases': '/use-cases',
-  story: '/our-story',
-  contact: '/talk-to-us',
-  blog: '/blog',
-  compare: '/compare'
+const ROUTES: Record<RouteKey, { label: string; path: string }> = {
+  home: { label: 'Veira', path: '/' },
+  pos: { label: 'POS', path: '/pos' },
+  agents: { label: 'Agents', path: '/agents' },
+  cloud: { label: 'Cloud', path: '/cloud' },
+  apps: { label: 'Apps', path: '/apps' },
+  useCases: { label: 'Use Cases', path: '/use-cases' },
+  ourStory: { label: 'Our Story', path: '/our-story' },
+  talkToUs: { label: 'Talk to Us', path: '/talk-to-us' }
 };
 
-function App() {
-  const [view, setView] = useState<AppView>('landing');
+// Navigation inclusions from JSON
+const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory', 'talkToUs'];
+const FOOTER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory'];
+
+export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey }) {
+  const [activeRoute, setActiveRoute] = useState<RouteKey>(initialRoute);
   const [activeCompId, setActiveCompId] = useState("chatgpt");
   const [activeContextId, setActiveContextId] = useState("whatsapp-business");
-  const [activeSlug, setActiveSlug] = useState<string | null>(null);
+  const [activeCompareSlug, setActiveCompareSlug] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // --- Programmatic SEO: Navigation Helper ---
-  const navigate = (newView: AppView, slug?: string) => {
-    setView(newView);
-    setActiveSlug(slug || null);
+  const navigate = (key: RouteKey, slug?: string) => {
+    setActiveRoute(key);
+    setActiveCompareSlug(slug || null);
     setIsMobileMenuOpen(false);
-    
-    // Smooth scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Simulated URL push (for demonstration of pSEO routing structure)
-    const newPath = slug ? `/compare/${slug}` : ROUTE_PATH_MAP[newView];
-    console.debug(`Navigating to canonical: ${BASE_URL}${newPath}`);
+    // In Next.js, we would use router.push here if we were actually changing browser URLs,
+    // but this initialRoute mechanism handles the landing states for Search Engine 200 responses.
   };
 
   const showCompare = (compId?: string, ctxId?: string) => {
@@ -540,10 +426,9 @@ function App() {
     const ctxid = ctxId || activeContextId;
     setActiveCompId(cid);
     setActiveContextId(ctxid);
-    
-    // Programmatic slug generation
     const slug = `${cid}-vs-veira-for-${ctxid}`;
-    navigate('compare', slug);
+    navigate('home', slug); 
+    setActiveCompareSlug(slug);
   };
 
   const handleWhatsApp = () => {
@@ -551,41 +436,20 @@ function App() {
     window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
   };
 
-  // --- Internal Linking Randomizer (pSEO Crawl discovery) ---
-  const internalLinks = useMemo(() => {
-    const links: { compId: string; ctxId: string }[] = [];
-    const used = new Set();
-    while (links.length < 12) {
-      const comp = COMPETITORS[Math.floor(Math.random() * COMPETITORS.length)];
-      const ctx = USE_CASES[Math.floor(Math.random() * USE_CASES.length)];
-      const key = `${comp.id}-${ctx.id}`;
-      if (!used.has(key) && (comp.id !== activeCompId || ctx.id !== activeContextId)) {
-        links.push({ compId: comp.id, ctxId: ctx.id });
-        used.add(key);
-      }
-    }
-    return links;
-  }, [activeCompId, activeContextId]);
-
-  // --- Comparison Engine Logic ---
   const activeCompareData = useMemo(() => {
-    // If we have a slug, parse it to extract IDs
-    if (activeSlug) {
-      const parts = activeSlug.split('-vs-veira-for-');
+    if (activeCompareSlug) {
+      const parts = activeCompareSlug.split('-vs-veira-for-');
       if (parts.length === 2) {
         const foundComp = COMPETITORS.find(c => c.id === parts[0]);
         const foundCtx = USE_CASES.find(u => u.id === parts[1]);
         if (foundComp && foundCtx) {
-          // Sync state if navigating from a link
           setActiveCompId(foundComp.id);
           setActiveContextId(foundCtx.id);
         }
       }
     }
-
     const comp = COMPETITORS.find(c => c.id === activeCompId) || COMPETITORS[0];
     const context = USE_CASES.find(ctx => ctx.id === activeContextId) || USE_CASES[0];
-    
     const isHelpdesk = comp.type.includes("Helpdesk") || comp.type.includes("Platform");
     const isLLM = comp.type.includes("LLM") || comp.type.includes("AI");
 
@@ -608,207 +472,85 @@ function App() {
     ];
 
     return { comp, context, strategicCapabilities, faqs };
-  }, [activeCompId, activeContextId, activeSlug]);
+  }, [activeCompId, activeContextId, activeCompareSlug]);
 
-  // --- Dynamic Meta, Canonical & Schema Injection ---
-  useEffect(() => {
-    const isCompare = view === 'compare';
-    const isPOS = view === 'pos';
-    const isAgents = view === 'agents';
-    const isCloud = view === 'cloud';
-    const isApps = view === 'apps';
-    const isStory = view === 'story';
-    const isUseCases = view === 'use-cases';
-    const isContact = view === 'contact';
-    
-    // Default Fallback
-    let pageTitle = `${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} | Veira`;
-    let metaDescription = `Learn how Veira helps businesses with ${view.replace('-', ' ')} through calm, reliable software.`;
-
-    const canonicalPath = activeSlug ? `/compare/${activeSlug}` : ROUTE_PATH_MAP[view];
-    const canonicalUrl = `${BASE_URL}${canonicalPath}`;
-
-    let mainSchema: any = {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Veira",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web, WhatsApp, Voice",
-        "url": BASE_URL,
-        "description": "Infrastructure for modern commerce.",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-    };
-
-    if (view === 'landing') {
-        pageTitle = "Veira — Simpler Business Systems";
-        metaDescription = "Modern business infrastructure for East African commerce. Managed POS, AI Agents, and Digital Payments.";
-    } else if (isCompare) {
-        const { comp, context, faqs } = activeCompareData;
-        pageTitle = `Veira vs ${comp.name} for ${context.label} | Best AI for Business`;
-        metaDescription = `Compare Veira and ${comp.name} for ${context.label}. See why Veira's WhatsApp-native operational agents lead in regional commerce execution.`;
-        mainSchema = [
-            mainSchema,
-            {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": faqs.map(f => ({
-                  "@type": "Question",
-                  "name": f.question,
-                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-                }))
-            }
-        ];
-    } else if (isPOS) {
-        pageTitle = POS_CONTENT.meta.title;
-        metaDescription = POS_CONTENT.meta.description;
-        mainSchema = [
-            mainSchema,
-            {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": POS_CONTENT.faq.items.map(f => ({
-                  "@type": "Question",
-                  "name": f.question,
-                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-                }))
-            }
-        ];
-    } else if (isAgents) {
-        pageTitle = AGENTS_CONTENT.meta.title;
-        metaDescription = AGENTS_CONTENT.meta.description;
-        mainSchema = [
-            mainSchema,
-            {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": AGENTS_CONTENT.faq.items.map(f => ({
-                  "@type": "Question",
-                  "name": f.question,
-                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-                }))
-            }
-        ];
-    } else if (isCloud) {
-        pageTitle = CLOUD_CONTENT.meta.title;
-        metaDescription = CLOUD_CONTENT.meta.description;
-        mainSchema = [
-            mainSchema,
-            {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": CLOUD_CONTENT.faq.items.map(f => ({
-                  "@type": "Question",
-                  "name": f.question,
-                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-                }))
-            }
-        ];
-    } else if (isApps) {
-        pageTitle = APPS_CONTENT.meta.title;
-        metaDescription = APPS_CONTENT.meta.description;
-        mainSchema = [
-            mainSchema,
-            {
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              "name": "Veira Apps & Websites",
-              "description": APPS_CONTENT.meta.description
-            }
-        ];
-    } else if (isStory) {
-        pageTitle = STORY_CONTENT.meta.title;
-        metaDescription = STORY_CONTENT.meta.description;
-        mainSchema = [
-            mainSchema,
-            {
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Veira",
-              "url": BASE_URL,
-              "description": STORY_CONTENT.meta.description
-            }
-        ];
-    } else if (isUseCases) {
-        pageTitle = USE_CASES_PAGE_CONTENT.meta.title;
-        metaDescription = USE_CASES_PAGE_CONTENT.meta.description;
-        mainSchema = [
-            mainSchema,
-            {
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              "name": "Veira Use Cases",
-              "description": USE_CASES_PAGE_CONTENT.meta.description
-            }
-        ];
-    } else if (isContact) {
-        pageTitle = CONTACT_PAGE_CONTENT.meta.title;
-        metaDescription = CONTACT_PAGE_CONTENT.meta.description;
-        mainSchema = [
-            mainSchema,
-            {
-              "@context": "https://schema.org",
-              "@type": "ContactPage",
-              "name": "Talk to Us",
-              "url": `${BASE_URL}/talk-to-us`,
-              "description": "Get in touch with Veira HQ."
-            }
-        ];
-    }
-
-    document.title = pageTitle;
-    
-    // Manage meta description
-    const updateOrCreateMeta = (name: string, content: string) => {
-        let tag = document.querySelector(`meta[name="${name}"]`);
-        if (!tag) {
-            tag = document.createElement('meta');
-            tag.setAttribute('name', name);
-            document.head.appendChild(tag);
-        }
-        tag.setAttribute('content', content);
-    };
-
-    updateOrCreateMeta('description', metaDescription);
-    
-    // Canonical link injection
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-        canonical = document.createElement('link');
-        canonical.setAttribute('rel', 'canonical');
-        document.head.appendChild(canonical);
-    }
-    canonical.setAttribute('href', canonicalUrl);
-
-    // Schema injection
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(mainSchema);
-    script.id = 'dynamic-seo-schema';
-    document.head.appendChild(script);
-
-    return () => {
-      const existing = document.getElementById('dynamic-seo-schema');
-      if (existing) document.head.removeChild(existing);
-    };
-  }, [view, activeCompareData, activeSlug]);
+  const renderComparisonView = () => (
+    <div className="comparison-page reveal">
+      <section className="saas-hero">
+        <h1>Veira vs {activeCompareData.comp.name}</h1>
+        <p className="hero-supporting">The ultimate comparison for {activeCompareData.context.label}. Choose the solution that executes real work.</p>
+      </section>
+      <section className="comparison-controls">
+          <div className="control-group">
+              <label>Brand Selection:</label>
+              <div className="control-pills">
+                  {COMPETITORS.map(c => (
+                      <button key={c.id} className={`pill ${activeCompId === c.id ? 'active' : ''}`} onClick={() => setActiveCompId(c.id)}>{c.name}</button>
+                  ))}
+              </div>
+          </div>
+          <div className="control-group">
+              <label>Target Use Case:</label>
+              <div className="control-pills">
+                  {USE_CASES.map(ctx => (
+                      <button key={ctx.id} className={`pill ${activeContextId === ctx.id ? 'active' : ''}`} onClick={() => setActiveContextId(ctx.id)}>{ctx.label}</button>
+                  ))}
+              </div>
+          </div>
+      </section>
+      <section className="comparison-table-section">
+        <div className="comparison-table-wrapper">
+          <table className="comparison-table">
+            <thead>
+              <tr>
+                <th>Core Capability</th>
+                <th className="brand-col brand-a">Veira</th>
+                <th className="brand-col brand-b">{activeCompareData.comp.name}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activeCompareData.strategicCapabilities.map((cap, i) => (
+                <tr key={i}>
+                  <td className="feature-name">{cap.name}</td>
+                  <td className="brand-val brand-a">{cap.a ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}</td>
+                  <td className="brand-val brand-b">{cap.b ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section className="verdict-section reveal">
+        <div className="section-header"><h2>Market Verdict</h2></div>
+        <div className="verdict-grid">
+          <div className="verdict-card card-a">
+            <div className="card-header"><h3>Why Veira Wins</h3></div>
+            <ul><li>Operational execution native to WhatsApp</li><li>Direct eTIMS & M-PESA compliance</li></ul>
+          </div>
+          <div className="verdict-card card-b">
+            <div className="card-header"><h3>Why {activeCompareData.comp.name} Wins</h3></div>
+            <ul><li>Broad text generation</li><li>Personal productivity</li></ul>
+          </div>
+        </div>
+      </section>
+      <section className="primary-cta reveal">
+        <button className="primary-btn" onClick={() => navigate('talkToUs')}>Upgrade Your Systems</button>
+      </section>
+    </div>
+  );
 
   return (
     <div className="saas-container">
-        {/* Navigation Bar (Strict Header Items) */}
         <nav className="saas-nav">
-            <div className="logo-link-container" onClick={() => navigate('landing')}>
+            <div className="logo-link-container" onClick={() => navigate('home')}>
                 <OrganicOrbLogo size={32} variant="nav" />
                 <span className="saas-logo">Veira</span>
             </div>
             <div className="nav-center">
                 <div className="nav-links">
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('agents'); }}>Agents</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('contact'); }}>Talk to Us</a>
+                    {HEADER_KEYS.map(key => (
+                        <a key={key} href="#" onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                    ))}
                 </div>
             </div>
             <div className="nav-right">
@@ -819,16 +561,11 @@ function App() {
             </div>
         </nav>
 
-        {/* Mobile Menu */}
         <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}>
             <div className="mobile-menu-links">
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('agents'); }}>Agents</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigate('contact'); }}>Talk to Us</a>
+                {HEADER_KEYS.map(key => (
+                    <a key={key} href="#" onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                ))}
                 <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>Get Free POS</button>
             </div>
         </div>
@@ -836,7 +573,7 @@ function App() {
         <main className="saas-main">
             <DottedGlowBackground gap={32} radius={0.5} color="rgba(255,255,255,0.03)" glowColor="rgba(255,255,255,0.08)" speedScale={0.1} />
 
-            {view === 'landing' && (
+            {activeRoute === 'home' && !activeCompareSlug && (
               <>
                 <section className="saas-hero reveal">
                   <h1>Infrastructure for Modern Business.</h1>
@@ -846,694 +583,134 @@ function App() {
                     <button className="secondary-btn" onClick={() => navigate('agents')}>Meet the Agents</button>
                   </div>
                 </section>
-
                 <section className="journal-landing-preview reveal">
-                  <div className="section-header">
-                    <h2>Market Intelligence</h2>
-                    <p>How Veira compares against the global ecosystem.</p>
-                  </div>
+                  <div className="section-header"><h2>Market Intelligence</h2></div>
                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                     {COMPETITORS.slice(0, 6).map(comp => (
                         <div key={comp.id} className="tool-card" onClick={() => showCompare(comp.id, "whatsapp-business")}>
                             <h4>Veira vs {comp.name}</h4>
-                            <p className="excerpt">WhatsApp & Voice Native operational efficiency for regional businesses.</p>
-                            <span className="category-tag" style={{ marginTop: '1rem' }}>Comparison</span>
+                            <p className="excerpt">Comparison for WhatsApp Business optimization.</p>
                         </div>
                     ))}
-                  </div>
-                  <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                    <button className="secondary-btn" onClick={() => showCompare()}>View All Comparisons</button>
                   </div>
                 </section>
               </>
             )}
 
-            {view === 'blog' && (
-              <div className="blog-page reveal">
-                <section className="saas-hero">
-                  <h1>The Veira Journal</h1>
-                  <p className="hero-supporting">Insights on AI, Operations, and Business Architecture.</p>
-                </section>
-                <section className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto 6rem' }}>
-                    {BLOG_POSTS.map(post => (
-                        <div key={post.id} className="tool-card journal-card-full">
-                            <span className="category-tag">{post.category}</span>
-                            <h4>{post.title}</h4>
-                            <p className="excerpt">{post.excerpt}</p>
-                            <p className="date-tag">{post.date}</p>
-                        </div>
-                    ))}
+            {activeCompareSlug && renderComparisonView()}
+
+            {activeRoute === 'pos' && (
+              <div className="pos-page reveal" style={{ padding: '8rem 2rem', textAlign: 'center' }}>
+                <section className="saas-hero" style={{ minHeight: 'auto' }}>
+                  <h1 style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>Veira POS</h1>
+                  <p className="hero-supporting" style={{ margin: '0 auto' }}>
+                    Point of sale built for modern businesses.
+                  </p>
                 </section>
               </div>
             )}
 
-            {view === 'compare' && (
-              <div className="comparison-page reveal">
-                <section className="saas-hero">
-                  <h1>Veira vs {activeCompareData.comp.name}</h1>
-                  <p className="hero-supporting">The ultimate comparison for {activeCompareData.context.label}. Choose the solution that executes real work.</p>
-                </section>
-
-                <section className="comparison-controls">
-                    <div className="control-group">
-                        <label>Brand Selection:</label>
-                        <div className="control-pills">
-                            {COMPETITORS.map(c => (
-                                <button key={c.id} className={`pill ${activeCompId === c.id ? 'active' : ''}`} onClick={() => setActiveCompId(c.id)}>{c.name}</button>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="control-group">
-                        <label>Target Use Case:</label>
-                        <div className="control-pills">
-                            {USE_CASES.map(ctx => (
-                                <button key={ctx.id} className={`pill ${activeContextId === ctx.id ? 'active' : ''}`} onClick={() => setActiveContextId(ctx.id)}>{ctx.label}</button>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                <section className="comparison-table-section">
-                  <div className="comparison-table-wrapper">
-                    <table className="comparison-table">
-                      <thead>
-                        <tr>
-                          <th>Core Capability</th>
-                          <th className="brand-col brand-a">Veira</th>
-                          <th className="brand-col brand-b">{activeCompareData.comp.name}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {activeCompareData.strategicCapabilities.map((cap, i) => (
-                          <tr key={i}>
-                            <td className="feature-name">{cap.name}</td>
-                            <td className="brand-val brand-a">
-                              {cap.a ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}
-                            </td>
-                            <td className="brand-val brand-b">
-                              {cap.b ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-
-                <section className="verdict-section reveal">
-                  <div className="section-header">
-                    <h2>Market Verdict</h2>
-                    <p>Why businesses choose Veira for real-world execution over general-purpose AI.</p>
-                  </div>
-                  <div className="verdict-grid">
-                    <div className="verdict-card card-a">
-                      <div className="card-header"><h3>Why Veira Wins</h3></div>
-                      <ul>
-                        <li>Purpose-built for operational execution</li>
-                        <li>Built-in payment and tax compliance</li>
-                        <li>WhatsApp & Voice native support</li>
-                      </ul>
-                    </div>
-                    <div className="verdict-card card-b">
-                      <div className="card-header"><h3>Why {activeCompareData.comp.name} Wins</h3></div>
-                      <ul>
-                        <li>General purpose text generation</li>
-                        <li>Broad knowledge retrieval</li>
-                        <li>Personal productivity workflows</li>
-                      </ul>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="faq-section reveal">
-                    <div className="section-header">
-                        <h2>Frequently Asked Questions</h2>
-                        <p>Detailed insights for {activeCompareData.context.label}.</p>
-                    </div>
-                    <div className="faq-container">
-                        {activeCompareData.faqs.map((faq, i) => (
-                            <div key={i} className="faq-item">
-                                <h3>{faq.question}</h3>
-                                <p>{faq.answer}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="compare-more-section reveal">
-                    <div className="section-header">
-                        <h2>Explore Related Contexts</h2>
-                        <p>Deep dive into alternative configurations for {activeCompareData.comp.name} and beyond.</p>
-                    </div>
-                    <div className="tools-grid">
-                        {internalLinks.map((link, idx) => {
-                            const c = COMPETITORS.find(comp => comp.id === link.compId);
-                            const u = USE_CASES.find(use => use.id === link.ctxId);
-                            return (
-                                <div key={idx} className="tool-card" onClick={() => showCompare(link.compId, link.ctxId)}>
-                                    <h4>Veira vs {c?.name}</h4>
-                                    <p>Optimal for {u?.label}</p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                  <h2>Upgrade Your Business Infrastructure</h2>
-                  <div className="cta-actions" style={{ marginTop: '2rem' }}>
-                    <button className="primary-btn" onClick={() => navigate('agents')}>Meet Your AI Team</button>
-                    <button className="secondary-btn" onClick={handleWhatsApp}>Consult an Expert</button>
-                  </div>
-                </section>
-              </div>
-            )}
-
-            {view === 'agents' && (
+            {activeRoute === 'agents' && (
               <div className="agents-page reveal">
                 <section className="saas-hero">
                   <h1>{AGENTS_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{AGENTS_CONTENT.hero.subheadline}</p>
-                  <div className="hero-actions">
-                    <button className="primary-btn" onClick={handleWhatsApp}>{AGENTS_CONTENT.hero.primaryCTA}</button>
-                    <button className="secondary-btn" onClick={handleWhatsApp}>{AGENTS_CONTENT.hero.secondaryCTA}</button>
-                  </div>
                 </section>
-
                 <section className="pos-content-section reveal">
-                   <div className="section-header">
-                      <h2>{AGENTS_CONTENT.intro.title}</h2>
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)' }}>
-                        {AGENTS_CONTENT.intro.text}
-                      </p>
-                   </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{AGENTS_CONTENT.howTheyWork.title}</h2>
-                  </div>
-                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                    {AGENTS_CONTENT.howTheyWork.points.map((point, i) => (
-                      <div key={i} className="tool-card">
-                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
-                        <p style={{ fontWeight: 600 }}>{point}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{AGENTS_CONTENT.agents.title}</h2>
-                  </div>
-                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                     {AGENTS_CONTENT.agents.list.map((agent, i) => (
                       <div key={i} className="tool-card agent-profile-card">
-                        <div style={{ marginBottom: '1.5rem' }}>
-                           <h3 style={{ fontSize: '1.5rem', color: '#fff' }}>{agent.name}</h3>
-                           <span className="category-tag">{agent.role}</span>
-                        </div>
-                        <p className="excerpt">{agent.description}</p>
+                        <h3 style={{ color: '#fff', marginBottom: '1rem' }}>{agent.name}</h3>
+                        <span className="category-tag">{agent.role}</span>
+                        <p className="excerpt" style={{ marginTop: '1.5rem' }}>{agent.description}</p>
                       </div>
                     ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{AGENTS_CONTENT.useCases.title}</h2>
-                  </div>
-                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                    {AGENTS_CONTENT.useCases.items.map((item, i) => (
-                      <div key={i} className="tool-card feature-item">
-                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
-                        <p style={{ fontWeight: 600 }}>{item}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{AGENTS_CONTENT.whoItsFor.title}</h2>
-                  </div>
-                  <div className="control-pills" style={{ justifyContent: 'center', maxWidth: '800px', margin: '0 auto' }}>
-                    {AGENTS_CONTENT.whoItsFor.businesses.map((biz, i) => (
-                      <span key={i} className="pill" style={{ cursor: 'default' }}>{biz}</span>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{AGENTS_CONTENT.benefits.title}</h2>
-                  </div>
-                  <div className="faq-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
-                    {AGENTS_CONTENT.benefits.items.map((item, i) => (
-                      <div key={i} className="faq-item" style={{ padding: '1.5rem 2rem' }}>
-                        <p style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 600 }}>
-                          <span className="check-icon">✓</span> {item}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="faq-section reveal">
-                    <div className="section-header">
-                        <h2>{AGENTS_CONTENT.faq.title}</h2>
-                    </div>
-                    <div className="faq-container">
-                        {AGENTS_CONTENT.faq.items.map((faq, i) => (
-                            <div key={i} className="faq-item">
-                                <h3>{faq.question}</h3>
-                                <p>{faq.answer}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                   <h2>Start Using Veira Agents</h2>
-                   <p className="hero-supporting" style={{ marginTop: '1rem' }}>Talk to us and see how AI assistants can help run your business day to day.</p>
-                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
-                      <button className="primary-btn" onClick={handleWhatsApp}>Talk to Us</button>
-                   </div>
-                </section>
-              </div>
-            )}
-
-            {view === 'pos' && (
-              <div className="pos-page reveal">
-                <section className="saas-hero">
-                  <h1>{POS_CONTENT.hero.headline}</h1>
-                  <p className="hero-supporting">{POS_CONTENT.hero.subheadline}</p>
-                  <div className="hero-actions">
-                    <button className="primary-btn" onClick={handleWhatsApp}>{POS_CONTENT.hero.primaryCTA}</button>
-                    <button className="secondary-btn" onClick={handleWhatsApp}>{POS_CONTENT.hero.secondaryCTA}</button>
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                   <div className="section-header">
-                      <h2>{POS_CONTENT.intro.title}</h2>
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)' }}>
-                        {POS_CONTENT.intro.text}
-                      </p>
-                   </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{POS_CONTENT.features.title}</h2>
-                  </div>
-                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                    {POS_CONTENT.features.items.map((item, i) => (
-                      <div key={i} className="tool-card feature-item">
-                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
-                        <p style={{ fontWeight: 600 }}>{item}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-                  <div className="section-header">
-                    <h2>{POS_CONTENT.pricing.title}</h2>
-                    <p style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
-                      {POS_CONTENT.pricing.text}
-                    </p>
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{POS_CONTENT.whoItsFor.title}</h2>
-                  </div>
-                  <div className="control-pills" style={{ justifyContent: 'center', maxWidth: '800px', margin: '0 auto' }}>
-                    {POS_CONTENT.whoItsFor.businesses.map((biz, i) => (
-                      <span key={i} className="pill" style={{ cursor: 'default' }}>{biz}</span>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{POS_CONTENT.benefits.title}</h2>
-                  </div>
-                  <div className="faq-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
-                    {POS_CONTENT.benefits.items.map((item, i) => (
-                      <div key={i} className="faq-item" style={{ padding: '1.5rem 2rem' }}>
-                        <p style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 600 }}>
-                          <span className="check-icon">✓</span> {item}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{POS_CONTENT.howItWorks.title}</h2>
-                  </div>
-                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                    {POS_CONTENT.howItWorks.steps.map((step, i) => (
-                      <div key={i} className="tool-card">
-                        <span style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--orb-violet)', display: 'block', marginBottom: '1rem' }}>0{i+1}</span>
-                        <p style={{ fontWeight: 600 }}>{step}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="faq-section reveal">
-                    <div className="section-header">
-                        <h2>{POS_CONTENT.faq.title}</h2>
-                    </div>
-                    <div className="faq-container">
-                        {POS_CONTENT.faq.items.map((faq, i) => (
-                            <div key={i} className="faq-item">
-                                <h3>{faq.question}</h3>
-                                <p>{faq.answer}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                  <h2>Get Started With Veira POS</h2>
-                  <p className="hero-supporting" style={{ marginTop: '1rem' }}>Talk to us today and get a POS system that works for your business.</p>
-                  <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
-                    <button className="primary-btn" onClick={handleWhatsApp}>Talk to Us</button>
                   </div>
                 </section>
               </div>
             )}
 
-            {view === 'cloud' && (
+            {activeRoute === 'cloud' && (
               <div className="cloud-page reveal">
                 <section className="saas-hero">
                   <h1>{CLOUD_CONTENT.opening.headline}</h1>
                   <p className="hero-supporting">{CLOUD_CONTENT.opening.body}</p>
                 </section>
-
                 <section className="pos-content-section reveal">
-                   <div className="section-header">
-                      <h2>{CLOUD_CONTENT.reframe.headline}</h2>
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-                        {CLOUD_CONTENT.reframe.body}
-                      </p>
-                   </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{CLOUD_CONTENT.whatActuallyHappens.headline}</h2>
-                  </div>
                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                     {CLOUD_CONTENT.whatActuallyHappens.items.map((item, i) => (
-                      <div key={i} className="tool-card feature-item">
-                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
-                        <p style={{ fontWeight: 600 }}>{item}</p>
-                      </div>
+                      <div key={i} className="tool-card feature-item"><span className="check-icon">✓</span> <p>{item}</p></div>
                     ))}
                   </div>
-                </section>
-
-                <section className="verdict-section reveal">
-                  <div className="section-header">
-                    <h2>The Quiet Shift</h2>
-                  </div>
-                  <div className="verdict-grid">
-                    <div className="verdict-card card-b">
-                      <div className="card-header"><h3>{CLOUD_CONTENT.contrast.headline}</h3></div>
-                      <ul style={{ listStyle: 'none' }}>
-                        {CLOUD_CONTENT.contrast.items.map((item, i) => (
-                          <li key={i} style={{ padding: '1rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text-muted)' }}>
-                             {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="verdict-card card-a">
-                      <div className="card-header"><h3>{CLOUD_CONTENT.contrastAfter.headline}</h3></div>
-                      <ul style={{ listStyle: 'none' }}>
-                        {CLOUD_CONTENT.contrastAfter.items.map((item, i) => (
-                          <li key={i} style={{ padding: '1rem 0', borderBottom: '1px solid var(--border)', color: '#fff', display: 'flex', gap: '12px' }}>
-                             <span className="check-icon" style={{ fontSize: '1.1rem' }}>✓</span> {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-                  <div className="section-header">
-                    <h2>{CLOUD_CONTENT.psychologicalBenefit.headline}</h2>
-                    <p style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
-                      {CLOUD_CONTENT.psychologicalBenefit.body}
-                    </p>
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="section-header">
-                    <h2>{CLOUD_CONTENT.whoItsReallyFor.headline}</h2>
-                  </div>
-                  <div className="control-pills" style={{ justifyContent: 'center', maxWidth: '800px', margin: '0 auto' }}>
-                    {CLOUD_CONTENT.whoItsReallyFor.items.map((biz, i) => (
-                      <span key={i} className="pill" style={{ cursor: 'default' }}>{biz}</span>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                    <div className="tool-card">
-                       <h3 style={{ marginBottom: '1rem', color: '#fff' }}>{CLOUD_CONTENT.howItFits.headline}</h3>
-                       <p className="excerpt">{CLOUD_CONTENT.howItFits.body}</p>
-                    </div>
-                    <div className="tool-card">
-                       <h3 style={{ marginBottom: '1rem', color: '#fff' }}>{CLOUD_CONTENT.securityWithoutFear.headline}</h3>
-                       <p className="excerpt">{CLOUD_CONTENT.securityWithoutFear.body}</p>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="faq-section reveal">
-                    <div className="section-header">
-                        <h2>Frequently Asked Questions</h2>
-                    </div>
-                    <div className="faq-container">
-                        {CLOUD_CONTENT.faq.items.map((faq, i) => (
-                            <div key={i} className="faq-item">
-                                <h3>{faq.question}</h3>
-                                <p>{faq.answer}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                   <h2>{CLOUD_CONTENT.closing.headline}</h2>
-                   <p className="hero-supporting" style={{ marginTop: '1rem' }}>{CLOUD_CONTENT.closing.body}</p>
-                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
-                      <button className="primary-btn" onClick={handleWhatsApp}>{CLOUD_CONTENT.closing.cta}</button>
-                   </div>
                 </section>
               </div>
             )}
 
-            {view === 'apps' && (
+            {activeRoute === 'apps' && (
               <div className="apps-page reveal">
                 <section className="saas-hero">
                   <h1>{APPS_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{APPS_CONTENT.hero.body}</p>
-                  <button className="primary-btn" onClick={handleWhatsApp} style={{ marginTop: '2rem' }}>Experience Veira Apps</button>
                 </section>
-
-                <section className="pos-content-section reveal" style={{ paddingBottom: '3rem' }}>
-                   <div className="section-header">
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
-                        {APPS_CONTENT.story.body}
-                      </p>
-                   </div>
-                </section>
-
                 <section className="pos-content-section reveal">
                    <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.designPhilosophy.headline}</h3>
-                         <p className="excerpt">{APPS_CONTENT.designPhilosophy.body}</p>
-                      </div>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.experience.headline}</h3>
-                         <p className="excerpt">{APPS_CONTENT.experience.body}</p>
-                      </div>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.performance.headline}</h3>
-                         <p className="excerpt">{APPS_CONTENT.performance.body}</p>
-                      </div>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.integration.headline}</h3>
-                         <p className="excerpt">{APPS_CONTENT.integration.body}</p>
-                      </div>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.devices.headline}</h3>
-                         <p className="excerpt">{APPS_CONTENT.devices.body}</p>
-                      </div>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.ownership.headline}</h3>
-                         <p className="excerpt">{APPS_CONTENT.ownership.body}</p>
-                      </div>
-                   </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                   <h2>{APPS_CONTENT.closing.headline}</h2>
-                   <p className="hero-supporting" style={{ marginTop: '1rem' }}>{APPS_CONTENT.closing.body}</p>
-                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
-                      <button className="primary-btn" onClick={handleWhatsApp}>{APPS_CONTENT.closing.cta}</button>
+                      <div className="tool-card"><h3>{APPS_CONTENT.designPhilosophy.headline}</h3><p className="excerpt">{APPS_CONTENT.designPhilosophy.body}</p></div>
+                      <div className="tool-card"><h3>{APPS_CONTENT.experience.headline}</h3><p className="excerpt">{APPS_CONTENT.experience.body}</p></div>
                    </div>
                 </section>
               </div>
             )}
 
-            {view === 'use-cases' && (
+            {activeRoute === 'useCases' && (
               <div className="use-cases-page reveal">
                 <section className="saas-hero">
                   <h1>{USE_CASES_PAGE_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{USE_CASES_PAGE_CONTENT.hero.body}</p>
                 </section>
-
-                <section className="pos-content-section reveal" style={{ paddingBottom: '3rem' }}>
-                   <div className="section-header">
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
-                        {USE_CASES_PAGE_CONTENT.intro.body}
-                      </p>
-                   </div>
-                </section>
-
                 <section className="pos-content-section reveal">
                    <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                       {USE_CASES_PAGE_CONTENT.useCases.map((uc, i) => (
                         <div key={i} className="tool-card feature-item">
-                           <h3 style={{ marginBottom: '1.2rem', color: '#fff', fontSize: '1.4rem' }}>{uc.name}</h3>
-                           <p className="excerpt" style={{ lineHeight: '1.7' }}>{uc.body}</p>
+                           <h3 style={{ marginBottom: '1.2rem', color: '#fff' }}>{uc.name}</h3>
+                           <p className="excerpt">{uc.body}</p>
                         </div>
                       ))}
-                   </div>
-                </section>
-
-                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-                   <div className="section-header">
-                      <h2>{USE_CASES_PAGE_CONTENT.crossChannel.headline}</h2>
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
-                        {USE_CASES_PAGE_CONTENT.crossChannel.body}
-                      </p>
-                   </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                   <div className="section-header">
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: '#fff', fontSize: '1.3rem', fontWeight: 500, fontStyle: 'italic' }}>
-                        "{USE_CASES_PAGE_CONTENT.psychologicalBenefit.body}"
-                      </p>
-                   </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                   <h2>{USE_CASES_PAGE_CONTENT.closing.headline}</h2>
-                   <p className="hero-supporting" style={{ marginTop: '1.5rem' }}>{USE_CASES_PAGE_CONTENT.closing.body}</p>
-                   <div className="cta-actions" style={{ marginTop: '3rem' }}>
-                      <button className="primary-btn" onClick={handleWhatsApp}>{USE_CASES_PAGE_CONTENT.closing.cta}</button>
                    </div>
                 </section>
               </div>
             )}
 
-            {view === 'story' && (
+            {activeRoute === 'ourStory' && (
               <div className="story-page reveal">
                 <section className="saas-hero">
                   <h1>{STORY_CONTENT.story.opening.headline}</h1>
                   <p className="hero-supporting">{STORY_CONTENT.story.opening.body}</p>
                 </section>
-
                 <section className="pos-content-section reveal">
-                   <div className="section-header">
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
-                        {STORY_CONTENT.story.philosophy.body}
-                      </p>
-                   </div>
-                </section>
-
-                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-                   <div className="section-header">
-                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: '#fff', fontSize: '1.2rem' }}>
-                        {STORY_CONTENT.story.howWeWork.body}
-                      </p>
-                   </div>
-                </section>
-
-                <section className="pos-content-section reveal">
-                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                      <div className="tool-card" style={{ gridColumn: 'span 2', textAlign: 'center', borderColor: 'var(--orb-pink)' }}>
-                         <h2 style={{ fontSize: '2rem', marginBottom: '1.5rem', color: '#fff' }}>{STORY_CONTENT.story.profitWithPurpose.headline}</h2>
-                         <p className="intro-text" style={{ color: 'var(--text-secondary)', lineHeight: '1.8', fontSize: '1.1rem' }}>
-                            {STORY_CONTENT.story.profitWithPurpose.body}
-                         </p>
-                      </div>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1rem', color: '#fff' }}>Why It Matters</h3>
-                         <p className="excerpt">{STORY_CONTENT.story.whyItMatters.body}</p>
-                      </div>
-                      <div className="tool-card">
-                         <h3 style={{ marginBottom: '1rem', color: '#fff' }}>The Long View</h3>
-                         <p className="excerpt">{STORY_CONTENT.story.longView.body}</p>
-                      </div>
-                   </div>
-                </section>
-
-                <section className="primary-cta reveal">
-                   <h2 style={{ fontSize: '2.5rem' }}>{STORY_CONTENT.story.closing.body}</h2>
-                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
-                      <button className="primary-btn" onClick={handleWhatsApp}>Join the Journey</button>
+                   <div className="tool-card" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', borderColor: 'var(--orb-pink)' }}>
+                      <h2 style={{ fontSize: '2rem', marginBottom: '1.5rem', color: '#fff' }}>{STORY_CONTENT.story.profitWithPurpose.headline}</h2>
+                      <p className="intro-text" style={{ color: 'var(--text-secondary)' }}>{STORY_CONTENT.story.profitWithPurpose.body}</p>
                    </div>
                 </section>
               </div>
             )}
 
-            {view === 'contact' && (
+            {activeRoute === 'talkToUs' && (
               <div className="contact-page reveal">
                 <section className="saas-hero">
                   <h1>{CONTACT_PAGE_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{CONTACT_PAGE_CONTENT.hero.body}</p>
                 </section>
-
                 <section className="pos-content-section reveal">
                    <div className="tools-grid" style={{ maxWidth: '800px', margin: '0 auto' }}>
                       {CONTACT_PAGE_CONTENT.channels.map((ch, i) => (
                         <div key={i} className="tool-card" style={{ textAlign: 'center' }}>
                            <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>{ch.name}</h3>
-                           <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>{ch.value}</p>
-                           <a 
-                             href={ch.link} 
-                             target="_blank" 
-                             rel="noopener noreferrer" 
-                             className="primary-btn" 
-                             style={{ display: 'inline-block', textDecoration: 'none', width: '100%' }}
-                           >
-                              {ch.actionLabel}
-                           </a>
+                           <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>{ch.value}</p>
+                           <a href={ch.link} target="_blank" rel="noopener noreferrer" className="primary-btn" style={{ textDecoration: 'none', display: 'block' }}>{ch.actionLabel}</a>
                         </div>
                       ))}
                    </div>
-                </section>
-
-                <section className="primary-cta reveal" style={{ marginTop: '4rem' }}>
-                   <p className="hero-supporting" style={{ margin: '0 auto' }}>Typical response time is under 2 hours during business hours.</p>
                 </section>
               </div>
             )}
@@ -1542,32 +719,25 @@ function App() {
         <footer className="saas-footer reveal">
             <div className="footer-content">
                 <div className="footer-brand">
-                    <div className="logo-link-container" onClick={() => navigate('landing')}>
-                        <OrganicOrbLogo size={28} variant="nav" />
-                        <span className="saas-logo">Veira</span>
-                    </div>
+                    <OrganicOrbLogo size={28} variant="nav" />
+                    <span className="saas-logo">Veira</span>
                     <p style={{ marginTop: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>The operating system for modern commerce.</p>
                 </div>
                 <div className="footer-col">
-                    <h4>Top Comparisons</h4>
+                    <h4>Solutions</h4>
+                    {FOOTER_KEYS.map(key => (
+                        <a key={key} href="#" onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                    ))}
+                </div>
+                <div className="footer-col">
+                    <h4>Comparisons</h4>
                     <a href="#" onClick={(e) => { e.preventDefault(); showCompare("chatgpt", "sales-teams"); }}>vs ChatGPT</a>
                     <a href="#" onClick={(e) => { e.preventDefault(); showCompare("claude", "customer-support"); }}>vs Claude</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("intercom-ai", "whatsapp-business"); }}>vs Intercom</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("meta-ai", "lead-qualification"); }}>vs Meta AI</a>
                 </div>
                 <div className="footer-col">
-                    <h4>Infrastructure</h4>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS System</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('agents'); }}>AI Agents</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud Platform</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps and Websites</a>
-                </div>
-                <div className="footer-col">
-                    <h4>Corporate</h4>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
+                    <h4>Connect</h4>
+                    <a href="#" onClick={handleWhatsApp}>WhatsApp</a>
                     <a href="https://linkedin.com/company/veira" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('contact'); }}>Talk to Us</a>
                 </div>
             </div>
             <div className="footer-bottom">&copy; {new Date().getFullYear()} Veira Systems. High-Performance Infrastructure.</div>
@@ -1576,5 +746,8 @@ function App() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root')!);
-root.render(<React.StrictMode><App /></React.StrictMode>);
+// Client-side Hydration
+if (typeof window !== 'undefined' && document.getElementById('root')) {
+  const root = ReactDOM.createRoot(document.getElementById('root')!);
+  root.render(<React.StrictMode><App /></React.StrictMode>);
+}
