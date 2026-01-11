@@ -159,7 +159,7 @@ function App() {
     setIsLoading(true);
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = `Analyze: ${JSON.stringify(answers)}. Context: Veira, Kenyan fintech. Return JSON: status (Green/Yellow/Red), summary, steps (array).`;
+      const prompt = `Analyze business state: ${JSON.stringify(answers)}. Status: Green/Yellow/Red. Summary (2 sentences). 3 next steps. Format as JSON.`;
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: prompt,
@@ -169,8 +169,8 @@ function App() {
     } catch (e) {
       setToolResult({
         status: 'Yellow',
-        summary: "Assessment complete. Most businesses in your category should prioritize digital record keeping.",
-        steps: ["Review your eTIMS status", "Automate sales logging", "Contact Veira for a full audit"]
+        summary: "Assessment complete. Your business shows potential for operational optimization through digital systems.",
+        steps: ["Review inventory logging frequency", "Audit tax compliance workflows", "Consult with Veira for automated tools"]
       });
     } finally {
       setIsLoading(false);
@@ -185,7 +185,7 @@ function App() {
 
   return (
     <div className="saas-container">
-        {/* Unified Navigation */}
+        {/* Navigation - Guaranteed Single Instance */}
         <nav className="saas-nav">
             <div className="nav-left" onClick={resetToLanding} style={{ cursor: 'pointer' }}>
                 <OrganicOrbLogo size={32} />
@@ -194,12 +194,11 @@ function App() {
             
             <div className="nav-center">
                 <div className="nav-links">
-                    <a href="https://veirahq.com/pos" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                    <a href="https://veirahq.com/agents" onClick={(e) => e.preventDefault()}>Agents</a>
-                    <a href="https://veirahq.com/cloud" onClick={(e) => e.preventDefault()}>Cloud</a>
-                    <a href="https://veirahq.com/apps" onClick={(e) => e.preventDefault()}>Apps</a>
-                    <a href="https://veirahq.com/usecases" onClick={(e) => e.preventDefault()}>Use Cases</a>
-                    <a href="https://veirahq.com/ourstory" onClick={(e) => e.preventDefault()}>Our Story</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
+                    <a href="https://veirahq.com/agents" target="_blank">Agents</a>
+                    <a href="https://veirahq.com/cloud" target="_blank">Cloud</a>
+                    <a href="https://veirahq.com/usecases" target="_blank">Cases</a>
+                    <a href="https://veirahq.com/ourstory" target="_blank">Story</a>
                 </div>
             </div>
             
@@ -213,70 +212,74 @@ function App() {
 
         {/* Mobile Menu Overlay */}
         <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}>
+            <button className="mobile-toggle" style={{ position: 'absolute', top: '24px', right: '24px' }} onClick={() => setIsMobileMenuOpen(false)}>
+                <XIcon />
+            </button>
             <div className="mobile-menu-links">
                 <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS Systems</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Agents</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Cloud Infra</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Apps</a>
-                <button className="primary-btn" style={{ marginTop: '2rem', width: '200px' }} onClick={handleWhatsApp}>WhatsApp Us</button>
+                <a href="#" onClick={(e) => { e.preventDefault(); resetToLanding(); }}>Audit Tools</a>
+                <a href="https://veirahq.com/agents" target="_blank">Agents</a>
+                <a href="https://veirahq.com/cloud" target="_blank">Cloud Infrastructure</a>
+                <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>WhatsApp Us</button>
             </div>
         </div>
 
+        {/* Main Content Area */}
         <main className="saas-main">
-            <DottedGlowBackground gap={32} radius={0.5} color="rgba(255,255,255,0.03)" glowColor="rgba(255,255,255,0.08)" speedScale={0.1} />
+            <DottedGlowBackground gap={32} radius={0.5} color="rgba(255,255,255,0.02)" glowColor="rgba(255,255,255,0.05)" speedScale={0.05} />
 
             {view === 'landing' && (
               <>
                 <section className="saas-hero reveal">
-                  <div className="hero-badge">The Future of Commerce</div>
+                  <div className="hero-badge">A Better Way to Sell</div>
                   <h1>Simpler systems for modern business.</h1>
-                  <p className="hero-supporting">We handle the POS, the payments, and the compliance. You handle the growth.</p>
+                  <p className="hero-supporting">Managed operations for high-growth commerce. We handle the hardware, payments, and compliance.</p>
                   <div className="hero-actions">
                     <button className="primary-btn" onClick={showPOS}>Explore POS</button>
-                    <button className="secondary-btn" onClick={() => trackEvent('cta_clicked')}>Book a Demo</button>
+                    <button className="secondary-btn" onClick={() => trackEvent('cta_clicked')}>Talk to Us</button>
                   </div>
                 </section>
 
                 <section className="trust-bar reveal">
-                    <p>Standardized by innovators</p>
+                    <p>Powered by global infrastructure</p>
                     <div className="partner-logos">
                         <div className="partner-logo">M-PESA</div>
                         <div className="partner-logo">eTIMS</div>
                         <div className="partner-logo">KRA</div>
                         <div className="partner-logo">VISA</div>
-                        <div className="partner-logo">MASTERCARD</div>
+                        <div className="partner-logo">STRIPE</div>
                     </div>
                 </section>
 
                 <section className="features-section reveal">
                     <div className="section-header">
-                        <h2>Managed Intelligence</h2>
-                        <p>Everything you need to run, quietly handled by Veira.</p>
+                        <h2>Quiet Operations</h2>
+                        <p>Total operational visibility without the daily management overhead.</p>
                     </div>
                     <div className="features-grid">
                         <div className="feature-card">
-                            <h4>Quiet Operations</h4>
-                            <p>Systems that sync in the background so you never have to chase a report again.</p>
+                            <h4>Managed POS</h4>
+                            <p>High-performance Android hardware configured for your specific retail or hospitality needs.</p>
                         </div>
                         <div className="feature-card">
-                            <h4>Total Compliance</h4>
-                            <p>Built-in KRA eTIMS validation for every transaction, handled automatically.</p>
+                            <h4>Auto-Compliance</h4>
+                            <p>Every sale is automatically validated against eTIMS, keeping you legal and stress-free.</p>
                         </div>
                         <div className="feature-card">
-                            <h4>Cloud-First</h4>
-                            <p>Access your business performance from anywhere, on any device, in real-time.</p>
+                            <h4>Real-time Sync</h4>
+                            <p>Watch your revenue performance from any device with our unified cloud dashboard.</p>
                         </div>
                     </div>
                 </section>
 
                 <section className="tools-showcase reveal">
                   <div className="section-header">
-                    <h2>Business Audit Tools</h2>
-                    <p>Professional checks for the modern commercial operator.</p>
+                    <h2>Intelligence Audit</h2>
+                    <p>Professional checks to identify bottlenecks in your current business workflows.</p>
                   </div>
                   <div className="tools-grid">
                     {STATIC_TOOLS.map((tool) => (
-                      <div key={tool.slug} className="tool-card" onClick={() => startTool(tool)}>
+                      <div key={tool.slug} className="tool-card" onClick={() => startTool(tool)} style={{ cursor: 'pointer' }}>
                         <div className="tool-content">
                           <h4>{tool.name}</h4>
                           <p>{tool.subheadline}</p>
@@ -286,10 +289,32 @@ function App() {
                   </div>
                 </section>
 
-                <section className="primary-cta reveal">
-                  <h2>Ready for better systems?</h2>
+                <section className="industry-section reveal">
+                   <div className="section-header">
+                        <h2>Built for Focus</h2>
+                        <p>We solve the technical complexity so you can focus on your craft.</p>
+                    </div>
+                    <div className="industry-grid">
+                        <div className="industry-card">
+                            <h4>Hospitality</h4>
+                            <p>Tableside ordering, split bills, and kitchen management that never lags.</p>
+                        </div>
+                        <div className="industry-card">
+                            <h4>Modern Retail</h4>
+                            <p>Inventory precision for boutiques, liquor stores, and neighborhood grocers.</p>
+                        </div>
+                        <div className="industry-card">
+                            <h4>Service Centers</h4>
+                            <p>Appointment booking and secure payment processing for clinics and wellness centers.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="primary-cta reveal" style={{ textAlign: 'center', maxWidth: '800px' }}>
+                  <h2 style={{ fontSize: '3rem', marginBottom: '24px' }}>Ready for clarity?</h2>
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: '40px' }}>Join the forward-thinking businesses using Veira to automate their commercial engine.</p>
                   <div className="cta-actions">
-                    <button className="primary-btn" onClick={() => trackEvent('cta_clicked')}>Talk to Us</button>
+                    <button className="primary-btn" onClick={() => trackEvent('cta_clicked')}>Request System</button>
                     <button className="secondary-btn" onClick={handleWhatsApp}>WhatsApp</button>
                   </div>
                 </section>
@@ -298,12 +323,12 @@ function App() {
 
             {view === 'pos' && (
               <section className="saas-hero reveal">
-                <div className="hero-badge">Veira POS</div>
-                <h1>Operational Clarity.</h1>
-                <p className="hero-supporting">Our Android Smart POS is designed to handle high-volume sales without the technical overhead.</p>
+                <div className="hero-badge">Hardware + Software</div>
+                <h1>Total Operational Clarity.</h1>
+                <p className="hero-supporting">Our Android Smart POS is built for high-volume environments that require speed and zero downtime.</p>
                 <div className="hero-actions">
                     <button className="primary-btn" onClick={() => trackEvent('cta_clicked')}>Order Device</button>
-                    <button className="secondary-btn" onClick={resetToLanding}>Go Back</button>
+                    <button className="secondary-btn" onClick={resetToLanding}>Return Home</button>
                 </div>
               </section>
             )}
@@ -312,7 +337,7 @@ function App() {
                 <section className="tool-view-container reveal">
                     <div className="tool-hero">
                         <h1>{activeTool.title}</h1>
-                        <p>{activeTool.subheadline}</p>
+                        <p className="hero-supporting">{activeTool.subheadline}</p>
                     </div>
 
                     {!toolResult ? (
@@ -326,24 +351,26 @@ function App() {
                                         ))
                                     ) : (
                                         <>
-                                            <button className="option-pill" onClick={() => handleToolAnswer("Yes")}>Yes</button>
-                                            <button className="option-pill" onClick={() => handleToolAnswer("No")}>No</button>
+                                            <button className="option-pill" onClick={() => handleToolAnswer("Yes")}>Yes, absolutely</button>
+                                            <button className="option-pill" onClick={() => handleToolAnswer("No")}>No, not yet</button>
                                         </>
                                     )}
                                 </div>
                             </div>
                          </div>
                     ) : (
-                        <div className="result-container">
-                            <div className="result-card">
-                                <h2>Audit Summary</h2>
-                                <p className={`status-badge status-${toolResult.status.toLowerCase()}`}>{toolResult.status}</p>
-                                <p>{toolResult.summary}</p>
+                        <div className="result-container reveal">
+                            <div className="tool-form-card">
+                                <h2 style={{ marginBottom: '8px' }}>Analysis Report</h2>
+                                <div className={`status-badge status-${toolResult.status.toLowerCase()}`} style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '4px', background: 'rgba(255,255,255,0.05)', marginBottom: '24px', fontSize: '12px', fontWeight: 800 }}>{toolResult.status} Intent</div>
+                                <p style={{ fontSize: '1.2rem', marginBottom: '32px' }}>{toolResult.summary}</p>
                                 <div className="next-steps">
-                                    <h3>Recommended Actions:</h3>
-                                    <ul>{toolResult.steps.map((s,i) => <li key={i}>{s}</li>)}</ul>
+                                    <h3 style={{ marginBottom: '16px', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Recommended:</h3>
+                                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        {toolResult.steps.map((s,i) => <li key={i} style={{ paddingLeft: '24px', position: 'relative' }}><span style={{ position: 'absolute', left: 0 }}>✓</span> {s}</li>)}
+                                    </ul>
                                 </div>
-                                <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={resetToLanding}>Back to Dashboard</button>
+                                <button className="primary-btn" style={{ marginTop: '48px', width: '100%' }} onClick={resetToLanding}>Back to Dashboard</button>
                             </div>
                         </div>
                     )}
@@ -351,6 +378,7 @@ function App() {
             )}
         </main>
 
+        {/* Footer - Single Instance */}
         <footer className="saas-footer reveal">
             <div className="footer-content">
                 <div className="footer-brand">
@@ -358,31 +386,34 @@ function App() {
                         <OrganicOrbLogo size={28} />
                         <span className="saas-logo">Veira</span>
                     </div>
-                    <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                        Managed business systems for the modern commercial operator.
+                    <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '14px' }}>
+                        Managed business systems designed for high-performance operators in the modern Kenyan market.
                     </p>
                 </div>
                 <div className="footer-links">
                     <div className="footer-col">
-                        <h4>Platform</h4>
-                        <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                        <a href="#">Agents</a>
-                        <a href="#">Cloud</a>
+                        <h4>Solutions</h4>
+                        <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS Systems</a>
+                        <a href="#">Payments</a>
+                        <a href="#">Cloud Sync</a>
                     </div>
                     <div className="footer-col">
-                        <h4>Resources</h4>
-                        <a href="#" onClick={(e) => { e.preventDefault(); resetToLanding(); }}>Tools</a>
+                        <h4>Support</h4>
+                        <a href="#" onClick={(e) => { e.preventDefault(); resetToLanding(); }}>Audit Tools</a>
+                        <a href="#">Security</a>
                         <a href="#">Privacy</a>
                     </div>
                     <div className="footer-col">
-                        <h4>Connect</h4>
-                        <a href="#" onClick={handleWhatsApp}>WhatsApp</a>
+                        <h4>Company</h4>
+                        <a href="#" onClick={handleWhatsApp}>WhatsApp Support</a>
                         <a href="https://linkedin.com/company/veira" target="_blank">LinkedIn</a>
+                        <a href="#">Careers</a>
                     </div>
                 </div>
             </div>
             <div className="footer-bottom">
-                &copy; {new Date().getFullYear()} Veira Systems. High-Performance Enterprise.
+                <span>&copy; {new Date().getFullYear()} Veira Systems. Registered in Kenya.</span>
+                <span>High Performance. Endless Possibility.</span>
             </div>
         </footer>
     </div>
