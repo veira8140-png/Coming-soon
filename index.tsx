@@ -51,11 +51,11 @@ const USE_CASES = [
 ];
 
 const BLOG_POSTS = [
-  { id: 1, title: "How AI Agents are Revolutionizing WhatsApp Commerce", category: "AI Trends", date: "Oct 24, 2024" },
-  { id: 2, title: "M-PESA Sync: The Missing Link in Automated Retail", category: "Payments", date: "Oct 22, 2024" },
-  { id: 3, title: "Scaling Branch Operations with Multi-Cloud POS", category: "Operations", date: "Oct 18, 2024" },
-  { id: 4, title: "Why Your CRM Needs a Voice-Native AI Strategy", category: "Sales", date: "Oct 15, 2024" },
-  { id: 5, title: "Compliance as Code: Automating eTIMS for Scale", category: "Compliance", date: "Oct 10, 2024" }
+  { id: 1, title: "How AI Agents are Revolutionizing WhatsApp Commerce", category: "AI Trends", date: "Oct 24, 2024", excerpt: "Learn how modern businesses are scaling customer engagement with zero human intervention." },
+  { id: 2, title: "M-PESA Sync: The Missing Link in Automated Retail", category: "Payments", date: "Oct 22, 2024", excerpt: "Bridging the gap between digital payment confirmation and automated order fulfillment." },
+  { id: 3, title: "Scaling Branch Operations with Multi-Cloud POS", category: "Operations", date: "Oct 18, 2024", excerpt: "Why centralizing branch data is the single most important move for growing retailers." },
+  { id: 4, title: "Why Your CRM Needs a Voice-Native AI Strategy", category: "Sales", date: "Oct 15, 2024", excerpt: "Turning cold calls into intelligent conversations with real-time AI processing." },
+  { id: 5, title: "Compliance as Code: Automating eTIMS for Scale", category: "Compliance", date: "Oct 10, 2024", excerpt: "How to stay ahead of regulatory requirements without slowing down your sales floor." }
 ];
 
 type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
@@ -213,14 +213,37 @@ function App() {
             <DottedGlowBackground gap={32} radius={0.5} color="rgba(255,255,255,0.03)" glowColor="rgba(255,255,255,0.08)" speedScale={0.1} />
 
             {view === 'landing' && (
-              <section className="saas-hero reveal">
-                <h1>Infrastructure for Modern Business.</h1>
-                <p className="hero-supporting">Managed POS, AI Agents, and Digital Payments in one high-performance stack built for East African commerce.</p>
-                <div className="hero-actions">
-                  <button className="primary-btn" onClick={() => navigate('pos')}>Explore POS</button>
-                  <button className="secondary-btn" onClick={() => navigate('agents')}>Meet the Agents</button>
-                </div>
-              </section>
+              <>
+                <section className="saas-hero reveal">
+                  <h1>Infrastructure for Modern Business.</h1>
+                  <p className="hero-supporting">Managed POS, AI Agents, and Digital Payments in one high-performance stack built for East African commerce.</p>
+                  <div className="hero-actions">
+                    <button className="primary-btn" onClick={() => navigate('pos')}>Explore POS</button>
+                    <button className="secondary-btn" onClick={() => navigate('agents')}>Meet the Agents</button>
+                  </div>
+                </section>
+
+                {/* Surfaced Blog Posts / Journal */}
+                <section className="journal-landing-preview reveal">
+                  <div className="section-header">
+                    <h2>The Journal</h2>
+                    <p>Intelligence on scaling modern operations.</p>
+                  </div>
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    {BLOG_POSTS.slice(0, 3).map(post => (
+                        <div key={post.id} className="tool-card journal-card" onClick={() => navigate('blog')}>
+                            <span className="category-tag">{post.category}</span>
+                            <h4>{post.title}</h4>
+                            <p className="excerpt">{post.excerpt}</p>
+                            <span className="date-tag">{post.date}</span>
+                        </div>
+                    ))}
+                  </div>
+                  <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                    <button className="secondary-btn" onClick={() => navigate('blog')}>Read All Entries</button>
+                  </div>
+                </section>
+              </>
             )}
 
             {view === 'blog' && (
@@ -231,10 +254,11 @@ function App() {
                 </section>
                 <section className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto 6rem' }}>
                     {BLOG_POSTS.map(post => (
-                        <div key={post.id} className="tool-card">
-                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--orb-pink)', display: 'block', marginBottom: '0.5rem' }}>{post.category}</span>
+                        <div key={post.id} className="tool-card journal-card-full">
+                            <span className="category-tag">{post.category}</span>
                             <h4>{post.title}</h4>
-                            <p>{post.date}</p>
+                            <p className="excerpt">{post.excerpt}</p>
+                            <p className="date-tag">{post.date}</p>
                         </div>
                     ))}
                 </section>

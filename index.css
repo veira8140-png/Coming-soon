@@ -66,8 +66,36 @@ body {
     cursor: pointer;
 }
 
+/* Organic Orb Logo Styles */
+.organic-orb-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .organic-orb-svg {
-    filter: drop-shadow(0 0 8px rgba(109, 90, 246, 0.3));
+    overflow: visible;
+}
+
+@keyframes orb-breathing {
+    0%, 100% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.03); opacity: 1; }
+}
+
+@keyframes orb-morph {
+    0% { d: path("M16 2C24 2 30 8 30 16C30 24 24 30 16 30C8 30 2 24 2 16C2 8 8 2 16 2Z"); }
+    50% { d: path("M16 3C25 3 29 7 29 16C29 25 25 29 16 29C7 29 3 25 3 16C3 7 7 3 16 3Z"); }
+    100% { d: path("M16 2C24 2 30 8 30 16C30 24 24 30 16 30C8 30 2 24 2 16C2 8 8 2 16 2Z"); }
+}
+
+.orb-morphing-base {
+    animation: orb-breathing 6s var(--ease-premium) infinite;
+    transform-origin: center;
+}
+
+.organic-orb-container.hero .orb-morphing-base {
+    animation: orb-breathing 8s var(--ease-premium) infinite;
+    filter: drop-shadow(0 0 15px rgba(109, 90, 246, 0.4));
 }
 
 .saas-logo { 
@@ -142,6 +170,47 @@ body {
 }
 
 .hero-actions { display: flex; gap: 1rem; }
+
+/* Journal Styles */
+.journal-landing-preview {
+    padding: 6rem 1.5rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    letter-spacing: -0.03em;
+}
+
+.journal-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.category-tag {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--orb-pink);
+    letter-spacing: 0.1em;
+}
+
+.excerpt {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.date-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: auto;
+}
 
 /* Comparison Factory Controls */
 .comparison-controls {
