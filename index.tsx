@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom/client';
 
 import DottedGlowBackground from './components/DottedGlowBackground';
 import SideDrawer from './components/SideDrawer';
+import OrganicOrbLogo from './components/OrganicOrbLogo';
 import { 
     ThinkingIcon, 
     SparklesIcon,
@@ -437,7 +438,10 @@ function App() {
     <div className="saas-container">
         <nav className="saas-nav">
             <div className="nav-left">
-                <div className="saas-logo" onClick={resetToLanding} style={{cursor: 'pointer'}}>Veira</div>
+                <div className="saas-logo-container" onClick={resetToLanding} style={{cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
+                    <OrganicOrbLogo size={32} />
+                    <span className="saas-logo">Veira</span>
+                </div>
             </div>
             <div className="nav-center">
                 <div className="nav-links">
@@ -940,7 +944,10 @@ function App() {
         <footer className="saas-footer">
             <div className="footer-content">
                 <div className="footer-brand">
-                    <div className="saas-logo" onClick={resetToLanding} style={{cursor:'pointer'}}>Veira</div>
+                    <div className="saas-logo-container" onClick={resetToLanding} style={{cursor:'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
+                        <OrganicOrbLogo size={24} />
+                        <div className="saas-logo">Veira</div>
+                    </div>
                     <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', maxWidth: '300px' }}>
                         Managed business systems for selling, payments, and operations.
                     </p>
