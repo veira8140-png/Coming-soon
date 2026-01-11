@@ -250,6 +250,100 @@ const AGENTS_CONTENT = {
   }
 };
 
+const CLOUD_CONTENT = {
+  meta: {
+    title: "Veira Cloud | The Calm Behind Your Business",
+    description: "Veira Cloud quietly keeps your business organised. Sales, reports, customers and activity from POS, AI agents, apps and websites in one simple place."
+  },
+  opening: {
+    headline: "Most Business Stress Comes From Not Knowing",
+    body: "Not knowing how sales are doing today. Not knowing if something was missed. Not knowing whether the numbers you heard are correct. Veira Cloud exists to remove that uncertainty."
+  },
+  reframe: {
+    headline: "Cloud Is Not About Technology",
+    body: "Despite what you have been told, cloud software is not really about servers or dashboards. It is about confidence. Confidence that things are running. Confidence that the numbers are real. Confidence that you can check without asking."
+  },
+  whatActuallyHappens: {
+    headline: "What Veira Cloud Quietly Does",
+    items: [
+      "Collects sales from your POS without reminders",
+      "Keeps customer and payment records in one place",
+      "Stores activity from AI assistants automatically",
+      "Turns daily chaos into a clear picture",
+      "Backs everything up so mistakes do not become disasters"
+    ]
+  },
+  contrast: {
+    headline: "Before Veira Cloud",
+    items: [
+      "WhatsApp messages everywhere",
+      "Reports arriving late or not at all",
+      "Numbers that feel approximate",
+      "Too many questions and too few answers"
+    ]
+  },
+  contrastAfter: {
+    headline: "After Veira Cloud",
+    items: [
+      "One place to check what matters",
+      "Sales figures you trust",
+      "Fewer follow up questions",
+      "More time to think instead of chase"
+    ]
+  },
+  psychologicalBenefit: {
+    headline: "The Unexpected Benefit",
+    body: "Businesses do not fail because they lack features. They fail because decision making becomes exhausting. Veira Cloud reduces cognitive load. And that, quietly, improves judgment."
+  },
+  whoItsReallyFor: {
+    headline: "Who Veira Cloud Is Really For",
+    items: [
+      "Owners who want fewer surprises",
+      "Managers tired of chasing updates",
+      "Restaurants and cafes",
+      "Retail shops",
+      "Service businesses",
+      "Law firms",
+      "Clinics and medical practices",
+      "Bars and clubs",
+      "Growing businesses that value clarity"
+    ]
+  },
+  howItFits: {
+    headline: "Where It Fits In",
+    body: "Veira Cloud sits behind everything you already use. Your POS feeds into it. Your AI assistants report to it. Your apps and website connect to it. You rarely notice it working. Which is exactly the point."
+  },
+  securityWithoutFear: {
+    headline: "Security Without Scare Tactics",
+    body: "Access is controlled. Activity is logged. Data is backed up. More importantly, you do not need to think about any of this. Veira manages the cloud so you can manage the business."
+  },
+  faq: {
+    items: [
+      {
+        question: "Do I need technical knowledge to use Veira Cloud",
+        answer: "No. Veira Cloud is built for business owners. If you can read a WhatsApp message, you can use it."
+      },
+      {
+        question: "Can I check my business when I am not on site",
+        answer: "Yes. Veira Cloud works on phones, tablets and computers so you can check anytime."
+      },
+      {
+        question: "Does Veira Cloud replace my POS or AI agents",
+        answer: "No. It connects them. Veira Cloud is the system that keeps everything in one place."
+      },
+      {
+        question: "What happens if something breaks",
+        answer: "Your data is backed up and Veira monitors the system to catch issues early."
+      }
+    ]
+  },
+  closing: {
+    headline: "Good Systems Feel Boring. In a Good Way.",
+    body: "Veira Cloud is not designed to impress you every day. It is designed so you stop worrying. And that turns out to be surprisingly valuable.",
+    cta: "Talk to Us"
+  }
+};
+
 type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
 
 function App() {
@@ -325,6 +419,7 @@ function App() {
     const isCompare = view === 'compare';
     const isPOS = view === 'pos';
     const isAgents = view === 'agents';
+    const isCloud = view === 'cloud';
     
     let pageTitle = `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
     let mainSchema: any = {
@@ -374,6 +469,20 @@ function App() {
                 "@context": "https://schema.org",
                 "@type": "FAQPage",
                 "mainEntity": AGENTS_CONTENT.faq.items.map(f => ({
+                  "@type": "Question",
+                  "name": f.question,
+                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+                }))
+            }
+        ];
+    } else if (isCloud) {
+        pageTitle = CLOUD_CONTENT.meta.title;
+        mainSchema = [
+            mainSchema,
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": CLOUD_CONTENT.faq.items.map(f => ({
                   "@type": "Question",
                   "name": f.question,
                   "acceptedAnswer": { "@type": "Answer", "text": f.answer }
@@ -857,9 +966,124 @@ function App() {
 
             {view === 'cloud' && (
               <div className="cloud-page reveal">
+                {/* Hero / Opening */}
                 <section className="saas-hero">
-                  <h1>Veira Cloud.</h1>
-                  <p className="hero-supporting">The backbone of your operational intelligence. Real-time data sync across every branch.</p>
+                  <h1>{CLOUD_CONTENT.opening.headline}</h1>
+                  <p className="hero-supporting">{CLOUD_CONTENT.opening.body}</p>
+                </section>
+
+                {/* Reframe */}
+                <section className="pos-content-section reveal">
+                   <div className="section-header">
+                      <h2>{CLOUD_CONTENT.reframe.headline}</h2>
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
+                        {CLOUD_CONTENT.reframe.body}
+                      </p>
+                   </div>
+                </section>
+
+                {/* What Actually Happens */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{CLOUD_CONTENT.whatActuallyHappens.headline}</h2>
+                  </div>
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    {CLOUD_CONTENT.whatActuallyHappens.items.map((item, i) => (
+                      <div key={i} className="tool-card feature-item">
+                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
+                        <p style={{ fontWeight: 600 }}>{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Contrast: Before / After */}
+                <section className="verdict-section reveal">
+                  <div className="section-header">
+                    <h2>The Quiet Shift</h2>
+                  </div>
+                  <div className="verdict-grid">
+                    <div className="verdict-card card-b">
+                      <div className="card-header"><h3>{CLOUD_CONTENT.contrast.headline}</h3></div>
+                      <ul style={{ listStyle: 'none' }}>
+                        {CLOUD_CONTENT.contrast.items.map((item, i) => (
+                          <li key={i} style={{ padding: '1rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text-muted)' }}>
+                             {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="verdict-card card-a">
+                      <div className="card-header"><h3>{CLOUD_CONTENT.contrastAfter.headline}</h3></div>
+                      <ul style={{ listStyle: 'none' }}>
+                        {CLOUD_CONTENT.contrastAfter.items.map((item, i) => (
+                          <li key={i} style={{ padding: '1rem 0', borderBottom: '1px solid var(--border)', color: '#fff', display: 'flex', gap: '12px' }}>
+                             <span className="check-icon" style={{ fontSize: '1.1rem' }}>✓</span> {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Psychological Benefit */}
+                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+                  <div className="section-header">
+                    <h2>{CLOUD_CONTENT.psychologicalBenefit.headline}</h2>
+                    <p style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
+                      {CLOUD_CONTENT.psychologicalBenefit.body}
+                    </p>
+                  </div>
+                </section>
+
+                {/* Who It's Really For */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{CLOUD_CONTENT.whoItsReallyFor.headline}</h2>
+                  </div>
+                  <div className="control-pills" style={{ justifyContent: 'center', maxWidth: '800px', margin: '0 auto' }}>
+                    {CLOUD_CONTENT.whoItsReallyFor.items.map((biz, i) => (
+                      <span key={i} className="pill" style={{ cursor: 'default' }}>{biz}</span>
+                    ))}
+                  </div>
+                </section>
+
+                {/* How It Fits & Security */}
+                <section className="pos-content-section reveal">
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    <div className="tool-card">
+                       <h3 style={{ marginBottom: '1rem', color: '#fff' }}>{CLOUD_CONTENT.howItFits.headline}</h3>
+                       <p className="excerpt">{CLOUD_CONTENT.howItFits.body}</p>
+                    </div>
+                    <div className="tool-card">
+                       <h3 style={{ marginBottom: '1rem', color: '#fff' }}>{CLOUD_CONTENT.securityWithoutFear.headline}</h3>
+                       <p className="excerpt">{CLOUD_CONTENT.securityWithoutFear.body}</p>
+                    </div>
+                  </div>
+                </section>
+
+                {/* FAQ */}
+                <section className="faq-section reveal">
+                    <div className="section-header">
+                        <h2>Frequently Asked Questions</h2>
+                    </div>
+                    <div className="faq-container">
+                        {CLOUD_CONTENT.faq.items.map((faq, i) => (
+                            <div key={i} className="faq-item">
+                                <h3>{faq.question}</h3>
+                                <p>{faq.answer}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Closing CTA */}
+                <section className="primary-cta reveal">
+                   <h2>{CLOUD_CONTENT.closing.headline}</h2>
+                   <p className="hero-supporting" style={{ marginTop: '1rem' }}>{CLOUD_CONTENT.closing.body}</p>
+                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
+                      <button className="primary-btn" onClick={handleWhatsApp}>{CLOUD_CONTENT.closing.cta}</button>
+                   </div>
                 </section>
               </div>
             )}
