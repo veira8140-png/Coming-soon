@@ -344,6 +344,49 @@ const CLOUD_CONTENT = {
   }
 };
 
+const APPS_CONTENT = {
+  meta: {
+    title: "Veira Apps & Websites | Simple Software That Just Works",
+    description: "Veira designs modern apps and websites that feel effortless. Built to be fast, clear, and quietly powerful for real businesses."
+  },
+  hero: {
+    headline: "Software Should Feel Obvious",
+    body: "The best apps do not need instructions. They respond instantly. They look calm. They feel inevitable. Veira builds apps and websites that work the way people expect them to."
+  },
+  story: {
+    body: "Most business software feels heavy. Too many buttons. Too many steps. Too much explanation. We take the opposite approach. Veira apps and websites are designed to disappear. You open them, do what you need to do, and move on with your day."
+  },
+  designPhilosophy: {
+    headline: "Design is not decoration. It is decision making.",
+    body: "Every screen is reduced to what matters. Every interaction is intentional. Nothing is added unless it makes something clearer, faster, or calmer."
+  },
+  experience: {
+    headline: "Consistent Experience",
+    body: "Whether it is a mobile app, a business dashboard, or a public website, the experience feels consistent. Clean layouts. Comfortable spacing. Thoughtful motion. Software that feels stable and trustworthy the moment it loads."
+  },
+  performance: {
+    headline: "Speed is not a feature. It is a feeling.",
+    body: "Veira apps load fast, respond instantly, and work smoothly across devices. Because waiting is friction. And friction costs trust."
+  },
+  integration: {
+    headline: "Deep Integration",
+    body: "Apps and websites do not live alone. They connect naturally with Veira POS, Veira Cloud, and Veira AI agents. Data flows quietly in the background. Nothing to sync. Nothing to export. Nothing to explain."
+  },
+  devices: {
+    headline: "Multi-Device Harmony",
+    body: "Phones. Tablets. Laptops. Desktops. Everything adjusts naturally. Text remains readable. Buttons remain reachable. Layouts remain balanced. The experience feels designed, not stretched."
+  },
+  ownership: {
+    headline: "Production Ready",
+    body: "These are not templates. And they are not experiments. Veira builds production ready apps and websites that businesses actually rely on. Systems that feel solid enough to grow with you."
+  },
+  closing: {
+    headline: "When Software Is Done Right, You Stop Thinking About It",
+    body: "That is the goal. Apps and websites that feel natural. Calm. Reliable. Software that respects your time and your customers attention.",
+    cta: "Talk to Us"
+  }
+};
+
 type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
 
 function App() {
@@ -420,6 +463,7 @@ function App() {
     const isPOS = view === 'pos';
     const isAgents = view === 'agents';
     const isCloud = view === 'cloud';
+    const isApps = view === 'apps';
     
     let pageTitle = `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
     let mainSchema: any = {
@@ -487,6 +531,17 @@ function App() {
                   "name": f.question,
                   "acceptedAnswer": { "@type": "Answer", "text": f.answer }
                 }))
+            }
+        ];
+    } else if (isApps) {
+        pageTitle = APPS_CONTENT.meta.title;
+        mainSchema = [
+            mainSchema,
+            {
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "Veira Apps & Websites",
+              "description": "Modern apps and websites designed to feel effortless, fast, and reliable for businesses."
             }
         ];
     } else if (view === 'landing') {
@@ -1090,9 +1145,58 @@ function App() {
 
             {view === 'apps' && (
               <div className="apps-page reveal">
+                {/* Hero */}
                 <section className="saas-hero">
-                  <h1>Integrated Apps.</h1>
-                  <p className="hero-supporting">A growing ecosystem of tools for billing, compliance, and staff management.</p>
+                  <h1>{APPS_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting">{APPS_CONTENT.hero.body}</p>
+                  <button className="primary-btn" onClick={handleWhatsApp} style={{ marginTop: '2rem' }}>Experience Veira Apps</button>
+                </section>
+
+                {/* Narrative / Philosophy Sections */}
+                <section className="pos-content-section reveal" style={{ paddingBottom: '3rem' }}>
+                   <div className="section-header">
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
+                        {APPS_CONTENT.story.body}
+                      </p>
+                   </div>
+                </section>
+
+                <section className="pos-content-section reveal">
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.designPhilosophy.headline}</h3>
+                         <p className="excerpt">{APPS_CONTENT.designPhilosophy.body}</p>
+                      </div>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.experience.headline}</h3>
+                         <p className="excerpt">{APPS_CONTENT.experience.body}</p>
+                      </div>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.performance.headline}</h3>
+                         <p className="excerpt">{APPS_CONTENT.performance.body}</p>
+                      </div>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.integration.headline}</h3>
+                         <p className="excerpt">{APPS_CONTENT.integration.body}</p>
+                      </div>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.devices.headline}</h3>
+                         <p className="excerpt">{APPS_CONTENT.devices.body}</p>
+                      </div>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1.5rem', color: '#fff' }}>{APPS_CONTENT.ownership.headline}</h3>
+                         <p className="excerpt">{APPS_CONTENT.ownership.body}</p>
+                      </div>
+                   </div>
+                </section>
+
+                {/* Closing CTA */}
+                <section className="primary-cta reveal">
+                   <h2>{APPS_CONTENT.closing.headline}</h2>
+                   <p className="hero-supporting" style={{ marginTop: '1rem' }}>{APPS_CONTENT.closing.body}</p>
+                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
+                      <button className="primary-btn" onClick={handleWhatsApp}>{APPS_CONTENT.closing.cta}</button>
+                   </div>
                 </section>
               </div>
             )}
