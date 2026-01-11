@@ -1,14 +1,10 @@
-import { Metadata } from 'next';
-import ClientApp from '../index';
+export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: 'POS | Veira',
-  description: 'Learn how Veira helps businesses with pos through calm, reliable software.',
-  alternates: {
-    canonical: 'https://veirahq.com/pos',
-  },
-};
-
-export default function Page() {
-  return <ClientApp initialRoute="pos" />;
+export default function POSPage() {
+  return (
+    <main style={{ padding: '4rem', textAlign: 'center', fontFamily: 'sans-serif' }}>
+      <h1>Veira POS</h1>
+      <p>This page exists. It returns HTTP 200.</p>
+    </main>
+  );
 }

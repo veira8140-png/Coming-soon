@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import ClientApp from '../index';
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: 'Veira — Simpler Business Systems',
   description: 'Managed POS, AI Agents, and Digital Payments in one high-performance stack built for East African commerce.',
@@ -10,6 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  // We wrap the existing client logic to preserve UI while fixing routing
   return <ClientApp />;
 }

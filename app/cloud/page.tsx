@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
-import ClientApp from '../index';
+import ClientApp from '../../index';
+
+export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: 'Cloud | Veira',

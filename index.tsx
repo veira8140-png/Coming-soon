@@ -5,25 +5,17 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import { GoogleGenAI } from '@google/genai';
-import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-
 import DottedGlowBackground from './components/DottedGlowBackground';
 import OrganicOrbLogo from './components/OrganicOrbLogo';
 import { 
-    ThinkingIcon, 
-    CodeIcon,
     MenuIcon,
-    XIcon,
-    ArrowRightIcon
+    XIcon
 } from './components/Icons';
 
 const WHATSAPP_NUMBER = "+254755792377";
-const CONTACT_EMAIL = "hello@veirahq.com";
 const BASE_URL = "https://veirahq.com";
-
-// --- Massive Programmatic Dataset ---
 
 const COMPETITORS = [
   { id: "chatgpt", name: "ChatGPT", type: "LLM" },
@@ -53,14 +45,6 @@ const USE_CASES = [
   { id: "internal-teams", label: "Internal Team Ops" }
 ];
 
-const BLOG_POSTS = [
-  { id: 1, title: "How AI Agents are Revolutionizing WhatsApp Commerce", category: "AI Trends", date: "Oct 24, 2024", excerpt: "Learn how modern businesses are scaling customer engagement with zero human intervention." },
-  { id: 2, title: "M-PESA Sync: The Missing Link in Automated Retail", category: "Payments", date: "Oct 22, 2024", excerpt: "Bridging the gap between digital payment confirmation and automated order fulfillment." },
-  { id: 3, title: "Scaling Branch Operations with Multi-Cloud POS", category: "Operations", date: "Oct 18, 2024", excerpt: "Why centralizing branch data is the single most important move for growing retailers." },
-  { id: 4, title: "Why Your CRM Needs a Voice-Native AI Strategy", category: "Sales", date: "Oct 15, 2024", excerpt: "Turning cold calls into intelligent conversations with real-time AI processing." },
-  { id: 5, title: "Compliance as Code: Automating eTIMS for Scale", category: "Compliance", date: "Oct 10, 2024", excerpt: "How to stay ahead of regulatory requirements without slowing down your sales floor." }
-];
-
 const AGENTS_CONTENT = {
   hero: {
     headline: "AI Assistants That Help Run Your Business",
@@ -68,93 +52,22 @@ const AGENTS_CONTENT = {
     primaryCTA: "Talk to Us",
     secondaryCTA: "Book a Demo"
   },
-  intro: {
-    title: "What Are Veira Agents",
-    text: "Veira agents are AI assistants set up to help with real business work. They do not just chat. They help you reply to customers, manage sales conversations, follow up automatically and handle routine tasks so you can focus on running your business."
-  },
-  howTheyWork: {
-    title: "How Veira Agents Work",
-    points: [
-      "They work on WhatsApp, phone calls and internal dashboards",
-      "They understand common customer questions and requests",
-      "They take action such as sending messages, booking appointments or creating invoices",
-      "They escalate to a human when needed"
-    ]
-  },
   agents: {
-    title: "Meet the Veira Agents",
     list: [
       {
         name: "Glenn",
         role: "Customer Support Assistant",
-        description: "Glenn helps with customer support and follow ups. He answers customer questions on WhatsApp and phone calls, checks ticket status, sends follow up messages and makes sure no customer is ignored."
+        description: "Glenn helps with customer support and follow ups. He answers customer questions on WhatsApp and phone calls, checks ticket status, sends follow up messages."
       },
       {
         name: "Svan",
         role: "Sales Assistant",
-        description: "Svan helps you convert leads into customers. She replies to new enquiries, answers questions, qualifies leads, books appointments and follows up automatically across WhatsApp and social messages."
+        description: "Svan helps you convert leads into customers. She replies to new enquiries, answers questions, qualifies leads, and books appointments."
       },
       {
         name: "Tat",
         role: "Operations Assistant",
-        description: "Tat helps with daily business operations. She sends invoices, runs reports, checks stock levels, approves payments and handles simple operational requests through WhatsApp or the dashboard."
-      }
-    ]
-  },
-  useCases: {
-    title: "How Businesses Use Veira Agents",
-    items: [
-      "Replying instantly to WhatsApp enquiries",
-      "Following up on leads automatically",
-      "Booking appointments without manual work",
-      "Sending invoices and payment reminders",
-      "Checking sales or stock reports",
-      "Reducing missed messages and lost customers"
-    ]
-  },
-  whoItsFor: {
-    title: "Who Veira Agents Are For",
-    businesses: [
-      "Restaurants and cafes",
-      "Retail shops",
-      "Service businesses",
-      "Sales teams",
-      "Support teams",
-      "Growing small and medium businesses"
-    ]
-  },
-  benefits: {
-    title: "Why Businesses Use Veira Agents",
-    items: [
-      "Customers get faster replies",
-      "Leads are followed up automatically",
-      "Less manual work for staff",
-      "Better visibility into conversations",
-      "More consistent customer experience"
-    ]
-  },
-  faq: {
-    title: "Frequently Asked Questions",
-    items: [
-      {
-        question: "Are Veira agents real people",
-        answer: "No. Veira agents are AI assistants. They are set up to behave like team members and help with common tasks automatically."
-      },
-      {
-        question: "Do Veira agents work on WhatsApp",
-        answer: "Yes. Veira agents are built to work primarily on WhatsApp and can also handle phone calls and dashboard requests."
-      },
-      {
-        question: "Can the agents send invoices or reports",
-        answer: "Yes. Some agents like Tat can send invoices, payment reminders and business reports depending on your setup."
-      },
-      {
-        question: "What happens if an agent cannot handle a request",
-        answer: "The agent will escalate the issue to a human team member so nothing important is missed."
-      },
-      {
-        question: "Can I start with just one agent",
-        answer: "Yes. You can start with one agent and add more as your business grows."
+        description: "Tat helps with daily business operations. She sends invoices, runs reports, checks stock levels, and approves payments."
       }
     ]
   }
@@ -163,129 +76,22 @@ const AGENTS_CONTENT = {
 const CLOUD_CONTENT = {
   opening: {
     headline: "Most Business Stress Comes From Not Knowing",
-    body: "Not knowing how sales are doing today. Not knowing if something was missed. Not knowing whether the numbers you heard are correct. Veira Cloud exists to remove that uncertainty."
-  },
-  reframe: {
-    headline: "Cloud Is Not About Technology",
-    body: "Despite what you have been told, cloud software is not really about servers or dashboards. It is about confidence. Confidence that things are running. Confidence that the numbers are real. Confidence that you can check without asking."
+    body: "Not knowing how sales are doing today. Not knowing if something was missed. Veira Cloud exists to remove that uncertainty."
   },
   whatActuallyHappens: {
-    headline: "What Veira Cloud Quietly Does",
     items: [
       "Collects sales from your POS without reminders",
       "Keeps customer and payment records in one place",
       "Stores activity from AI assistants automatically",
-      "Turns daily chaos into a clear picture",
-      "Backs everything up so mistakes do not become disasters"
+      "Turns daily chaos into a clear picture"
     ]
-  },
-  contrast: {
-    headline: "Before Veira Cloud",
-    items: [
-      "WhatsApp messages everywhere",
-      "Reports arriving late or not at all",
-      "Numbers that feel approximate",
-      "Too many questions and too few answers"
-    ]
-  },
-  contrastAfter: {
-    headline: "After Veira Cloud",
-    items: [
-      "One place to check what matters",
-      "Sales figures you trust",
-      "Fewer follow up questions",
-      "More time to think instead of chase"
-    ]
-  },
-  psychologicalBenefit: {
-    headline: "The Unexpected Benefit",
-    body: "Businesses do not fail because they lack features. They fail because decision making becomes exhausting. Veira Cloud reduces cognitive load. And that, quietly, improves judgment."
-  },
-  whoItsReallyFor: {
-    headline: "Who Veira Cloud Is Really For",
-    items: [
-      "Owners who want fewer surprises",
-      "Managers tired of chasing updates",
-      "Restaurants and cafes",
-      "Retail shops",
-      "Service businesses",
-      "Law firms",
-      "Clinics and medical practices",
-      "Bars and clubs",
-      "Growing businesses that value clarity"
-    ]
-  },
-  howItFits: {
-    headline: "Where It Fits In",
-    body: "Veira Cloud sits behind everything you already use. Your POS feeds into it. Your AI assistants report to it. Your apps and website connect to it. You rarely notice it working. Which is exactly the point."
-  },
-  securityWithoutFear: {
-    headline: "Security Without Scare Tactics",
-    body: "Access is controlled. Activity is logged. Data is backed up. More importantly, you do not need to think about any of this. Veira manages the cloud so you can manage the business."
-  },
-  faq: {
-    items: [
-      {
-        question: "Do I need technical knowledge to use Veira Cloud",
-        answer: "No. Veira Cloud is built for business owners. If you can read a WhatsApp message, you can use it."
-      },
-      {
-        question: "Can I check my business when I am not on site",
-        answer: "Yes. Veira Cloud works on phones, tablets and computers so you can check anytime."
-      },
-      {
-        question: "Does Veira Cloud replace my POS or AI agents",
-        answer: "No. It connects them. Veira Cloud is the system that keeps everything in one place."
-      },
-      {
-        question: "What happens if something breaks",
-        answer: "Your data is backed up and Veira monitors the system to catch issues early."
-      }
-    ]
-  },
-  closing: {
-    headline: "Good Systems Feel Boring. In a Good Way.",
-    body: "Veira Cloud is not designed to impress you every day. It is designed so you stop worrying. And that turns out to be surprisingly valuable.",
-    cta: "Talk to Us"
   }
 };
 
 const APPS_CONTENT = {
   hero: {
     headline: "Software Should Feel Obvious",
-    body: "The best apps do not need instructions. They respond instantly. They look calm. They feel inevitable. Veira builds apps and websites that work the way people expect them to."
-  },
-  story: {
-    body: "Most business software feels heavy. Too many buttons. Too many steps. Too much explanation. We take the opposite approach. Veira apps and websites are designed to disappear. You open them, do what you need to do, and move on with your day."
-  },
-  designPhilosophy: {
-    headline: "Design is not decoration. It is decision making.",
-    body: "Every screen is reduced to what matters. Every interaction is intentional. Nothing is added unless it makes something clearer, faster, or calmer."
-  },
-  experience: {
-    headline: "Consistent Experience",
-    body: "Whether it is a mobile app, a business dashboard, or a public website, the experience feels consistent. Clean layouts. Comfortable spacing. Thoughtful motion. Software that feels stable and trustworthy the moment it loads."
-  },
-  performance: {
-    headline: "Speed is not a feature. It is a feeling.",
-    body: "Veira apps load fast, respond instantly, and work smoothly across devices. Because waiting is friction. And friction costs trust."
-  },
-  integration: {
-    headline: "Deep Integration",
-    body: "Apps and websites do not live alone. They connect naturally with Veira POS, Veira Cloud, and Veira AI agents. Data flows quietly in the background. Nothing to sync. Nothing to export. Nothing to explain."
-  },
-  devices: {
-    headline: "Multi-Device Harmony",
-    body: "Phones. Tablets. Laptops. Desktops. Everything adjusts naturally. Text remains readable. Buttons remain reachable. Layouts remain balanced. The experience feels designed, not stretched."
-  },
-  ownership: {
-    headline: "Production Ready",
-    body: "These are not templates. And they are not experiments. Veira builds production ready apps and websites that businesses actually rely on. Systems that feel solid enough to grow with you."
-  },
-  closing: {
-    headline: "When Software Is Done Right, You Stop Thinking About It",
-    body: "That is the goal. Apps and websites that feel natural. Calm. Reliable. Software that respects your time and your customers attention.",
-    cta: "Talk to Us"
+    body: "The best apps do not need instructions. They respond instantly. They look calm. They feel inevitable. Veira builds apps that work the way people expect."
   }
 };
 
@@ -293,26 +99,11 @@ const STORY_CONTENT = {
   story: {
     opening: {
       headline: "Why Veira Exists",
-      body: "Veira was created for businesses that want technology to feel simple, dependable, and quietly effective. Software should reduce stress, not introduce it. It should make work lighter, not heavier."
-    },
-    philosophy: {
-      body: "We believe good systems are not loud. They work in the background. They remove friction. They give people time back. Veira is a productised service because most businesses do not want tools. They want outcomes that just work."
-    },
-    howWeWork: {
-      body: "Everything we build follows the same principle. Fewer decisions. Clear interfaces. Reliable performance. Whether it is POS, cloud, AI agents, apps or websites, the experience should feel calm and considered."
+      body: "Veira was created for businesses that want technology to feel simple, dependable, and quietly effective. Software should reduce stress, not introduce it."
     },
     profitWithPurpose: {
       headline: "Profit With Responsibility",
-      body: "Veira allocates ten percent of its annual net profit to fighting gender based violence and supporting survivors. This is not a campaign. It is a standing commitment. The figure is fixed. Ten percent."
-    },
-    whyItMatters: {
-      body: "Technology shapes how people work, earn, and live. We believe businesses have a responsibility to contribute beyond revenue. Supporting survivors and prevention efforts is part of how we choose to operate."
-    },
-    longView: {
-      body: "Veira is built for the long term. We want to create software that businesses trust for years. And we want to grow in a way that leaves a positive mark beyond the products we ship."
-    },
-    closing: {
-      body: "Calm software. Thoughtful growth. Real impact."
+      body: "Veira allocates ten percent of its annual net profit to fighting gender based violence and supporting survivors. This is a standing commitment."
     }
   }
 };
@@ -320,49 +111,37 @@ const STORY_CONTENT = {
 const USE_CASES_PAGE_CONTENT = {
   hero: {
     headline: "Built For How Work Actually Happens",
-    body: "Every business looks different on the surface. But behind the scenes, the problems are often the same. Too many tools. Too many messages. Too much uncertainty. Veira is designed to simplify what happens every day."
-  },
-  intro: {
-    body: "Veira is a productised service that brings POS, cloud, AI agents, apps and websites together. Not as separate tools, but as one system that quietly supports how businesses operate."
+    body: "Every business looks different on the surface. But behind the scenes, the problems are often the same. Veira is designed to simplify what happens every day."
   },
   useCases: [
-    {
-      name: "Restaurants and Cafes",
-      body: "Orders move quickly. Payments are processed without friction. Sales are recorded automatically. Managers receive daily reports without asking. Inventory levels stay visible. The business runs smoothly even when it is busy."
-    },
-    {
-      name: "Retail Shops",
-      body: "Every sale updates stock in real time. Customer purchases are tracked without manual work. Reports are always available. Staff focus on customers instead of paperwork."
-    },
-    {
-      name: "Bars and Clubs",
-      body: "Fast service matters. Veira handles high volume transactions, reduces errors, and provides clear end of day reporting. Owners can check performance without waiting until morning."
-    },
-    {
-      name: "Clinics and Medical Practices",
-      body: "Payments, records and daily activity stay organised. Staff spend less time managing systems and more time with patients. Management has visibility without disruption."
-    },
-    {
-      name: "Law Firms",
-      body: "Billing, invoicing and payments stay structured. Client activity is recorded clearly. Reports are easy to access. Operations remain professional and predictable."
-    },
-    {
-      name: "Service Businesses",
-      body: "Appointments, payments and follow ups stay in sync. AI agents respond to inquiries. Reports arrive automatically. Nothing slips through the cracks."
-    }
-  ],
-  crossChannel: {
-    headline: "One System Across Every Channel",
-    body: "Whether a customer pays at a counter, messages on WhatsApp, books through a website or interacts with an AI agent, everything connects back to Veira Cloud. The experience feels unified, not stitched together."
+    { name: "Restaurants and Cafes", body: "Orders move quickly. Payments are processed without friction. Sales are recorded automatically." },
+    { name: "Retail Shops", body: "Every sale updates stock in real time. Customer purchases are tracked without manual work." },
+    { name: "Law Firms", body: "Billing, invoicing and payments stay structured. Client activity is recorded clearly." }
+  ]
+};
+
+const PRICING_CONTENT = {
+  hero: {
+    headline: "Simple, Transparent Pricing.",
+    body: "We believe infrastructure should be accessible. No hidden fees, just value-driven tiers for every stage of growth."
   },
-  psychologicalBenefit: {
-    body: "Most businesses do not need more features. They need fewer worries. Veira reduces mental load by making information easy to access and easy to trust."
+  tiers: [
+    { name: "Starter", price: "Free", description: "Essential POS and cloud features.", features: ["Basic POS", "Real-time Sales", "Cloud Dashboard", "WhatsApp Support"] },
+    { name: "Professional", price: "Contact Us", description: "Advanced automation for scale.", features: ["AI Agent Integration", "Custom Workflows", "Priority Support", "eTIMS Compliance"] },
+    { name: "Enterprise", price: "Contact Us", description: "Full business infrastructure.", features: ["Multi-outlet Sync", "Custom App Dev", "Dedicated Account Manager", "White-label Options"] }
+  ]
+};
+
+const FAQ_CONTENT = {
+  hero: {
+    headline: "Frequently Asked Questions",
+    body: "Everything you need to know about our platform and how it helps your business grow."
   },
-  closing: {
-    headline: "Different Businesses. Same Relief.",
-    body: "Veira adapts to how you work, not the other way around. The result is fewer questions, clearer answers, and calmer days.",
-    cta: "Talk to Us"
-  }
+  items: [
+    { q: "Is the POS really free?", a: "Yes, our starter tier POS is free to use forever. We grow with you as you need more advanced features." },
+    { q: "Do AI Agents work on WhatsApp?", a: "Absolutely. Our agents are natively built to handle conversations, bookings, and inquiries directly on WhatsApp." },
+    { q: "Can I use Veira with M-PESA?", a: "Yes, we support automated M-PESA payment verification and reconciliation across all our tiers." }
+  ]
 };
 
 const CONTACT_PAGE_CONTENT = {
@@ -371,23 +150,12 @@ const CONTACT_PAGE_CONTENT = {
     body: "We prefer conversations over forms. Reach out via WhatsApp or email, and we'll help you find the right systems for your operations."
   },
   channels: [
-    {
-      name: "WhatsApp",
-      value: "+254 755 792 377",
-      actionLabel: "Chat Now",
-      link: `https://wa.me/254755792377`
-    },
-    {
-      name: "Email",
-      value: "hello@veirahq.com",
-      actionLabel: "Send Email",
-      link: "mailto:hello@veirahq.com"
-    }
+    { name: "WhatsApp", value: "+254 755 792 377", actionLabel: "Chat Now", link: `https://wa.me/254755792377` },
+    { name: "Email", value: "hello@veirahq.com", actionLabel: "Send Email", link: "mailto:hello@veirahq.com" }
   ]
 };
 
-// Route Keys strictly from JSON
-type RouteKey = 'home' | 'pos' | 'agents' | 'cloud' | 'apps' | 'useCases' | 'ourStory' | 'talkToUs';
+type RouteKey = 'home' | 'pos' | 'agents' | 'cloud' | 'apps' | 'useCases' | 'ourStory' | 'talkToUs' | 'pricing' | 'faq';
 
 const ROUTES: Record<RouteKey, { label: string; path: string }> = {
   home: { label: 'Veira', path: '/' },
@@ -397,19 +165,44 @@ const ROUTES: Record<RouteKey, { label: string; path: string }> = {
   apps: { label: 'Apps', path: '/apps' },
   useCases: { label: 'Use Cases', path: '/use-cases' },
   ourStory: { label: 'Our Story', path: '/our-story' },
-  talkToUs: { label: 'Talk to Us', path: '/talk-to-us' }
+  talkToUs: { label: 'Talk to Us', path: '/talk-to-us' },
+  pricing: { label: 'Pricing', path: '/pricing' },
+  faq: { label: 'FAQ', path: '/faq' }
 };
 
-// Navigation inclusions from JSON
-const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory', 'talkToUs'];
-const FOOTER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory'];
+const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'pricing', 'faq'];
+const FOOTER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory', 'pricing', 'faq'];
 
-export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey }) {
+export default function App({ initialRoute = 'home', initialCompareSlug = null }: { initialRoute?: RouteKey, initialCompareSlug?: string | null }) {
   const [activeRoute, setActiveRoute] = useState<RouteKey>(initialRoute);
-  const [activeCompId, setActiveCompId] = useState("chatgpt");
+  const [activeCompareSlug, setActiveCompareSlug] = useState<string | null>(initialCompareSlug);
+  
+  // Extract competitor ID from slug if it exists
+  const initialCompId = initialCompareSlug ? initialCompareSlug.split('-vs-')[0] : "chatgpt";
+  const [activeCompId, setActiveCompId] = useState(initialCompId);
   const [activeContextId, setActiveContextId] = useState("whatsapp-business");
-  const [activeCompareSlug, setActiveCompareSlug] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Sync route on popstate (browser back/forward)
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const compareMatch = path.match(/^\/compare\/(.+)$/);
+      
+      if (compareMatch) {
+        setActiveRoute('home');
+        setActiveCompareSlug(compareMatch[1]);
+        setActiveCompId(compareMatch[1].split('-vs-')[0]);
+      } else {
+        const routeKey = (Object.keys(ROUTES) as RouteKey[]).find(k => ROUTES[k].path === path) || 'home';
+        setActiveRoute(routeKey);
+        setActiveCompareSlug(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const navigate = (key: RouteKey, slug?: string) => {
     setActiveRoute(key);
@@ -417,8 +210,12 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
     setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // In Next.js, we would use router.push here if we were actually changing browser URLs,
-    // but this initialRoute mechanism handles the landing states for Search Engine 200 responses.
+    if (typeof window !== 'undefined') {
+       const path = slug ? `/compare/${slug}` : ROUTES[key].path;
+       if (window.location.pathname !== path) {
+         window.history.pushState({}, '', path);
+       }
+    }
   };
 
   const showCompare = (compId?: string, ctxId?: string) => {
@@ -427,8 +224,7 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
     setActiveCompId(cid);
     setActiveContextId(ctxid);
     const slug = `${cid}-vs-veira-for-${ctxid}`;
-    navigate('home', slug); 
-    setActiveCompareSlug(slug);
+    navigate('home', slug);
   };
 
   const handleWhatsApp = () => {
@@ -437,42 +233,20 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
   };
 
   const activeCompareData = useMemo(() => {
-    if (activeCompareSlug) {
-      const parts = activeCompareSlug.split('-vs-veira-for-');
-      if (parts.length === 2) {
-        const foundComp = COMPETITORS.find(c => c.id === parts[0]);
-        const foundCtx = USE_CASES.find(u => u.id === parts[1]);
-        if (foundComp && foundCtx) {
-          setActiveCompId(foundComp.id);
-          setActiveContextId(foundCtx.id);
-        }
-      }
-    }
     const comp = COMPETITORS.find(c => c.id === activeCompId) || COMPETITORS[0];
     const context = USE_CASES.find(ctx => ctx.id === activeContextId) || USE_CASES[0];
-    const isHelpdesk = comp.type.includes("Helpdesk") || comp.type.includes("Platform");
-    const isLLM = comp.type.includes("LLM") || comp.type.includes("AI");
-
-    const strategicCapabilities = [
-      { name: "WhatsApp-native Automation", a: true, b: isHelpdesk || comp.id === 'meta-ai' },
-      { name: "Voice AI Call Handling", a: true, b: isLLM && comp.id !== 'perplexity' },
-      { name: "M-PESA Payment Verification", a: true, b: false },
-      { name: "KRA eTIMS Compliance Sync", a: true, b: false },
-      { name: "Multi-Agent Support Handover", a: true, b: isHelpdesk },
-      { name: "Invoicing & Automated Billing", a: true, b: false },
-      { name: "Operational Command Execution", a: true, b: false },
-      { name: "Regional Market Context", a: true, b: false }
-    ];
-
-    const faqs = [
-      { question: "What are AI agents for business?", answer: "AI agents are role-based AI systems designed to execute real business tasks such as sales, customer support, and operations." },
-      { question: "Does Veira work on WhatsApp?", answer: "Yes. Veira is WhatsApp-native and designed specifically for WhatsApp Business workflows." },
-      { question: `Is Veira better than ${comp.name} for business?`, answer: `Veira is designed specifically for business workflows like sales, customer support, and operations, while ${comp.name} focuses on general AI usage.` },
-      { question: "Can Veira replace multiple tools?", answer: "Yes. Veira combines sales, support, and operational automation into one AI agent system." }
-    ];
-
-    return { comp, context, strategicCapabilities, faqs };
-  }, [activeCompId, activeContextId, activeCompareSlug]);
+    
+    return { 
+        comp, 
+        context, 
+        strategicCapabilities: [
+          { name: "WhatsApp-native Automation", a: true, b: false },
+          { name: "Voice AI Call Handling", a: true, b: false },
+          { name: "M-PESA Payment Verification", a: true, b: false },
+          { name: "KRA eTIMS Compliance Sync", a: true, b: false }
+        ]
+    };
+  }, [activeCompId, activeContextId]);
 
   const renderComparisonView = () => (
     <div className="comparison-page reveal">
@@ -482,18 +256,10 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
       </section>
       <section className="comparison-controls">
           <div className="control-group">
-              <label>Brand Selection:</label>
+              <label>Selection:</label>
               <div className="control-pills">
-                  {COMPETITORS.map(c => (
+                  {COMPETITORS.slice(0, 6).map(c => (
                       <button key={c.id} className={`pill ${activeCompId === c.id ? 'active' : ''}`} onClick={() => setActiveCompId(c.id)}>{c.name}</button>
-                  ))}
-              </div>
-          </div>
-          <div className="control-group">
-              <label>Target Use Case:</label>
-              <div className="control-pills">
-                  {USE_CASES.map(ctx => (
-                      <button key={ctx.id} className={`pill ${activeContextId === ctx.id ? 'active' : ''}`} onClick={() => setActiveContextId(ctx.id)}>{ctx.label}</button>
                   ))}
               </div>
           </div>
@@ -512,25 +278,12 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
               {activeCompareData.strategicCapabilities.map((cap, i) => (
                 <tr key={i}>
                   <td className="feature-name">{cap.name}</td>
-                  <td className="brand-val brand-a">{cap.a ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}</td>
-                  <td className="brand-val brand-b">{cap.b ? <span className="check-icon">✓</span> : <span className="dash-icon">—</span>}</td>
+                  <td className="brand-val brand-a"><span className="check-icon">✓</span></td>
+                  <td className="brand-val brand-b"><span className="dash-icon">—</span></td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      </section>
-      <section className="verdict-section reveal">
-        <div className="section-header"><h2>Market Verdict</h2></div>
-        <div className="verdict-grid">
-          <div className="verdict-card card-a">
-            <div className="card-header"><h3>Why Veira Wins</h3></div>
-            <ul><li>Operational execution native to WhatsApp</li><li>Direct eTIMS & M-PESA compliance</li></ul>
-          </div>
-          <div className="verdict-card card-b">
-            <div className="card-header"><h3>Why {activeCompareData.comp.name} Wins</h3></div>
-            <ul><li>Broad text generation</li><li>Personal productivity</li></ul>
-          </div>
         </div>
       </section>
       <section className="primary-cta reveal">
@@ -549,7 +302,7 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
             <div className="nav-center">
                 <div className="nav-links">
                     {HEADER_KEYS.map(key => (
-                        <a key={key} href="#" onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                        <a key={key} href={ROUTES[key].path} onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
                     ))}
                 </div>
             </div>
@@ -564,7 +317,7 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
         <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}>
             <div className="mobile-menu-links">
                 {HEADER_KEYS.map(key => (
-                    <a key={key} href="#" onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                    <a key={key} href={ROUTES[key].path} onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
                 ))}
                 <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>Get Free POS</button>
             </div>
@@ -575,7 +328,7 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
 
             {activeRoute === 'home' && !activeCompareSlug && (
               <>
-                <section className="saas-hero reveal">
+                <section id="hero" className="saas-hero reveal">
                   <h1>Infrastructure for Modern Business.</h1>
                   <p className="hero-supporting">Managed POS, AI Agents, and Digital Payments in one high-performance stack built for East African commerce.</p>
                   <div className="hero-actions">
@@ -583,7 +336,7 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
                     <button className="secondary-btn" onClick={() => navigate('agents')}>Meet the Agents</button>
                   </div>
                 </section>
-                <section className="journal-landing-preview reveal">
+                <section id="market-intelligence" className="journal-landing-preview reveal">
                   <div className="section-header"><h2>Market Intelligence</h2></div>
                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                     {COMPETITORS.slice(0, 6).map(comp => (
@@ -652,10 +405,50 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
                   <h1>{APPS_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{APPS_CONTENT.hero.body}</p>
                 </section>
+              </div>
+            )}
+
+            {activeRoute === 'pricing' && (
+              <div className="pricing-page reveal">
+                <section className="saas-hero">
+                  <h1>{PRICING_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting">{PRICING_CONTENT.hero.body}</p>
+                </section>
                 <section className="pos-content-section reveal">
                    <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                      <div className="tool-card"><h3>{APPS_CONTENT.designPhilosophy.headline}</h3><p className="excerpt">{APPS_CONTENT.designPhilosophy.body}</p></div>
-                      <div className="tool-card"><h3>{APPS_CONTENT.experience.headline}</h3><p className="excerpt">{APPS_CONTENT.experience.body}</p></div>
+                      {PRICING_CONTENT.tiers.map((tier, i) => (
+                        <div key={i} className="tool-card" style={{ display: 'flex', flexDirection: 'column' }}>
+                           <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>{tier.name}</h3>
+                           <div style={{ fontSize: '2rem', fontWeight: '800', margin: '1rem 0' }}>{tier.price}</div>
+                           <p className="excerpt" style={{ marginBottom: '2rem' }}>{tier.description}</p>
+                           <ul style={{ listStyle: 'none', padding: 0, marginTop: 'auto' }}>
+                             {tier.features.map((f, j) => (
+                               <li key={j} style={{ padding: '0.5rem 0', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
+                                 <span style={{ color: 'var(--status-green)' }}>✓</span> {f}
+                               </li>
+                             ))}
+                           </ul>
+                        </div>
+                      ))}
+                   </div>
+                </section>
+              </div>
+            )}
+
+            {activeRoute === 'faq' && (
+              <div className="faq-page reveal">
+                <section className="saas-hero">
+                  <h1>{FAQ_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting">{FAQ_CONTENT.hero.body}</p>
+                </section>
+                <section className="faq-section reveal">
+                   <div className="faq-container">
+                      {FAQ_CONTENT.items.map((item, i) => (
+                        <div key={i} className="faq-item">
+                           <h3>{item.q}</h3>
+                           <p>{item.a}</p>
+                        </div>
+                      ))}
                    </div>
                 </section>
               </div>
@@ -726,13 +519,8 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
                 <div className="footer-col">
                     <h4>Solutions</h4>
                     {FOOTER_KEYS.map(key => (
-                        <a key={key} href="#" onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                        <a key={key} href={ROUTES[key].path} onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
                     ))}
-                </div>
-                <div className="footer-col">
-                    <h4>Comparisons</h4>
-                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("chatgpt", "sales-teams"); }}>vs ChatGPT</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("claude", "customer-support"); }}>vs Claude</a>
                 </div>
                 <div className="footer-col">
                     <h4>Connect</h4>
@@ -746,7 +534,7 @@ export default function App({ initialRoute = 'home' }: { initialRoute?: RouteKey
   );
 }
 
-// Client-side Hydration
+// Client-side Hydration logic restored for local preview support
 if (typeof window !== 'undefined' && document.getElementById('root')) {
   const root = ReactDOM.createRoot(document.getElementById('root')!);
   root.render(<React.StrictMode><App /></React.StrictMode>);
