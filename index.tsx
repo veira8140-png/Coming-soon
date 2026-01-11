@@ -170,7 +170,7 @@ const ROUTES: Record<RouteKey, { label: string; path: string }> = {
   faq: { label: 'FAQ', path: '/faq' }
 };
 
-const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'pricing', 'faq'];
+const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'pricing', 'faq', 'talkToUs'];
 const FOOTER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory', 'pricing', 'faq'];
 
 export default function App({ initialRoute = 'home', initialCompareSlug = null }: { initialRoute?: RouteKey, initialCompareSlug?: string | null }) {
@@ -187,6 +187,16 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
     // Sync route on popstate (browser back/forward)
     const handlePopState = () => {
       const path = window.location.pathname;
+      const hash = window.location.hash;
+
+      if (hash && path === '/') {
+          setActiveRoute('home');
+          setActiveCompareSlug(null);
+          const el = document.querySelector(hash);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          return;
+      }
+
       const compareMatch = path.match(/^\/compare\/(.+)$/);
       
       if (compareMatch) {
@@ -204,16 +214,25 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  const navigate = (key: RouteKey, slug?: string) => {
+  const navigate = (key: RouteKey, options?: { slug?: string; hash?: string }) => {
+    const { slug, hash } = options || {};
     setActiveRoute(key);
     setActiveCompareSlug(slug || null);
     setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     
     if (typeof window !== 'undefined') {
-       const path = slug ? `/compare/${slug}` : ROUTES[key].path;
-       if (window.location.pathname !== path) {
+       let path = slug ? `/compare/${slug}` : ROUTES[key].path;
+       if (hash) path += hash;
+       
+       if (window.location.pathname + window.location.hash !== path) {
          window.history.pushState({}, '', path);
+       }
+
+       if (hash) {
+           const el = document.querySelector(hash);
+           if (el) el.scrollIntoView({ behavior: 'smooth' });
+       } else {
+           window.scrollTo({ top: 0, behavior: 'smooth' });
        }
     }
   };
@@ -224,7 +243,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
     setActiveCompId(cid);
     setActiveContextId(ctxid);
     const slug = `${cid}-vs-veira-for-${ctxid}`;
-    navigate('home', slug);
+    navigate('home', { slug });
   };
 
   const handleWhatsApp = () => {
@@ -256,9 +275,9 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
       </section>
       <section className="comparison-controls">
           <div className="control-group">
-              <label>Selection:</label>
+              <label>Select Competitor:</label>
               <div className="control-pills">
-                  {COMPETITORS.slice(0, 6).map(c => (
+                  {COMPETITORS.slice(0, 8).map(c => (
                       <button key={c.id} className={`pill ${activeCompId === c.id ? 'active' : ''}`} onClick={() => setActiveCompId(c.id)}>{c.name}</button>
                   ))}
               </div>
@@ -287,7 +306,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
         </div>
       </section>
       <section className="primary-cta reveal">
-        <button className="primary-btn" onClick={() => navigate('talkToUs')}>Upgrade Your Systems</button>
+        <button className="primary-btn" onClick={() => navigate('talkToUs')}>Contact Our Team</button>
       </section>
     </div>
   );
@@ -336,10 +355,35 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
                     <button className="secondary-btn" onClick={() => navigate('agents')}>Meet the Agents</button>
                   </div>
                 </section>
+
+                <section id="infrastructure-stack" className="reveal" style={{ padding: '6rem 1.5rem', background: 'rgba(255,255,255,0.01)', borderY: '1px solid var(--border)' }}>
+                   <div className="section-header">
+                      <span className="category-tag">Integrated Stack</span>
+                      <h2>Everything under one roof.</h2>
+                   </div>
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                      <div className="tool-card" onClick={() => navigate('pos')}>
+                         <h4>Cloud POS</h4>
+                         <p className="excerpt">Free, eTIMS compliant point of sale that works offline and syncs instantly.</p>
+                      </div>
+                      <div className="tool-card" onClick={() => navigate('agents')}>
+                         <h4>AI Agents</h4>
+                         <p className="excerpt">Assistants that handle your WhatsApp, calls, and daily ops automatically.</p>
+                      </div>
+                      <div className="tool-card" onClick={() => navigate('cloud')}>
+                         <h4>Veira Cloud</h4>
+                         <p className="excerpt">Centralized business intelligence and unified data for all your outlets.</p>
+                      </div>
+                   </div>
+                </section>
+
                 <section id="market-intelligence" className="journal-landing-preview reveal">
-                  <div className="section-header"><h2>Market Intelligence</h2></div>
+                  <div className="section-header">
+                    <span className="category-tag">Older vs New</span>
+                    <h2>Market Intelligence</h2>
+                  </div>
                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                    {COMPETITORS.slice(0, 6).map(comp => (
+                    {COMPETITORS.slice(0, 8).map(comp => (
                         <div key={comp.id} className="tool-card" onClick={() => showCompare(comp.id, "whatsapp-business")}>
                             <h4>Veira vs {comp.name}</h4>
                             <p className="excerpt">Comparison for WhatsApp Business optimization.</p>
@@ -353,12 +397,28 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
             {activeCompareSlug && renderComparisonView()}
 
             {activeRoute === 'pos' && (
-              <div className="pos-page reveal" style={{ padding: '8rem 2rem', textAlign: 'center' }}>
-                <section className="saas-hero" style={{ minHeight: 'auto' }}>
+              <div className="pos-page reveal">
+                <section className="saas-hero">
                   <h1 style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>Veira POS</h1>
                   <p className="hero-supporting" style={{ margin: '0 auto' }}>
-                    Point of sale built for modern businesses.
+                    Point of sale built for modern businesses. Fast, offline-first, and fully integrated with digital payments.
                   </p>
+                </section>
+                <section className="pos-content-section reveal">
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                      <div className="tool-card">
+                         <h4>eTIMS Ready</h4>
+                         <p className="excerpt">Native integration with KRA eTIMS for effortless compliance with every sale.</p>
+                      </div>
+                      <div className="tool-card">
+                         <h4>Offline First</h4>
+                         <p className="excerpt">Sales continue even when the internet doesn't. Data syncs automatically once back online.</p>
+                      </div>
+                      <div className="tool-card">
+                         <h4>M-PESA Integrated</h4>
+                         <p className="excerpt">Instant payment verification at the counter. No more fake messages or manual checks.</p>
+                      </div>
+                   </div>
                 </section>
               </div>
             )}
@@ -404,6 +464,13 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
                 <section className="saas-hero">
                   <h1>{APPS_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{APPS_CONTENT.hero.body}</p>
+                </section>
+                <section className="pos-content-section reveal">
+                   <div className="tool-card" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+                      <h3 style={{ color: '#fff', marginBottom: '1.5rem' }}>Custom Development</h3>
+                      <p className="excerpt">We build bespoke applications for enterprises that need specific workflows, integrations, or interfaces that standard tools can't provide.</p>
+                      <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={() => navigate('talkToUs')}>Inquire About Custom Apps</button>
+                   </div>
                 </section>
               </div>
             )}
@@ -523,8 +590,14 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
                     ))}
                 </div>
                 <div className="footer-col">
+                    <h4>Sections</h4>
+                    <a href="/#infrastructure-stack" onClick={(e) => { e.preventDefault(); navigate('home', { hash: '#infrastructure-stack' }); }}>Platform Stack</a>
+                    <a href="/#market-intelligence" onClick={(e) => { e.preventDefault(); navigate('home', { hash: '#market-intelligence' }); }}>Intelligence</a>
+                    <a href="/#hero" onClick={(e) => { e.preventDefault(); navigate('home', { hash: '#hero' }); }}>Hero</a>
+                </div>
+                <div className="footer-col">
                     <h4>Connect</h4>
-                    <a href="#" onClick={handleWhatsApp}>WhatsApp</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); handleWhatsApp(); }}>WhatsApp</a>
                     <a href="https://linkedin.com/company/veira" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 </div>
             </div>

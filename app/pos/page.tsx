@@ -1,10 +1,16 @@
+import { Metadata } from 'next';
+import ClientApp from '../../index';
+
 export const dynamic = "force-static";
 
-export default function POSPage() {
-  return (
-    <main style={{ padding: '4rem', textAlign: 'center', fontFamily: 'sans-serif' }}>
-      <h1>Veira POS</h1>
-      <p>This page exists. It returns HTTP 200.</p>
-    </main>
-  );
+export const metadata: Metadata = {
+  title: 'Cloud POS | Veira',
+  description: 'eTIMS ready, offline-first Cloud POS for modern retail and hospitality.',
+  alternates: {
+    canonical: 'https://veirahq.com/pos',
+  },
+};
+
+export default function Page() {
+  return <ClientApp initialRoute="pos" />;
 }
