@@ -209,6 +209,7 @@ body {
     text-transform: uppercase;
     color: var(--orb-pink);
     letter-spacing: 0.1em;
+    display: inline-block;
 }
 
 .excerpt {
@@ -223,9 +224,17 @@ body {
     margin-top: auto;
 }
 
-/* POS Content Sections */
+/* Content Sections */
 .pos-content-section {
     padding: 6rem 1.5rem;
+}
+
+.agent-profile-card {
+   transition: border-color 0.3s var(--ease-premium);
+}
+
+.agent-profile-card:hover {
+   border-color: var(--orb-violet);
 }
 
 /* Comparison Factory Controls */

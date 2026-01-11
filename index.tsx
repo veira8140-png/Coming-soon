@@ -147,6 +147,109 @@ const POS_CONTENT = {
   }
 };
 
+const AGENTS_CONTENT = {
+  meta: {
+    title: "AI Business Assistants for WhatsApp, Sales and Support | Veira Agents",
+    description: "Veira provides AI business assistants that help handle sales, customer support, follow ups, invoicing and reports across WhatsApp, calls and business systems."
+  },
+  hero: {
+    headline: "AI Assistants That Help Run Your Business",
+    subheadline: "Veira agents help you reply to customers, follow up on leads, send invoices and handle daily business tasks automatically.",
+    primaryCTA: "Talk to Us",
+    secondaryCTA: "Book a Demo"
+  },
+  intro: {
+    title: "What Are Veira Agents",
+    text: "Veira agents are AI assistants set up to help with real business work. They do not just chat. They help you reply to customers, manage sales conversations, follow up automatically and handle routine tasks so you can focus on running your business."
+  },
+  howTheyWork: {
+    title: "How Veira Agents Work",
+    points: [
+      "They work on WhatsApp, phone calls and internal dashboards",
+      "They understand common customer questions and requests",
+      "They take action such as sending messages, booking appointments or creating invoices",
+      "They escalate to a human when needed"
+    ]
+  },
+  agents: {
+    title: "Meet the Veira Agents",
+    list: [
+      {
+        name: "Glenn",
+        role: "Customer Support Assistant",
+        description: "Glenn helps with customer support and follow ups. He answers customer questions on WhatsApp and phone calls, checks ticket status, sends follow up messages and makes sure no customer is ignored."
+      },
+      {
+        name: "Svan",
+        role: "Sales Assistant",
+        description: "Svan helps you convert leads into customers. She replies to new enquiries, answers questions, qualifies leads, books appointments and follows up automatically across WhatsApp and social messages."
+      },
+      {
+        name: "Tat",
+        role: "Operations Assistant",
+        description: "Tat helps with daily business operations. She sends invoices, runs reports, checks stock levels, approves payments and handles simple operational requests through WhatsApp or the dashboard."
+      }
+    ]
+  },
+  useCases: {
+    title: "How Businesses Use Veira Agents",
+    items: [
+      "Replying instantly to WhatsApp enquiries",
+      "Following up on leads automatically",
+      "Booking appointments without manual work",
+      "Sending invoices and payment reminders",
+      "Checking sales or stock reports",
+      "Reducing missed messages and lost customers"
+    ]
+  },
+  whoItsFor: {
+    title: "Who Veira Agents Are For",
+    businesses: [
+      "Restaurants and cafes",
+      "Retail shops",
+      "Service businesses",
+      "Sales teams",
+      "Support teams",
+      "Growing small and medium businesses"
+    ]
+  },
+  benefits: {
+    title: "Why Businesses Use Veira Agents",
+    items: [
+      "Customers get faster replies",
+      "Leads are followed up automatically",
+      "Less manual work for staff",
+      "Better visibility into conversations",
+      "More consistent customer experience"
+    ]
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    items: [
+      {
+        question: "Are Veira agents real people",
+        answer: "No. Veira agents are AI assistants. They are set up to behave like team members and help with common tasks automatically."
+      },
+      {
+        question: "Do Veira agents work on WhatsApp",
+        answer: "Yes. Veira agents are built to work primarily on WhatsApp and can also handle phone calls and dashboard requests."
+      },
+      {
+        question: "Can the agents send invoices or reports",
+        answer: "Yes. Some agents like Tat can send invoices, payment reminders and business reports depending on your setup."
+      },
+      {
+        question: "What happens if an agent cannot handle a request",
+        answer: "The agent will escalate the issue to a human team member so nothing important is missed."
+      },
+      {
+        question: "Can I start with just one agent",
+        answer: "Yes. You can start with one agent and add more as your business grows."
+      }
+    ]
+  }
+};
+
 type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
 
 function App() {
@@ -221,6 +324,7 @@ function App() {
   useEffect(() => {
     const isCompare = view === 'compare';
     const isPOS = view === 'pos';
+    const isAgents = view === 'agents';
     
     let pageTitle = `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
     let mainSchema: any = {
@@ -256,6 +360,20 @@ function App() {
                 "@context": "https://schema.org",
                 "@type": "FAQPage",
                 "mainEntity": POS_CONTENT.faq.items.map(f => ({
+                  "@type": "Question",
+                  "name": f.question,
+                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+                }))
+            }
+        ];
+    } else if (isAgents) {
+        pageTitle = AGENTS_CONTENT.meta.title;
+        mainSchema = [
+            mainSchema,
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": AGENTS_CONTENT.faq.items.map(f => ({
                   "@type": "Question",
                   "name": f.question,
                   "acceptedAnswer": { "@type": "Answer", "text": f.answer }
@@ -499,10 +617,124 @@ function App() {
 
             {view === 'agents' && (
               <div className="agents-page reveal">
+                {/* Hero */}
                 <section className="saas-hero">
-                  <h1>Specialized AI Agents.</h1>
-                  <p className="hero-supporting">Sales, Support, and Operations agents that manage your business on WhatsApp and Voice.</p>
-                  <button className="primary-btn" onClick={handleWhatsApp} style={{ marginTop: '2rem' }}>Assign Agents to Your Team</button>
+                  <h1>{AGENTS_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting">{AGENTS_CONTENT.hero.subheadline}</p>
+                  <div className="hero-actions">
+                    <button className="primary-btn" onClick={handleWhatsApp}>{AGENTS_CONTENT.hero.primaryCTA}</button>
+                    <button className="secondary-btn" onClick={handleWhatsApp}>{AGENTS_CONTENT.hero.secondaryCTA}</button>
+                  </div>
+                </section>
+
+                {/* Intro */}
+                <section className="pos-content-section reveal">
+                   <div className="section-header">
+                      <h2>{AGENTS_CONTENT.intro.title}</h2>
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)' }}>
+                        {AGENTS_CONTENT.intro.text}
+                      </p>
+                   </div>
+                </section>
+
+                {/* How They Work */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{AGENTS_CONTENT.howTheyWork.title}</h2>
+                  </div>
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    {AGENTS_CONTENT.howTheyWork.points.map((point, i) => (
+                      <div key={i} className="tool-card">
+                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
+                        <p style={{ fontWeight: 600 }}>{point}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Meet the Agents */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{AGENTS_CONTENT.agents.title}</h2>
+                  </div>
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    {AGENTS_CONTENT.agents.list.map((agent, i) => (
+                      <div key={i} className="tool-card agent-profile-card">
+                        <div style={{ marginBottom: '1.5rem' }}>
+                           <h3 style={{ fontSize: '1.5rem', color: '#fff' }}>{agent.name}</h3>
+                           <span className="category-tag">{agent.role}</span>
+                        </div>
+                        <p className="excerpt">{agent.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Use Cases */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{AGENTS_CONTENT.useCases.title}</h2>
+                  </div>
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    {AGENTS_CONTENT.useCases.items.map((item, i) => (
+                      <div key={i} className="tool-card feature-item">
+                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
+                        <p style={{ fontWeight: 600 }}>{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Who it's for */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{AGENTS_CONTENT.whoItsFor.title}</h2>
+                  </div>
+                  <div className="control-pills" style={{ justifyContent: 'center', maxWidth: '800px', margin: '0 auto' }}>
+                    {AGENTS_CONTENT.whoItsFor.businesses.map((biz, i) => (
+                      <span key={i} className="pill" style={{ cursor: 'default' }}>{biz}</span>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Benefits */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{AGENTS_CONTENT.benefits.title}</h2>
+                  </div>
+                  <div className="faq-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                    {AGENTS_CONTENT.benefits.items.map((item, i) => (
+                      <div key={i} className="faq-item" style={{ padding: '1.5rem 2rem' }}>
+                        <p style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 600 }}>
+                          <span className="check-icon">✓</span> {item}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* FAQ */}
+                <section className="faq-section reveal">
+                    <div className="section-header">
+                        <h2>{AGENTS_CONTENT.faq.title}</h2>
+                    </div>
+                    <div className="faq-container">
+                        {AGENTS_CONTENT.faq.items.map((faq, i) => (
+                            <div key={i} className="faq-item">
+                                <h3>{faq.question}</h3>
+                                <p>{faq.answer}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Final CTA */}
+                <section className="primary-cta reveal">
+                   <h2>Start Using Veira Agents</h2>
+                   <p className="hero-supporting" style={{ marginTop: '1rem' }}>Talk to us and see how AI assistants can help run your business day to day.</p>
+                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
+                      <button className="primary-btn" onClick={handleWhatsApp}>Talk to Us</button>
+                   </div>
                 </section>
               </div>
             )}
