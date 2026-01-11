@@ -387,6 +387,38 @@ const APPS_CONTENT = {
   }
 };
 
+const STORY_CONTENT = {
+  meta: {
+    title: "Our Story | Veira",
+    description: "Veira builds calm, reliable software for real businesses and commits 10% of annual net profit to fighting gender based violence and supporting survivors."
+  },
+  story: {
+    opening: {
+      headline: "Why Veira Exists",
+      body: "Veira was created for businesses that want technology to feel simple, dependable, and quietly effective. Software should reduce stress, not introduce it. It should make work lighter, not heavier."
+    },
+    philosophy: {
+      body: "We believe good systems are not loud. They work in the background. They remove friction. They give people time back. Veira is a productised service because most businesses do not want tools. They want outcomes that just work."
+    },
+    howWeWork: {
+      body: "Everything we build follows the same principle. Fewer decisions. Clear interfaces. Reliable performance. Whether it is POS, cloud, AI agents, apps or websites, the experience should feel calm and considered."
+    },
+    profitWithPurpose: {
+      headline: "Profit With Responsibility",
+      body: "Veira allocates ten percent of its annual net profit to fighting gender based violence and supporting survivors. This is not a campaign. It is a standing commitment. The figure is fixed. Ten percent."
+    },
+    whyItMatters: {
+      body: "Technology shapes how people work, earn, and live. We believe businesses have a responsibility to contribute beyond revenue. Supporting survivors and prevention efforts is part of how we choose to operate."
+    },
+    longView: {
+      body: "Veira is built for the long term. We want to create software that businesses trust for years. And we want to grow in a way that leaves a positive mark beyond the products we ship."
+    },
+    closing: {
+      body: "Calm software. Thoughtful growth. Real impact."
+    }
+  }
+};
+
 type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
 
 function App() {
@@ -464,6 +496,7 @@ function App() {
     const isAgents = view === 'agents';
     const isCloud = view === 'cloud';
     const isApps = view === 'apps';
+    const isStory = view === 'story';
     
     let pageTitle = `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
     let mainSchema: any = {
@@ -542,6 +575,18 @@ function App() {
               "@type": "WebPage",
               "name": "Veira Apps & Websites",
               "description": "Modern apps and websites designed to feel effortless, fast, and reliable for businesses."
+            }
+        ];
+    } else if (isStory) {
+        pageTitle = STORY_CONTENT.meta.title;
+        mainSchema = [
+            mainSchema,
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Veira",
+              "url": "https://veirahq.com",
+              "description": "Veira is a productised service offering POS, cloud, AI agents, apps and websites, with a commitment to allocate 10% of annual net profit to fighting gender based violence and supporting survivors."
             }
         ];
     } else if (view === 'landing') {
@@ -1212,9 +1257,55 @@ function App() {
 
             {view === 'story' && (
               <div className="story-page reveal">
+                {/* Hero */}
                 <section className="saas-hero">
-                  <h1>Our Story.</h1>
-                  <p className="hero-supporting">Building the operating system for the next generation of commerce.</p>
+                  <h1>{STORY_CONTENT.story.opening.headline}</h1>
+                  <p className="hero-supporting">{STORY_CONTENT.story.opening.body}</p>
+                </section>
+
+                {/* Narrative sections */}
+                <section className="pos-content-section reveal">
+                   <div className="section-header">
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
+                        {STORY_CONTENT.story.philosophy.body}
+                      </p>
+                   </div>
+                </section>
+
+                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+                   <div className="section-header">
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: '#fff', fontSize: '1.2rem' }}>
+                        {STORY_CONTENT.story.howWeWork.body}
+                      </p>
+                   </div>
+                </section>
+
+                {/* Profit with Purpose - Highlighted Section */}
+                <section className="pos-content-section reveal">
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                      <div className="tool-card" style={{ gridColumn: 'span 2', textAlign: 'center', borderColor: 'var(--orb-pink)' }}>
+                         <h2 style={{ fontSize: '2rem', marginBottom: '1.5rem', color: '#fff' }}>{STORY_CONTENT.story.profitWithPurpose.headline}</h2>
+                         <p className="intro-text" style={{ color: 'var(--text-secondary)', lineHeight: '1.8', fontSize: '1.1rem' }}>
+                            {STORY_CONTENT.story.profitWithPurpose.body}
+                         </p>
+                      </div>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1rem', color: '#fff' }}>Why It Matters</h3>
+                         <p className="excerpt">{STORY_CONTENT.story.whyItMatters.body}</p>
+                      </div>
+                      <div className="tool-card">
+                         <h3 style={{ marginBottom: '1rem', color: '#fff' }}>The Long View</h3>
+                         <p className="excerpt">{STORY_CONTENT.story.longView.body}</p>
+                      </div>
+                   </div>
+                </section>
+
+                {/* Closing */}
+                <section className="primary-cta reveal">
+                   <h2 style={{ fontSize: '2.5rem' }}>{STORY_CONTENT.story.closing.body}</h2>
+                   <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
+                      <button className="primary-btn" onClick={handleWhatsApp}>Join the Journey</button>
+                   </div>
                 </section>
               </div>
             )}
