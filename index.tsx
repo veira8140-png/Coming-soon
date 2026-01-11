@@ -19,6 +19,8 @@ import {
 } from './components/Icons';
 
 const WHATSAPP_NUMBER = "+254755792377";
+const CONTACT_EMAIL = "hello@veirahq.com";
+const BASE_URL = "https://veirahq.com";
 
 // --- Massive Programmatic Dataset ---
 
@@ -419,19 +421,141 @@ const STORY_CONTENT = {
   }
 };
 
-type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
+const USE_CASES_PAGE_CONTENT = {
+  meta: {
+    title: "Use Cases | How Businesses Use Veira Every Day",
+    description: "See how restaurants, retail shops, clinics, law firms, service businesses, bars and clubs use Veira POS, Cloud, AI agents, apps and websites to run calmer operations."
+  },
+  hero: {
+    headline: "Built For How Work Actually Happens",
+    body: "Every business looks different on the surface. But behind the scenes, the problems are often the same. Too many tools. Too many messages. Too much uncertainty. Veira is designed to simplify what happens every day."
+  },
+  intro: {
+    body: "Veira is a productised service that brings POS, cloud, AI agents, apps and websites together. Not as separate tools, but as one system that quietly supports how businesses operate."
+  },
+  useCases: [
+    {
+      name: "Restaurants and Cafes",
+      body: "Orders move quickly. Payments are processed without friction. Sales are recorded automatically. Managers receive daily reports without asking. Inventory levels stay visible. The business runs smoothly even when it is busy."
+    },
+    {
+      name: "Retail Shops",
+      body: "Every sale updates stock in real time. Customer purchases are tracked without manual work. Reports are always available. Staff focus on customers instead of paperwork."
+    },
+    {
+      name: "Bars and Clubs",
+      body: "Fast service matters. Veira handles high volume transactions, reduces errors, and provides clear end of day reporting. Owners can check performance without waiting until morning."
+    },
+    {
+      name: "Clinics and Medical Practices",
+      body: "Payments, records and daily activity stay organised. Staff spend less time managing systems and more time with patients. Management has visibility without disruption."
+    },
+    {
+      name: "Law Firms",
+      body: "Billing, invoicing and payments stay structured. Client activity is recorded clearly. Reports are easy to access. Operations remain professional and predictable."
+    },
+    {
+      name: "Service Businesses",
+      body: "Appointments, payments and follow ups stay in sync. AI agents respond to inquiries. Reports arrive automatically. Nothing slips through the cracks."
+    }
+  ],
+  crossChannel: {
+    headline: "One System Across Every Channel",
+    body: "Whether a customer pays at a counter, messages on WhatsApp, books through a website or interacts with an AI agent, everything connects back to Veira Cloud. The experience feels unified, not stitched together."
+  },
+  psychologicalBenefit: {
+    body: "Most businesses do not need more features. They need fewer worries. Veira reduces mental load by making information easy to access and easy to trust."
+  },
+  closing: {
+    headline: "Different Businesses. Same Relief.",
+    body: "Veira adapts to how you work, not the other way around. The result is fewer questions, clearer answers, and calmer days.",
+    cta: "Talk to Us"
+  }
+};
+
+const CONTACT_PAGE_CONTENT = {
+  meta: {
+    title: "Talk to Us | Veira",
+    description: "Get in touch with Veira for POS systems, AI agents, cloud platforms, and custom software solutions."
+  },
+  hero: {
+    headline: "Let's Talk About Your Business.",
+    body: "We prefer conversations over forms. Reach out via WhatsApp or email, and we'll help you find the right systems for your operations."
+  },
+  channels: [
+    {
+      name: "WhatsApp",
+      value: "+254 755 792 377",
+      actionLabel: "Chat Now",
+      link: `https://wa.me/254755792377`
+    },
+    {
+      name: "Email",
+      value: "hello@veirahq.com",
+      actionLabel: "Send Email",
+      link: "mailto:hello@veirahq.com"
+    }
+  ]
+};
+
+type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog' | 'contact';
+
+// Map views to paths for SEO/Canonical logic
+const ROUTE_PATH_MAP: Record<AppView, string> = {
+  landing: '/',
+  pos: '/pos',
+  agents: '/agents',
+  cloud: '/cloud',
+  apps: '/apps',
+  'use-cases': '/use-cases',
+  story: '/our-story',
+  contact: '/talk-to-us',
+  blog: '/blog',
+  compare: '/compare'
+};
 
 function App() {
   const [view, setView] = useState<AppView>('landing');
   const [activeCompId, setActiveCompId] = useState("chatgpt");
   const [activeContextId, setActiveContextId] = useState("whatsapp-business");
+  const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // --- Internal Linking Randomizer ---
+  // --- Programmatic SEO: Navigation Helper ---
+  const navigate = (newView: AppView, slug?: string) => {
+    setView(newView);
+    setActiveSlug(slug || null);
+    setIsMobileMenuOpen(false);
+    
+    // Smooth scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Simulated URL push (for demonstration of pSEO routing structure)
+    const newPath = slug ? `/compare/${slug}` : ROUTE_PATH_MAP[newView];
+    console.debug(`Navigating to canonical: ${BASE_URL}${newPath}`);
+  };
+
+  const showCompare = (compId?: string, ctxId?: string) => {
+    const cid = compId || activeCompId;
+    const ctxid = ctxId || activeContextId;
+    setActiveCompId(cid);
+    setActiveContextId(ctxid);
+    
+    // Programmatic slug generation
+    const slug = `${cid}-vs-veira-for-${ctxid}`;
+    navigate('compare', slug);
+  };
+
+  const handleWhatsApp = () => {
+    const message = encodeURIComponent("Hi Veira, I'm interested in your business solutions.");
+    window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
+  };
+
+  // --- Internal Linking Randomizer (pSEO Crawl discovery) ---
   const internalLinks = useMemo(() => {
     const links: { compId: string; ctxId: string }[] = [];
     const used = new Set();
-    while (links.length < 6) {
+    while (links.length < 12) {
       const comp = COMPETITORS[Math.floor(Math.random() * COMPETITORS.length)];
       const ctx = USE_CASES[Math.floor(Math.random() * USE_CASES.length)];
       const key = `${comp.id}-${ctx.id}`;
@@ -443,25 +567,22 @@ function App() {
     return links;
   }, [activeCompId, activeContextId]);
 
-  const navigate = (newView: AppView) => {
-    setView(newView);
-    setIsMobileMenuOpen(false);
-    window.scrollTo(0, 0);
-  };
-
-  const showCompare = (compId?: string, ctxId?: string) => {
-    if (compId) setActiveCompId(compId);
-    if (ctxId) setActiveContextId(ctxId);
-    navigate('compare');
-  };
-
-  const handleWhatsApp = () => {
-    const message = encodeURIComponent("Hi Veira, I'm interested in your business solutions.");
-    window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
-  };
-
   // --- Comparison Engine Logic ---
   const activeCompareData = useMemo(() => {
+    // If we have a slug, parse it to extract IDs
+    if (activeSlug) {
+      const parts = activeSlug.split('-vs-veira-for-');
+      if (parts.length === 2) {
+        const foundComp = COMPETITORS.find(c => c.id === parts[0]);
+        const foundCtx = USE_CASES.find(u => u.id === parts[1]);
+        if (foundComp && foundCtx) {
+          // Sync state if navigating from a link
+          setActiveCompId(foundComp.id);
+          setActiveContextId(foundCtx.id);
+        }
+      }
+    }
+
     const comp = COMPETITORS.find(c => c.id === activeCompId) || COMPETITORS[0];
     const context = USE_CASES.find(ctx => ctx.id === activeContextId) || USE_CASES[0];
     
@@ -487,9 +608,9 @@ function App() {
     ];
 
     return { comp, context, strategicCapabilities, faqs };
-  }, [activeCompId, activeContextId]);
+  }, [activeCompId, activeContextId, activeSlug]);
 
-  // --- Dynamic Meta & Schema Injection ---
+  // --- Dynamic Meta, Canonical & Schema Injection ---
   useEffect(() => {
     const isCompare = view === 'compare';
     const isPOS = view === 'pos';
@@ -497,21 +618,34 @@ function App() {
     const isCloud = view === 'cloud';
     const isApps = view === 'apps';
     const isStory = view === 'story';
+    const isUseCases = view === 'use-cases';
+    const isContact = view === 'contact';
     
-    let pageTitle = `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
+    // Default Fallback
+    let pageTitle = `${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} | Veira`;
+    let metaDescription = `Learn how Veira helps businesses with ${view.replace('-', ' ')} through calm, reliable software.`;
+
+    const canonicalPath = activeSlug ? `/compare/${activeSlug}` : ROUTE_PATH_MAP[view];
+    const canonicalUrl = `${BASE_URL}${canonicalPath}`;
+
     let mainSchema: any = {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "Veira AI Agents",
+        "name": "Veira",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web, WhatsApp, Voice",
-        "description": "AI agents for sales, customer support, and operations across WhatsApp and voice.",
+        "url": BASE_URL,
+        "description": "Infrastructure for modern commerce.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     };
 
-    if (isCompare) {
+    if (view === 'landing') {
+        pageTitle = "Veira — Simpler Business Systems";
+        metaDescription = "Modern business infrastructure for East African commerce. Managed POS, AI Agents, and Digital Payments.";
+    } else if (isCompare) {
         const { comp, context, faqs } = activeCompareData;
         pageTitle = `Veira vs ${comp.name} for ${context.label} | Best AI for Business`;
+        metaDescription = `Compare Veira and ${comp.name} for ${context.label}. See why Veira's WhatsApp-native operational agents lead in regional commerce execution.`;
         mainSchema = [
             mainSchema,
             {
@@ -526,6 +660,7 @@ function App() {
         ];
     } else if (isPOS) {
         pageTitle = POS_CONTENT.meta.title;
+        metaDescription = POS_CONTENT.meta.description;
         mainSchema = [
             mainSchema,
             {
@@ -540,6 +675,7 @@ function App() {
         ];
     } else if (isAgents) {
         pageTitle = AGENTS_CONTENT.meta.title;
+        metaDescription = AGENTS_CONTENT.meta.description;
         mainSchema = [
             mainSchema,
             {
@@ -554,6 +690,7 @@ function App() {
         ];
     } else if (isCloud) {
         pageTitle = CLOUD_CONTENT.meta.title;
+        metaDescription = CLOUD_CONTENT.meta.description;
         mainSchema = [
             mainSchema,
             {
@@ -568,33 +705,81 @@ function App() {
         ];
     } else if (isApps) {
         pageTitle = APPS_CONTENT.meta.title;
+        metaDescription = APPS_CONTENT.meta.description;
         mainSchema = [
             mainSchema,
             {
               "@context": "https://schema.org",
               "@type": "WebPage",
               "name": "Veira Apps & Websites",
-              "description": "Modern apps and websites designed to feel effortless, fast, and reliable for businesses."
+              "description": APPS_CONTENT.meta.description
             }
         ];
     } else if (isStory) {
         pageTitle = STORY_CONTENT.meta.title;
+        metaDescription = STORY_CONTENT.meta.description;
         mainSchema = [
             mainSchema,
             {
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "Veira",
-              "url": "https://veirahq.com",
-              "description": "Veira is a productised service offering POS, cloud, AI agents, apps and websites, with a commitment to allocate 10% of annual net profit to fighting gender based violence and supporting survivors."
+              "url": BASE_URL,
+              "description": STORY_CONTENT.meta.description
             }
         ];
-    } else if (view === 'landing') {
-        pageTitle = "Veira — Simpler Business Systems";
+    } else if (isUseCases) {
+        pageTitle = USE_CASES_PAGE_CONTENT.meta.title;
+        metaDescription = USE_CASES_PAGE_CONTENT.meta.description;
+        mainSchema = [
+            mainSchema,
+            {
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "Veira Use Cases",
+              "description": USE_CASES_PAGE_CONTENT.meta.description
+            }
+        ];
+    } else if (isContact) {
+        pageTitle = CONTACT_PAGE_CONTENT.meta.title;
+        metaDescription = CONTACT_PAGE_CONTENT.meta.description;
+        mainSchema = [
+            mainSchema,
+            {
+              "@context": "https://schema.org",
+              "@type": "ContactPage",
+              "name": "Talk to Us",
+              "url": `${BASE_URL}/talk-to-us`,
+              "description": "Get in touch with Veira HQ."
+            }
+        ];
     }
 
     document.title = pageTitle;
+    
+    // Manage meta description
+    const updateOrCreateMeta = (name: string, content: string) => {
+        let tag = document.querySelector(`meta[name="${name}"]`);
+        if (!tag) {
+            tag = document.createElement('meta');
+            tag.setAttribute('name', name);
+            document.head.appendChild(tag);
+        }
+        tag.setAttribute('content', content);
+    };
 
+    updateOrCreateMeta('description', metaDescription);
+    
+    // Canonical link injection
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+        canonical = document.createElement('link');
+        canonical.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', canonicalUrl);
+
+    // Schema injection
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(mainSchema);
@@ -605,11 +790,11 @@ function App() {
       const existing = document.getElementById('dynamic-seo-schema');
       if (existing) document.head.removeChild(existing);
     };
-  }, [view, activeCompareData]);
+  }, [view, activeCompareData, activeSlug]);
 
   return (
     <div className="saas-container">
-        {/* Navigation Bar */}
+        {/* Navigation Bar (Strict Header Items) */}
         <nav className="saas-nav">
             <div className="logo-link-container" onClick={() => navigate('landing')}>
                 <OrganicOrbLogo size={32} variant="nav" />
@@ -623,6 +808,7 @@ function App() {
                     <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps</a>
                     <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
                     <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('contact'); }}>Talk to Us</a>
                 </div>
             </div>
             <div className="nav-right">
@@ -642,6 +828,7 @@ function App() {
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps</a>
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('contact'); }}>Talk to Us</a>
                 <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>Get Free POS</button>
             </div>
         </div>
@@ -660,24 +847,22 @@ function App() {
                   </div>
                 </section>
 
-                {/* Surfaced Blog Posts / Journal */}
                 <section className="journal-landing-preview reveal">
                   <div className="section-header">
-                    <h2>The Journal</h2>
-                    <p>Intelligence on scaling modern operations.</p>
+                    <h2>Market Intelligence</h2>
+                    <p>How Veira compares against the global ecosystem.</p>
                   </div>
                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                    {BLOG_POSTS.slice(0, 3).map(post => (
-                        <div key={post.id} className="tool-card journal-card" onClick={() => navigate('blog')}>
-                            <span className="category-tag">{post.category}</span>
-                            <h4>{post.title}</h4>
-                            <p className="excerpt">{post.excerpt}</p>
-                            <span className="date-tag">{post.date}</span>
+                    {COMPETITORS.slice(0, 6).map(comp => (
+                        <div key={comp.id} className="tool-card" onClick={() => showCompare(comp.id, "whatsapp-business")}>
+                            <h4>Veira vs {comp.name}</h4>
+                            <p className="excerpt">WhatsApp & Voice Native operational efficiency for regional businesses.</p>
+                            <span className="category-tag" style={{ marginTop: '1rem' }}>Comparison</span>
                         </div>
                     ))}
                   </div>
                   <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                    <button className="secondary-btn" onClick={() => navigate('blog')}>Read All Entries</button>
+                    <button className="secondary-btn" onClick={() => showCompare()}>View All Comparisons</button>
                   </div>
                 </section>
               </>
@@ -797,8 +982,8 @@ function App() {
 
                 <section className="compare-more-section reveal">
                     <div className="section-header">
-                        <h2>Explore Other Comparisons</h2>
-                        <p>Deep dive into how Veira stacks up against the competition in various business contexts.</p>
+                        <h2>Explore Related Contexts</h2>
+                        <p>Deep dive into alternative configurations for {activeCompareData.comp.name} and beyond.</p>
                     </div>
                     <div className="tools-grid">
                         {internalLinks.map((link, idx) => {
@@ -826,7 +1011,6 @@ function App() {
 
             {view === 'agents' && (
               <div className="agents-page reveal">
-                {/* Hero */}
                 <section className="saas-hero">
                   <h1>{AGENTS_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{AGENTS_CONTENT.hero.subheadline}</p>
@@ -836,7 +1020,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Intro */}
                 <section className="pos-content-section reveal">
                    <div className="section-header">
                       <h2>{AGENTS_CONTENT.intro.title}</h2>
@@ -846,7 +1029,6 @@ function App() {
                    </div>
                 </section>
 
-                {/* How They Work */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{AGENTS_CONTENT.howTheyWork.title}</h2>
@@ -861,7 +1043,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Meet the Agents */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{AGENTS_CONTENT.agents.title}</h2>
@@ -879,7 +1060,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Use Cases */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{AGENTS_CONTENT.useCases.title}</h2>
@@ -894,7 +1074,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Who it's for */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{AGENTS_CONTENT.whoItsFor.title}</h2>
@@ -906,7 +1085,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Benefits */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{AGENTS_CONTENT.benefits.title}</h2>
@@ -922,7 +1100,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* FAQ */}
                 <section className="faq-section reveal">
                     <div className="section-header">
                         <h2>{AGENTS_CONTENT.faq.title}</h2>
@@ -937,7 +1114,6 @@ function App() {
                     </div>
                 </section>
 
-                {/* Final CTA */}
                 <section className="primary-cta reveal">
                    <h2>Start Using Veira Agents</h2>
                    <p className="hero-supporting" style={{ marginTop: '1rem' }}>Talk to us and see how AI assistants can help run your business day to day.</p>
@@ -950,7 +1126,6 @@ function App() {
 
             {view === 'pos' && (
               <div className="pos-page reveal">
-                {/* Hero */}
                 <section className="saas-hero">
                   <h1>{POS_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{POS_CONTENT.hero.subheadline}</p>
@@ -960,7 +1135,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Intro */}
                 <section className="pos-content-section reveal">
                    <div className="section-header">
                       <h2>{POS_CONTENT.intro.title}</h2>
@@ -970,7 +1144,6 @@ function App() {
                    </div>
                 </section>
 
-                {/* Features */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{POS_CONTENT.features.title}</h2>
@@ -985,7 +1158,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Pricing */}
                 <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
                   <div className="section-header">
                     <h2>{POS_CONTENT.pricing.title}</h2>
@@ -995,7 +1167,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Who it's for */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{POS_CONTENT.whoItsFor.title}</h2>
@@ -1007,7 +1178,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Benefits */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{POS_CONTENT.benefits.title}</h2>
@@ -1023,7 +1193,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* How it Works */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{POS_CONTENT.howItWorks.title}</h2>
@@ -1038,7 +1207,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* FAQ */}
                 <section className="faq-section reveal">
                     <div className="section-header">
                         <h2>{POS_CONTENT.faq.title}</h2>
@@ -1053,7 +1221,6 @@ function App() {
                     </div>
                 </section>
 
-                {/* Final CTA */}
                 <section className="primary-cta reveal">
                   <h2>Get Started With Veira POS</h2>
                   <p className="hero-supporting" style={{ marginTop: '1rem' }}>Talk to us today and get a POS system that works for your business.</p>
@@ -1066,13 +1233,11 @@ function App() {
 
             {view === 'cloud' && (
               <div className="cloud-page reveal">
-                {/* Hero / Opening */}
                 <section className="saas-hero">
                   <h1>{CLOUD_CONTENT.opening.headline}</h1>
                   <p className="hero-supporting">{CLOUD_CONTENT.opening.body}</p>
                 </section>
 
-                {/* Reframe */}
                 <section className="pos-content-section reveal">
                    <div className="section-header">
                       <h2>{CLOUD_CONTENT.reframe.headline}</h2>
@@ -1082,7 +1247,6 @@ function App() {
                    </div>
                 </section>
 
-                {/* What Actually Happens */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{CLOUD_CONTENT.whatActuallyHappens.headline}</h2>
@@ -1097,7 +1261,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Contrast: Before / After */}
                 <section className="verdict-section reveal">
                   <div className="section-header">
                     <h2>The Quiet Shift</h2>
@@ -1126,7 +1289,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Psychological Benefit */}
                 <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
                   <div className="section-header">
                     <h2>{CLOUD_CONTENT.psychologicalBenefit.headline}</h2>
@@ -1136,7 +1298,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* Who It's Really For */}
                 <section className="pos-content-section reveal">
                   <div className="section-header">
                     <h2>{CLOUD_CONTENT.whoItsReallyFor.headline}</h2>
@@ -1148,7 +1309,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* How It Fits & Security */}
                 <section className="pos-content-section reveal">
                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                     <div className="tool-card">
@@ -1162,7 +1322,6 @@ function App() {
                   </div>
                 </section>
 
-                {/* FAQ */}
                 <section className="faq-section reveal">
                     <div className="section-header">
                         <h2>Frequently Asked Questions</h2>
@@ -1177,7 +1336,6 @@ function App() {
                     </div>
                 </section>
 
-                {/* Closing CTA */}
                 <section className="primary-cta reveal">
                    <h2>{CLOUD_CONTENT.closing.headline}</h2>
                    <p className="hero-supporting" style={{ marginTop: '1rem' }}>{CLOUD_CONTENT.closing.body}</p>
@@ -1190,14 +1348,12 @@ function App() {
 
             {view === 'apps' && (
               <div className="apps-page reveal">
-                {/* Hero */}
                 <section className="saas-hero">
                   <h1>{APPS_CONTENT.hero.headline}</h1>
                   <p className="hero-supporting">{APPS_CONTENT.hero.body}</p>
                   <button className="primary-btn" onClick={handleWhatsApp} style={{ marginTop: '2rem' }}>Experience Veira Apps</button>
                 </section>
 
-                {/* Narrative / Philosophy Sections */}
                 <section className="pos-content-section reveal" style={{ paddingBottom: '3rem' }}>
                    <div className="section-header">
                       <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
@@ -1235,7 +1391,6 @@ function App() {
                    </div>
                 </section>
 
-                {/* Closing CTA */}
                 <section className="primary-cta reveal">
                    <h2>{APPS_CONTENT.closing.headline}</h2>
                    <p className="hero-supporting" style={{ marginTop: '1rem' }}>{APPS_CONTENT.closing.body}</p>
@@ -1249,21 +1404,63 @@ function App() {
             {view === 'use-cases' && (
               <div className="use-cases-page reveal">
                 <section className="saas-hero">
-                  <h1>Solving for Industry.</h1>
-                  <p className="hero-supporting">From small retail stores to massive logistics enterprises.</p>
+                  <h1>{USE_CASES_PAGE_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting">{USE_CASES_PAGE_CONTENT.hero.body}</p>
+                </section>
+
+                <section className="pos-content-section reveal" style={{ paddingBottom: '3rem' }}>
+                   <div className="section-header">
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
+                        {USE_CASES_PAGE_CONTENT.intro.body}
+                      </p>
+                   </div>
+                </section>
+
+                <section className="pos-content-section reveal">
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                      {USE_CASES_PAGE_CONTENT.useCases.map((uc, i) => (
+                        <div key={i} className="tool-card feature-item">
+                           <h3 style={{ marginBottom: '1.2rem', color: '#fff', fontSize: '1.4rem' }}>{uc.name}</h3>
+                           <p className="excerpt" style={{ lineHeight: '1.7' }}>{uc.body}</p>
+                        </div>
+                      ))}
+                   </div>
+                </section>
+
+                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+                   <div className="section-header">
+                      <h2>{USE_CASES_PAGE_CONTENT.crossChannel.headline}</h2>
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
+                        {USE_CASES_PAGE_CONTENT.crossChannel.body}
+                      </p>
+                   </div>
+                </section>
+
+                <section className="pos-content-section reveal">
+                   <div className="section-header">
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: '#fff', fontSize: '1.3rem', fontWeight: 500, fontStyle: 'italic' }}>
+                        "{USE_CASES_PAGE_CONTENT.psychologicalBenefit.body}"
+                      </p>
+                   </div>
+                </section>
+
+                <section className="primary-cta reveal">
+                   <h2>{USE_CASES_PAGE_CONTENT.closing.headline}</h2>
+                   <p className="hero-supporting" style={{ marginTop: '1.5rem' }}>{USE_CASES_PAGE_CONTENT.closing.body}</p>
+                   <div className="cta-actions" style={{ marginTop: '3rem' }}>
+                      <button className="primary-btn" onClick={handleWhatsApp}>{USE_CASES_PAGE_CONTENT.closing.cta}</button>
+                   </div>
                 </section>
               </div>
             )}
 
             {view === 'story' && (
               <div className="story-page reveal">
-                {/* Hero */}
                 <section className="saas-hero">
                   <h1>{STORY_CONTENT.story.opening.headline}</h1>
                   <p className="hero-supporting">{STORY_CONTENT.story.opening.body}</p>
                 </section>
 
-                {/* Narrative sections */}
                 <section className="pos-content-section reveal">
                    <div className="section-header">
                       <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: '1.8' }}>
@@ -1280,7 +1477,6 @@ function App() {
                    </div>
                 </section>
 
-                {/* Profit with Purpose - Highlighted Section */}
                 <section className="pos-content-section reveal">
                    <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                       <div className="tool-card" style={{ gridColumn: 'span 2', textAlign: 'center', borderColor: 'var(--orb-pink)' }}>
@@ -1300,12 +1496,44 @@ function App() {
                    </div>
                 </section>
 
-                {/* Closing */}
                 <section className="primary-cta reveal">
                    <h2 style={{ fontSize: '2.5rem' }}>{STORY_CONTENT.story.closing.body}</h2>
                    <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
                       <button className="primary-btn" onClick={handleWhatsApp}>Join the Journey</button>
                    </div>
+                </section>
+              </div>
+            )}
+
+            {view === 'contact' && (
+              <div className="contact-page reveal">
+                <section className="saas-hero">
+                  <h1>{CONTACT_PAGE_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting">{CONTACT_PAGE_CONTENT.hero.body}</p>
+                </section>
+
+                <section className="pos-content-section reveal">
+                   <div className="tools-grid" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                      {CONTACT_PAGE_CONTENT.channels.map((ch, i) => (
+                        <div key={i} className="tool-card" style={{ textAlign: 'center' }}>
+                           <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>{ch.name}</h3>
+                           <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>{ch.value}</p>
+                           <a 
+                             href={ch.link} 
+                             target="_blank" 
+                             rel="noopener noreferrer" 
+                             className="primary-btn" 
+                             style={{ display: 'inline-block', textDecoration: 'none', width: '100%' }}
+                           >
+                              {ch.actionLabel}
+                           </a>
+                        </div>
+                      ))}
+                   </div>
+                </section>
+
+                <section className="primary-cta reveal" style={{ marginTop: '4rem' }}>
+                   <p className="hero-supporting" style={{ margin: '0 auto' }}>Typical response time is under 2 hours during business hours.</p>
                 </section>
               </div>
             )}
@@ -1325,23 +1553,24 @@ function App() {
                     <a href="#" onClick={(e) => { e.preventDefault(); showCompare("chatgpt", "sales-teams"); }}>vs ChatGPT</a>
                     <a href="#" onClick={(e) => { e.preventDefault(); showCompare("claude", "customer-support"); }}>vs Claude</a>
                     <a href="#" onClick={(e) => { e.preventDefault(); showCompare("intercom-ai", "whatsapp-business"); }}>vs Intercom</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare(); }}>All Comparisons</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showCompare("meta-ai", "lead-qualification"); }}>vs Meta AI</a>
                 </div>
                 <div className="footer-col">
-                    <h4>Solutions</h4>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS Systems</a>
+                    <h4>Infrastructure</h4>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('pos'); }}>POS System</a>
                     <a href="#" onClick={(e) => { e.preventDefault(); navigate('agents'); }}>AI Agents</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud Systems</a>
-                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('blog'); }}>Blog Posts</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('cloud'); }}>Cloud Platform</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps and Websites</a>
                 </div>
                 <div className="footer-col">
-                    <h4>Support</h4>
-                    <a href="#" onClick={handleWhatsApp}>WhatsApp</a>
-                    <a href="https://linkedin.com/company/veira" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <h4>Corporate</h4>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
                     <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
+                    <a href="https://linkedin.com/company/veira" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); navigate('contact'); }}>Talk to Us</a>
                 </div>
             </div>
-            <div className="footer-bottom">&copy; {new Date().getFullYear()} Veira Systems. High-Performance Enterprise.</div>
+            <div className="footer-bottom">&copy; {new Date().getFullYear()} Veira Systems. High-Performance Infrastructure.</div>
         </footer>
     </div>
   );
