@@ -60,8 +60,34 @@ interface BlogPost {
   };
 }
 
+// --- Fix for missing Tool types ---
+interface ToolStep {
+  id: string;
+  label: string;
+  type: 'select' | 'boolean' | 'number';
+  options?: string[];
+}
+
+interface ToolConfig {
+  slug: string;
+  name: string;
+  category: string;
+  title: string;
+  subheadline: string;
+  steps: ToolStep[];
+  cta: string;
+  baseScore: number;
+  intentLevel: 'high' | 'medium' | 'low';
+}
+
+interface ToolResult {
+  status: 'Green' | 'Yellow' | 'Red';
+  summary: string;
+  steps: string[];
+}
+
 // --- Collapsible FAQ Component ---
-const FAQItem: React.FC<{ faq: FAQ }> = ({ faq }) => {
+const FAQItem = React.memo(({ faq }: { faq: FAQ }) => {
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -88,10 +114,10 @@ const FAQItem: React.FC<{ faq: FAQ }> = ({ faq }) => {
       </div>
     </div>
   );
-};
+});
 
-// --- All Blog Posts ---
-const BLOG_POSTS: BlogPost[] = [
+// --- All Blog Posts (Data Memoization) ---
+const STATIC_BLOG_POSTS: BlogPost[] = [
   {
     slug: "free-etims-compliant-pos-kenya",
     meta: {
@@ -106,58 +132,58 @@ const BLOG_POSTS: BlogPost[] = [
         {
           id: "what-is-pos",
           title: "What Is a POS System and Why It Matters in Kenya",
-          body: "A Point of Sale (POS) system is the heart of any modern business. In Kenya, moving away from manual ledgers to a digital POS helps you track every shilling, manage stock accurately, and understand your best-selling items. For restaurants and retail shops, it reduces errors and provides the data needed to grow.",
+          body: "A Point of Sale (POS) system is the digital heart of your business operations. In the modern Kenyan market, relying on manual ledgers or basic calculators is no longer sufficient. The best POS software in Kenya allows you to track every transaction, manage inventory in real-time, and gain insights into your business performance. Whether you are running a retail shop or a busy restaurant, a reliable POS system ensures accuracy, speeds up service, and professionalizes your customer interactions.",
           internalLinks: ["/pos"]
         },
         {
           id: "etims-compliance",
           title: "What Is ETIMS and Why Your POS Must Be ETIMS Compliant",
-          body: "KRA's Electronic Tax Invoice Management System (eTIMS) is now a requirement for businesses in Kenya. An eTIMS-compliant POS system automatically generates valid tax invoices and syncs them with KRA in real-time. This saves you from the manual work of logging into the portal for every sale and ensures your business remains compliant.",
+          body: "KRA's Electronic Tax Invoice Management System (eTIMS) has transformed how businesses handle taxes in Kenya. An eTIMS-compliant POS system is no longer a luxury—it is a legal necessity. It automatically validates invoices and sends them directly to KRA, ensuring you stay compliant without the stress of manual filing. By using a KRA eTIMS POS, you protect your business from penalties and simplify your bookkeeping and VAT processes.",
           internalLinks: ["/ai-tools/etims-compliance-checker"]
         },
         {
           id: "free-pos-future",
           title: "Why Free POS Systems Are the Future for Kenyan Businesses",
-          body: "Upfront software costs and heavy monthly fees shouldn't stop you from running a professional business. Free-to-start POS systems like Veira align our success with yours. By removing monthly subscriptions and focusing on value, we allow Kenyan entrepreneurs to scale without financial burden.",
+          body: "The traditional model of paying heavy monthly software fees is being replaced by more aligned, free-to-start models. A free POS system in Kenya allows entrepreneurs to invest their capital into stock and growth rather than expensive software subscriptions. By offering a no-monthly-fee POS, platforms like Veira align their success with yours, ensuring that modern business technology is accessible to every 'Mama Mboga', shopkeeper, and restaurateur in the country.",
           internalLinks: ["/pos"]
         },
         {
           id: "who-is-it-for",
           title: "Who Veira POS Is Built For",
-          body: "Our system is tailored for the high-paced environment of Kenyan commerce. Whether you are running a busy restaurant in Nairobi, a high-volume retail store, a local supermarket, or a specialized clinic, the system adapts to your workflow. We support multi-branch operations and diverse payment methods including M-PESA and cards.",
+          body: "Our system is specifically designed for the high-paced Kenyan commercial landscape. It serves as a specialized restaurant POS in Kenya, handling table management and kitchen orders with ease. For retail businesses, it functions as a robust retail POS system, managing thousands of SKUs and diverse product categories. From neighborhood supermarkets to boutique pharmacies and busy clinics, Veira provides the scalability and reliability required by high-growth businesses.",
           internalLinks: ["/pos"]
         },
         {
           id: "features",
           title: "Key Features of Veira POS",
-          body: "Veira isn't just a sales tool; it's a complete business management suite. Our key features include full eTIMS compliance, support for Android Smart POS hardware, a real-time cloud-based dashboard, and our signature daily WhatsApp sales reports. We also provide robust inventory management, staff fraud prevention, and smart analytics to help you spot trends before they become problems.",
+          body: "Veira provides a comprehensive suite of features handled entirely for you. This includes seamless eTIMS compliance, native support for Android POS hardware, and a real-time cloud-based dashboard for remote management. Business owners love our signature daily WhatsApp sales reports that deliver performance metrics straight to their phones. Additionally, the system includes deep inventory management, staff fraud prevention tools, and smart analytics to help you make data-driven decisions every day.",
           internalLinks: ["/pos"]
         },
         {
           id: "why-switch",
           title: "Why Businesses Are Switching to Veira POS",
-          body: "Kenyan business owners are switching because they want simplicity. They are tired of complicated software that breaks or requires expensive tech support. Veira offers a managed experience—we handle the setup, the updates, and the compliance so you can focus on your customers.",
+          body: "Businesses across Kenya are making the switch because they want an affordable, managed solution. Unlike traditional systems that require constant maintenance and technical knowledge, Veira offers a 'set it and forget it' experience. We handle the technical complexities of cloud sync, fraud monitoring, and compliance updates, making us the best POS system in Kenya for owners who want to focus on their customers instead of their software.",
           internalLinks: ["/pos"]
         },
         {
           id: "get-started",
           title: "How to Get Started with Veira POS",
-          body: "Ready to simplify your operations? The process is simple. Book a free demo via WhatsApp, and our team will show you how the system works. Once you're ready, we help set up your Android POS hardware and train your staff. You could be up and running in as little as 48 hours.",
+          body: "Getting set up is easy and fast. You can start by checking your compliance status or booking a free POS demo in Kenya through our website or WhatsApp. Our team will guide you through selecting the right Android POS hardware, importing your initial inventory, and training your staff. Within 48 hours, your business can be transformed into a modern, ETIMS-compliant operation.",
           internalLinks: ["/talk-to-us"]
         }
       ],
       faqs: [
         {
           question: "Is a free POS system reliable for my business?",
-          answer: "Yes. Veira uses enterprise-grade cloud infrastructure. Our 'free' model means we don't charge monthly software fees; we align our revenue with your success through payment processing."
+          answer: "Absolutely. Veira uses enterprise-grade cloud infrastructure and handles thousands of transactions daily. Our 'free' model means we don't charge monthly software fees; instead, we align our revenue with your growth through a simple payment processing fee."
         },
         {
-          question: "Do I need to buy expensive hardware to use Veira?",
-          answer: "No. Veira supports a wide range of affordable Android Smart POS devices. We can even help you source the right hardware at competitive prices."
+          question: "Do I need to buy specific hardware to use Veira?",
+          answer: "Veira supports a wide range of Android Smart POS devices. We can help you source the right hardware configured with our system, or you can use your own compatible Android devices."
         },
         {
-          question: "How does the eTIMS integration work?",
-          answer: "The POS system is pre-configured to communicate with KRA. When you make a sale, the system generates the eTIMS invoice automatically in the background."
+          question: "How exactly does the eTIMS integration work?",
+          answer: "The POS is pre-integrated with KRA. Every time a sale is made, the system automatically generates an eTIMS-compliant receipt and syncs the data with KRA's servers in the background, so you never have to worry about manual tax logging."
         }
       ]
     }
@@ -193,33 +219,7 @@ const BLOG_POSTS: BlogPost[] = [
   }
 ];
 
-// --- Tool Configuration ---
-interface ToolStep {
-  id: string;
-  label: string;
-  type: 'select' | 'boolean' | 'number';
-  options?: string[];
-}
-
-interface ToolConfig {
-  slug: string;
-  name: string;
-  category: string;
-  title: string;
-  subheadline: string;
-  steps: ToolStep[];
-  cta: string;
-  baseScore: number;
-  intentLevel: 'medium' | 'high' | 'very_high';
-}
-
-interface ToolResult {
-  status: 'Green' | 'Yellow' | 'Red';
-  summary: string;
-  steps: string[];
-}
-
-const AI_TOOLS_CONFIG: ToolConfig[] = [
+const STATIC_TOOLS: ToolConfig[] = [
   {
     slug: "inventory-risk-checker",
     name: "Inventory Risk Checker",
@@ -256,7 +256,7 @@ type AppView = 'landing' | 'pos' | 'tool' | 'blog';
 function App() {
   const [view, setView] = useState<AppView>('landing');
   const [activeTool, setActiveTool] = useState<ToolConfig | null>(null);
-  const [activeBlogSlug, setActiveBlogSlug] = useState<string>(BLOG_POSTS[0].slug);
+  const [activeBlogSlug, setActiveBlogSlug] = useState<string>(STATIC_BLOG_POSTS[0].slug);
   const [toolStep, setToolStep] = useState(0);
   const [toolAnswers, setToolAnswers] = useState<Record<string, any>>({});
   const [toolResult, setToolResult] = useState<ToolResult | null>(null);
@@ -267,12 +267,19 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [drawerState, setDrawerState] = useState<{ isOpen: boolean; mode: 'code' | null; title: string; data: any; }>({ isOpen: false, mode: null, title: '', data: null });
 
+  // Memoized handlers for performance
   const updateScore = useCallback((points: number) => {
     setLeadScore(prev => Math.min(100, prev + points));
   }, []);
 
   const trackEvent = useCallback((event: string, data?: any) => {
     console.log(`[Analytics] ${event}`, data);
+    // Push to Google Analytics
+    // Fix for TypeScript error: Property 'gtag' does not exist on type 'Window & typeof globalThis'
+    const win = window as any;
+    if (win.gtag) {
+        win.gtag('event', event, data);
+    }
     if (event === 'cta_clicked') updateScore(EVENT_SCORES.CTA_CLICKED);
     if (event === 'whatsapp_clicked') updateScore(EVENT_SCORES.WHATSAPP_CLICKED);
     if (event === 'pos_page_visited') updateScore(EVENT_SCORES.POS_VISITED);
@@ -284,34 +291,34 @@ function App() {
     return 'COLD';
   }, [leadScore]);
 
-  const resetToLanding = () => {
+  const resetToLanding = useCallback(() => {
     setView('landing');
     setActiveTool(null);
     setToolStep(0);
     setToolAnswers({});
     setToolResult(null);
     setNumberInputValue("");
-    window.scrollTo(0, 0);
-  };
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
 
-  const showPOS = () => {
+  const showPOS = useCallback(() => {
     setView('pos');
     setActiveTool(null);
     setToolStep(0);
     setToolAnswers({});
     setToolResult(null);
     setNumberInputValue("");
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
     trackEvent('pos_page_visited');
-  }
+  }, [trackEvent]);
 
-  const showBlog = (slug?: string) => {
+  const showBlog = useCallback((slug?: string) => {
     if (slug) setActiveBlogSlug(slug);
     setView('blog');
-    window.scrollTo(0, 0);
-  };
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
 
-  const startTool = (tool: ToolConfig) => {
+  const startTool = useCallback((tool: ToolConfig) => {
     trackEvent("tool_viewed", { tool: tool.slug });
     setActiveTool(tool);
     setToolStep(0);
@@ -319,26 +326,30 @@ function App() {
     setToolResult(null);
     setNumberInputValue("");
     setView('tool');
-    window.scrollTo(0, 0);
-  };
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [trackEvent]);
 
-  const handleToolAnswer = (val: any) => {
+  const handleToolAnswer = useCallback((val: any) => {
     if (!activeTool) return;
     if (toolStep === 0) trackEvent("tool_started", { tool: activeTool.slug });
 
     const currentStepId = activeTool.steps[toolStep].id;
-    const newAnswers = { ...toolAnswers, [currentStepId]: val };
-    setToolAnswers(newAnswers);
+    setToolAnswers(prev => {
+        const next = { ...prev, [currentStepId]: val };
+        // Defer result processing to next tick for smoother transitions
+        if (toolStep >= activeTool.steps.length - 1) {
+            setTimeout(() => processToolResult(next), 0);
+        }
+        return next;
+    });
     setNumberInputValue("");
 
     if (toolStep < activeTool.steps.length - 1) {
       setToolStep(toolStep + 1);
-    } else {
-      processToolResult(newAnswers);
     }
-  };
+  }, [activeTool, toolStep, trackEvent]);
 
-  const handleInternalLink = (link: string) => {
+  const handleInternalLink = useCallback((link: string) => {
     if (!link || link === '/') return;
     if (link === '/pos') { showPOS(); return; }
     if (link === '/ai-tools') { resetToLanding(); return; }
@@ -346,9 +357,9 @@ function App() {
     
     const parts = link.split('/');
     const slug = parts[parts.length - 1];
-    const tool = AI_TOOLS_CONFIG.find(t => t.slug === slug);
+    const tool = STATIC_TOOLS.find(t => t.slug === slug);
     if (tool) { startTool(tool); } else if (link.startsWith('/ai-tools')) { resetToLanding(); }
-  };
+  }, [showPOS, resetToLanding, trackEvent, startTool]);
 
   const processToolResult = async (answers: Record<string, any>) => {
     if (!activeTool) return;
@@ -397,21 +408,20 @@ function App() {
     }
   };
 
-  const handleWhatsApp = (e: React.MouseEvent) => {
+  const handleWhatsApp = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     const toolName = activeTool?.name || "Veira POS";
     const message = `Hi Veira, I'm interested in learning more about your services. (Referencing: ${toolName})`;
     const encoded = encodeURIComponent(message);
     trackEvent("whatsapp_clicked", { tool: activeTool?.slug || "general" });
     window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${encoded}`, '_blank');
-  };
+  }, [activeTool, trackEvent]);
 
-  const activeBlog = useMemo(() => BLOG_POSTS.find(p => p.slug === activeBlogSlug) || BLOG_POSTS[0], [activeBlogSlug]);
-  const otherPosts = useMemo(() => BLOG_POSTS.filter(p => p.slug !== activeBlogSlug), [activeBlogSlug]);
-
+  const activeBlog = useMemo(() => STATIC_BLOG_POSTS.find(p => p.slug === activeBlogSlug) || STATIC_BLOG_POSTS[0], [activeBlogSlug]);
+  
   const toolsByCategory = useMemo(() => {
     const categories: Record<string, ToolConfig[]> = {};
-    AI_TOOLS_CONFIG.forEach(tool => {
+    STATIC_TOOLS.forEach(tool => {
       if (!categories[tool.category]) categories[tool.category] = [];
       categories[tool.category].push(tool);
     });
