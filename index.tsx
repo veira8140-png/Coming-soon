@@ -186,12 +186,15 @@ function App() {
   // Partners for the slide show
   const partners = ["M-PESA", "eTIMS", "KRA", "VISA", "MASTERCARD", "STRIPE", "CHASE", "REVOLUT"];
 
+  // Responsive sizes based on CSS variables
+  const getOrbSize = () => window.innerWidth <= 900 ? 22 : 32;
+
   return (
     <div className="saas-container">
         {/* Unified Navigation */}
         <nav className="saas-nav">
-            <div className="nav-left" onClick={resetToLanding} style={{ cursor: 'pointer' }}>
-                <OrganicOrbLogo size={32} />
+            <div className="logo-link-container" onClick={resetToLanding}>
+                <OrganicOrbLogo size={getOrbSize()} variant="nav" />
                 <span className="saas-logo">Veira</span>
             </div>
             
@@ -360,8 +363,8 @@ function App() {
         <footer className="saas-footer reveal">
             <div className="footer-content">
                 <div className="footer-brand">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <OrganicOrbLogo size={28} />
+                    <div className="logo-link-container" style={{ cursor: 'default' }}>
+                        <OrganicOrbLogo size={28} variant="nav" />
                         <span className="saas-logo">Veira</span>
                     </div>
                     <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
