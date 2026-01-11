@@ -58,6 +58,95 @@ const BLOG_POSTS = [
   { id: 5, title: "Compliance as Code: Automating eTIMS for Scale", category: "Compliance", date: "Oct 10, 2024", excerpt: "How to stay ahead of regulatory requirements without slowing down your sales floor." }
 ];
 
+const POS_CONTENT = {
+  meta: {
+    title: "Free ETIMS Compliant POS System in Kenya | Android POS by Veira",
+    description: "Get a free ETIMS compliant Android POS system for restaurants, retail, clinics, law firms, service businesses, bars and clubs. Daily WhatsApp reports and cloud dashboard included."
+  },
+  hero: {
+    headline: "A Simple POS That Helps You Run Your Business",
+    subheadline: "Record sales, manage staff, track inventory and receive clear reports without complicated software.",
+    primaryCTA: "Get Started",
+    secondaryCTA: "Talk to Us"
+  },
+  intro: {
+    title: "What Is Veira POS",
+    text: "Veira POS is a modern Android POS system delivered as a service. It helps businesses handle sales, payments and reporting in a simple and reliable way. Everything is set up for you and works out of the box."
+  },
+  features: {
+    title: "What You Get",
+    items: [
+      "ETIMS compliant and KRA ready",
+      "Android POS devices for fast checkout",
+      "Cloud based dashboard you can access anywhere",
+      "Daily sales reports sent directly to WhatsApp",
+      "Staff and inventory management",
+      "Fraud prevention and basic business insights"
+    ]
+  },
+  pricing: {
+    title: "Simple Pricing",
+    text: "There is no monthly software fee. Veira charges a small transaction fee when you process payments. This helps us maintain the system, improve security and support your business."
+  },
+  whoItsFor: {
+    title: "Who Veira POS Is For",
+    businesses: [
+      "Restaurants and cafes",
+      "Retail shops and mini marts",
+      "Law firms",
+      "Service based businesses",
+      "Clinics and medical practices",
+      "Bars and clubs",
+      "Pharmacies",
+      "Growing small and medium businesses"
+    ]
+  },
+  benefits: {
+    title: "Why Businesses Choose Veira POS",
+    items: [
+      "Easy to use with little training needed",
+      "Works well for both product and service businesses",
+      "Clear reports sent automatically to WhatsApp",
+      "Reliable ETIMS compliance",
+      "One system connected to cloud and support"
+    ]
+  },
+  howItWorks: {
+    title: "How It Works",
+    steps: [
+      "We help you set up the POS",
+      "You start recording sales and payments",
+      "Reports are sent automatically to your WhatsApp",
+      "You monitor everything from one dashboard"
+    ]
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    items: [
+      {
+        question: "Is the Veira POS really free",
+        answer: "Yes. There is no monthly software fee. Veira only charges a small transaction fee when payments are processed."
+      },
+      {
+        question: "Is Veira POS ETIMS compliant",
+        answer: "Yes. Veira POS is fully ETIMS compliant and ready for KRA requirements."
+      },
+      {
+        question: "Can service businesses like law firms or clinics use the POS",
+        answer: "Yes. Veira POS supports service based billing, invoicing and reporting, making it suitable for law firms, clinics and other service businesses."
+      },
+      {
+        question: "Do I get reports on WhatsApp",
+        answer: "Yes. Veira sends daily sales reports directly to your WhatsApp so you can track performance easily."
+      },
+      {
+        question: "Does the POS work on Android devices",
+        answer: "Yes. Veira POS is designed for Android POS hardware and handheld devices."
+      }
+    ]
+  }
+};
+
 type AppView = 'landing' | 'pos' | 'agents' | 'compare' | 'cloud' | 'apps' | 'use-cases' | 'story' | 'blog';
 
 function App() {
@@ -130,15 +219,11 @@ function App() {
 
   // --- Dynamic Meta & Schema Injection ---
   useEffect(() => {
-    const { comp, context, faqs } = activeCompareData;
     const isCompare = view === 'compare';
+    const isPOS = view === 'pos';
     
-    document.title = isCompare 
-      ? `Veira vs ${comp.name} for ${context.label} | Best AI for Business`
-      : `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
-
-    const schemas = [
-      {
+    let pageTitle = `Veira — ${view.charAt(0).toUpperCase() + view.slice(1).replace('-', ' ')} Systems`;
+    let mainSchema: any = {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "Veira AI Agents",
@@ -146,21 +231,46 @@ function App() {
         "operatingSystem": "Web, WhatsApp, Voice",
         "description": "AI agents for sales, customer support, and operations across WhatsApp and voice.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqs.map(f => ({
-          "@type": "Question",
-          "name": f.question,
-          "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-        }))
-      }
-    ];
+    };
+
+    if (isCompare) {
+        const { comp, context, faqs } = activeCompareData;
+        pageTitle = `Veira vs ${comp.name} for ${context.label} | Best AI for Business`;
+        mainSchema = [
+            mainSchema,
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faqs.map(f => ({
+                  "@type": "Question",
+                  "name": f.question,
+                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+                }))
+            }
+        ];
+    } else if (isPOS) {
+        pageTitle = POS_CONTENT.meta.title;
+        mainSchema = [
+            mainSchema,
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": POS_CONTENT.faq.items.map(f => ({
+                  "@type": "Question",
+                  "name": f.question,
+                  "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+                }))
+            }
+        ];
+    } else if (view === 'landing') {
+        pageTitle = "Veira — Simpler Business Systems";
+    }
+
+    document.title = pageTitle;
 
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.text = JSON.stringify(schemas);
+    script.text = JSON.stringify(mainSchema);
     script.id = 'dynamic-seo-schema';
     document.head.appendChild(script);
 
@@ -399,10 +509,116 @@ function App() {
 
             {view === 'pos' && (
               <div className="pos-page reveal">
+                {/* Hero */}
                 <section className="saas-hero">
-                  <h1>Professional POS Systems.</h1>
-                  <p className="hero-supporting">Hardware and software synced with M-PESA and eTIMS for total branch control.</p>
-                  <button className="primary-btn" onClick={handleWhatsApp} style={{ marginTop: '2rem' }}>Order POS Device</button>
+                  <h1>{POS_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting">{POS_CONTENT.hero.subheadline}</p>
+                  <div className="hero-actions">
+                    <button className="primary-btn" onClick={handleWhatsApp}>{POS_CONTENT.hero.primaryCTA}</button>
+                    <button className="secondary-btn" onClick={handleWhatsApp}>{POS_CONTENT.hero.secondaryCTA}</button>
+                  </div>
+                </section>
+
+                {/* Intro */}
+                <section className="pos-content-section reveal">
+                   <div className="section-header">
+                      <h2>{POS_CONTENT.intro.title}</h2>
+                      <p className="intro-text" style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)' }}>
+                        {POS_CONTENT.intro.text}
+                      </p>
+                   </div>
+                </section>
+
+                {/* Features */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{POS_CONTENT.features.title}</h2>
+                  </div>
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    {POS_CONTENT.features.items.map((item, i) => (
+                      <div key={i} className="tool-card feature-item">
+                        <span className="check-icon" style={{ display: 'block', marginBottom: '1rem' }}>✓</span>
+                        <p style={{ fontWeight: 600 }}>{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Pricing */}
+                <section className="pos-content-section reveal" style={{ background: 'var(--bg-surface)', padding: '6rem 1.5rem', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+                  <div className="section-header">
+                    <h2>{POS_CONTENT.pricing.title}</h2>
+                    <p style={{ maxWidth: '800px', margin: '2rem auto 0', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
+                      {POS_CONTENT.pricing.text}
+                    </p>
+                  </div>
+                </section>
+
+                {/* Who it's for */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{POS_CONTENT.whoItsFor.title}</h2>
+                  </div>
+                  <div className="control-pills" style={{ justifyContent: 'center', maxWidth: '800px', margin: '0 auto' }}>
+                    {POS_CONTENT.whoItsFor.businesses.map((biz, i) => (
+                      <span key={i} className="pill" style={{ cursor: 'default' }}>{biz}</span>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Benefits */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{POS_CONTENT.benefits.title}</h2>
+                  </div>
+                  <div className="faq-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                    {POS_CONTENT.benefits.items.map((item, i) => (
+                      <div key={i} className="faq-item" style={{ padding: '1.5rem 2rem' }}>
+                        <p style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 600 }}>
+                          <span className="check-icon">✓</span> {item}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* How it Works */}
+                <section className="pos-content-section reveal">
+                  <div className="section-header">
+                    <h2>{POS_CONTENT.howItWorks.title}</h2>
+                  </div>
+                  <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                    {POS_CONTENT.howItWorks.steps.map((step, i) => (
+                      <div key={i} className="tool-card">
+                        <span style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--orb-violet)', display: 'block', marginBottom: '1rem' }}>0{i+1}</span>
+                        <p style={{ fontWeight: 600 }}>{step}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* FAQ */}
+                <section className="faq-section reveal">
+                    <div className="section-header">
+                        <h2>{POS_CONTENT.faq.title}</h2>
+                    </div>
+                    <div className="faq-container">
+                        {POS_CONTENT.faq.items.map((faq, i) => (
+                            <div key={i} className="faq-item">
+                                <h3>{faq.question}</h3>
+                                <p>{faq.answer}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Final CTA */}
+                <section className="primary-cta reveal">
+                  <h2>Get Started With Veira POS</h2>
+                  <p className="hero-supporting" style={{ marginTop: '1rem' }}>Talk to us today and get a POS system that works for your business.</p>
+                  <div className="cta-actions" style={{ marginTop: '2.5rem' }}>
+                    <button className="primary-btn" onClick={handleWhatsApp}>Talk to Us</button>
+                  </div>
                 </section>
               </div>
             )}
