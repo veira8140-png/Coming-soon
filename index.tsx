@@ -12,7 +12,9 @@ import DottedGlowBackground from './components/DottedGlowBackground';
 import SideDrawer from './components/SideDrawer';
 import { 
     ThinkingIcon, 
-    SparklesIcon
+    SparklesIcon,
+    MenuIcon,
+    XIcon
 } from './components/Icons';
 
 const WHATSAPP_NUMBER = "+254700000000";
@@ -260,6 +262,7 @@ function App() {
   const [toolStep, setToolStep] = useState(0);
   const [toolAnswers, setToolAnswers] = useState<Record<string, any>>({});
   const [toolResult, setToolResult] = useState<ToolResult | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const [numberInputValue, setNumberInputValue] = useState("");
   const [leadScore, setLeadScore] = useState(0);
@@ -274,8 +277,6 @@ function App() {
 
   const trackEvent = useCallback((event: string, data?: any) => {
     console.log(`[Analytics] ${event}`, data);
-    // Push to Google Analytics
-    // Fix for TypeScript error: Property 'gtag' does not exist on type 'Window & typeof globalThis'
     const win = window as any;
     if (win.gtag) {
         win.gtag('event', event, data);
@@ -298,6 +299,7 @@ function App() {
     setToolAnswers({});
     setToolResult(null);
     setNumberInputValue("");
+    setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
@@ -308,6 +310,7 @@ function App() {
     setToolAnswers({});
     setToolResult(null);
     setNumberInputValue("");
+    setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'instant' });
     trackEvent('pos_page_visited');
   }, [trackEvent]);
@@ -315,6 +318,7 @@ function App() {
   const showBlog = useCallback((slug?: string) => {
     if (slug) setActiveBlogSlug(slug);
     setView('blog');
+    setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
@@ -326,6 +330,7 @@ function App() {
     setToolResult(null);
     setNumberInputValue("");
     setView('tool');
+    setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [trackEvent]);
 
@@ -336,7 +341,6 @@ function App() {
     const currentStepId = activeTool.steps[toolStep].id;
     setToolAnswers(prev => {
         const next = { ...prev, [currentStepId]: val };
-        // Defer result processing to next tick for smoother transitions
         if (toolStep >= activeTool.steps.length - 1) {
             setTimeout(() => processToolResult(next), 0);
         }
@@ -351,7 +355,8 @@ function App() {
 
   const handleInternalLink = useCallback((link: string) => {
     if (!link || link === '/') return;
-    if (link === '/pos') { showPOS(); return; }
+    setIsMobileMenuOpen(false);
+    if (link === '/pos' || link.includes('veirahq.com/pos')) { showPOS(); return; }
     if (link === '/ai-tools') { resetToLanding(); return; }
     if (link === '/talk-to-us' || link === '/contact') { trackEvent('cta_clicked'); return; }
     
@@ -436,18 +441,34 @@ function App() {
             </div>
             <div className="nav-center">
                 <div className="nav-links">
-                    <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Agents</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Cloud</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Apps</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Use Cases</a>
-                    <a href="#" onClick={(e) => e.preventDefault()}>Our Story</a>
+                    <a href="https://veirahq.com/pos" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
+                    <a href="https://veirahq.com/agents" onClick={(e) => e.preventDefault()}>Agents</a>
+                    <a href="https://veirahq.com/cloud" onClick={(e) => e.preventDefault()}>Cloud</a>
+                    <a href="https://veirahq.com/apps" onClick={(e) => e.preventDefault()}>Apps</a>
+                    <a href="https://veirahq.com/usecases" onClick={(e) => e.preventDefault()}>Use Cases</a>
+                    <a href="https://veirahq.com/ourstory" onClick={(e) => e.preventDefault()}>Our Story</a>
                 </div>
             </div>
             <div className="nav-right">
                 <button className="nav-cta" onClick={() => handleInternalLink('/contact')}>Talk to Us</button>
+                <button className="mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle Menu">
+                    {isMobileMenuOpen ? <XIcon /> : <MenuIcon />}
+                </button>
             </div>
         </nav>
+
+        {/* Mobile Menu Overlay */}
+        <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}>
+            <div className="mobile-menu-links">
+                <a href="https://veirahq.com/pos" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
+                <a href="https://veirahq.com/agents" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Agents</a>
+                <a href="https://veirahq.com/cloud" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Cloud</a>
+                <a href="https://veirahq.com/apps" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Apps</a>
+                <a href="https://veirahq.com/usecases" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Use Cases</a>
+                <a href="https://veirahq.com/ourstory" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Our Story</a>
+                <button className="nav-cta mobile-cta" onClick={() => handleInternalLink('/contact')}>Talk to Us</button>
+            </div>
+        </div>
 
         <SideDrawer isOpen={drawerState.isOpen} onClose={() => setDrawerState(s => ({...s, isOpen: false}))} title={drawerState.title}>
             {drawerState.mode === 'code' && <pre className="code-block"><code>{drawerState.data}</code></pre>}
@@ -470,7 +491,7 @@ function App() {
                 </section>
 
                 <section className="trust-bar">
-                  <p>Trusted by growing businesses and partners across Kenya</p>
+                  <p>Trusted by growing businesses across Kenya</p>
                   <div className="partner-logos">
                     <div className="partner-logo">M-PESA</div>
                     <div className="partner-logo">eTIMS</div>
@@ -928,12 +949,12 @@ function App() {
                 <div className="footer-links">
                     <div className="footer-col">
                         <h4>Product</h4>
-                        <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                        <a href="#" onClick={(e) => e.preventDefault()}>Agents</a>
-                        <a href="#" onClick={(e) => e.preventDefault()}>Cloud</a>
-                        <a href="#" onClick={(e) => e.preventDefault()}>Apps</a>
-                        <a href="#" onClick={(e) => e.preventDefault()}>Use Cases</a>
-                        <a href="#" onClick={(e) => e.preventDefault()}>Our Story</a>
+                        <a href="https://veirahq.com/pos" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
+                        <a href="https://veirahq.com/agents" onClick={(e) => e.preventDefault()}>Agents</a>
+                        <a href="https://veirahq.com/cloud" onClick={(e) => e.preventDefault()}>Cloud</a>
+                        <a href="https://veirahq.com/apps" onClick={(e) => e.preventDefault()}>Apps</a>
+                        <a href="https://veirahq.com/usecases" onClick={(e) => e.preventDefault()}>Use Cases</a>
+                        <a href="https://veirahq.com/ourstory" onClick={(e) => e.preventDefault()}>Our Story</a>
                     </div>
                     <div className="footer-col">
                         <h4>Resources</h4>
