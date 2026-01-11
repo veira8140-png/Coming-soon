@@ -189,7 +189,7 @@ function App() {
                 </div>
             </div>
             <div className="nav-right">
-                <button className="nav-cta hide-mobile" onClick={handleWhatsApp}>Get Started</button>
+                <button className="nav-cta primary-btn hide-mobile" onClick={handleWhatsApp}>Get Free POS</button>
                 <button className="mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                     {isMobileMenuOpen ? <XIcon /> : <MenuIcon />}
                 </button>
@@ -205,7 +205,7 @@ function App() {
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('apps'); }}>Apps</a>
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('use-cases'); }}>Use Cases</a>
                 <a href="#" onClick={(e) => { e.preventDefault(); navigate('story'); }}>Our Story</a>
-                <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>WhatsApp Us</button>
+                <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>Get Free POS</button>
             </div>
         </div>
 
