@@ -243,6 +243,191 @@ body {
     flex-wrap: wrap;
 }
 
+/* Agents Page Styles */
+.agents-grid-container {
+    max-width: var(--container-width);
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+}
+
+.agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.agent-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s var(--ease-premium);
+}
+
+.agent-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--border-hover);
+    background: var(--bg-surface-elevated);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.agent-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.agent-meta h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.agent-role {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--orb-violet);
+    font-weight: 700;
+}
+
+.agent-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.agent-capabilities {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cap-section h5 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.75rem;
+}
+
+.cap-section ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.cap-section li {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    position: relative;
+    padding-left: 1rem;
+}
+
+.cap-section li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--orb-pink);
+}
+
+.agent-triggers h5 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.trigger-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.trigger-pill {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    color: var(--text-secondary);
+    font-family: monospace;
+}
+
+/* System Benefits Section */
+.system-benefits {
+    max-width: 900px;
+    margin: 8rem auto;
+    padding: 0 1.5rem;
+}
+
+.benefits-card {
+    background: linear-gradient(135deg, rgba(109, 90, 246, 0.05) 0%, rgba(224, 122, 251, 0.05) 100%);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 4rem;
+    border-radius: 24px;
+    text-align: center;
+}
+
+.benefits-card h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+}
+
+.benefits-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: left;
+}
+
+.benefits-list li {
+    padding-left: 2rem;
+    position: relative;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.benefits-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--orb-teal);
+    font-weight: bold;
+}
+
+/* Primary CTA Section */
+.primary-cta {
+    padding: var(--section-padding) 1.5rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+
+.primary-cta h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+}
+
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
 /* Trust Bar / Marquee */
 .trust-bar {
     padding: 4rem 0;
@@ -392,6 +577,9 @@ body {
     }
     .saas-logo {
         font-size: var(--logo-text-mobile);
+    }
+    .benefits-card {
+        padding: 2.5rem;
     }
 }
 

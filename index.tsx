@@ -15,10 +15,11 @@ import {
     ThinkingIcon, 
     SparklesIcon,
     MenuIcon,
-    XIcon
+    XIcon,
+    CodeIcon
 } from './components/Icons';
 
-const WHATSAPP_NUMBER = "+254700000000";
+const WHATSAPP_NUMBER = "+254755792377"; // Updated as per CTA spec
 
 // --- Lead Scoring & Analytics ---
 const EVENT_SCORES = {
@@ -82,7 +83,34 @@ const STATIC_TOOLS: ToolConfig[] = [
   }
 ];
 
-type AppView = 'landing' | 'pos' | 'tool';
+const AGENT_DATA = [
+  {
+    name: "Glenn",
+    role: "Support & Follow-Up Agent",
+    description: "Glenn manages customer support and follow-ups across all communication channels, ensuring fast responses and zero dropped requests.",
+    voice: ["Answer incoming customer support calls", "Triage issues and provide accurate information", "Route complex cases to human teams"],
+    text: ["Respond on WhatsApp and social media DMs", "Handle FAQs and ticket status checks", "Send follow-ups and reminders"],
+    triggers: ["Check my last ticket", "What’s the status of my issue?", "Send a follow-up to client X"]
+  },
+  {
+    name: "Svan",
+    role: "Sales & Marketing Agent",
+    description: "Svan drives growth by qualifying leads, engaging prospects, and booking appointments across inbound channels.",
+    voice: ["Qualify inbound sales leads", "Answer product and pricing questions", "Book demos and consultations"],
+    text: ["Respond to leads on WhatsApp & Instagram", "Capture lead details and requirements", "Send promotional messages"],
+    triggers: ["Schedule a consultation for tomorrow", "Message leads about a promotion", "Qualify this lead"]
+  },
+  {
+    name: "Tat",
+    role: "Operational & Transaction Agent",
+    description: "Tat executes operational tasks and financial workflows with precision, giving business owners real-time control.",
+    voice: ["Answer operational queries", "Run sales and performance reports", "Confirm and execute actions"],
+    text: ["Accept commands via WhatsApp & Slack", "Send invoices and receipts", "Check inventory and approve payments"],
+    triggers: ["Send invoice to client Y", "Check stock levels", "Approve payment"]
+  }
+];
+
+type AppView = 'landing' | 'pos' | 'tool' | 'agents';
 
 function App() {
   const [view, setView] = useState<AppView>('landing');
@@ -125,6 +153,17 @@ function App() {
     setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     trackEvent('pos_page_visited');
+  }, [trackEvent]);
+
+  const showAgents = useCallback(() => {
+    setView('agents');
+    setActiveTool(null);
+    setToolStep(0);
+    setToolAnswers({});
+    setToolResult(null);
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    trackEvent('agents_page_visited');
   }, [trackEvent]);
 
   const startTool = useCallback((tool: ToolConfig) => {
@@ -178,7 +217,7 @@ function App() {
   };
 
   const handleWhatsApp = useCallback(() => {
-    const message = encodeURIComponent("Hi Veira, I'm interested in modernizing my business operations.");
+    const message = encodeURIComponent("Hi Veira, I'm interested in learning more about your AI Agents.");
     trackEvent("whatsapp_clicked");
     window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
   }, [trackEvent]);
@@ -200,12 +239,12 @@ function App() {
             
             <div className="nav-center">
                 <div className="nav-links">
-                    <a href="https://veirahq.com/pos" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                    <a href="https://veirahq.com/agents" onClick={(e) => e.preventDefault()}>Agents</a>
-                    <a href="https://veirahq.com/cloud" onClick={(e) => e.preventDefault()}>Cloud</a>
-                    <a href="https://veirahq.com/apps" onClick={(e) => e.preventDefault()}>Apps</a>
-                    <a href="https://veirahq.com/usecases" onClick={(e) => e.preventDefault()}>Use Cases</a>
-                    <a href="https://veirahq.com/ourstory" onClick={(e) => e.preventDefault()}>Our Story</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); showAgents(); }}>Agents</a>
+                    <a href="#" onClick={(e) => e.preventDefault()}>Cloud</a>
+                    <a href="#" onClick={(e) => e.preventDefault()}>Apps</a>
+                    <a href="#" onClick={(e) => e.preventDefault()}>Use Cases</a>
+                    <a href="#" onClick={(e) => e.preventDefault()}>Our Story</a>
                 </div>
             </div>
             
@@ -221,7 +260,7 @@ function App() {
         <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}>
             <div className="mobile-menu-links">
                 <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS Systems</a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Agents</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); showAgents(); }}>AI Agents</a>
                 <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Cloud Infra</a>
                 <a href="#" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); }}>Apps</a>
                 <button className="primary-btn" style={{ marginTop: '2rem', width: '200px' }} onClick={handleWhatsApp}>WhatsApp Us</button>
@@ -317,6 +356,80 @@ function App() {
               </section>
             )}
 
+            {view === 'agents' && (
+              <div className="agents-page reveal">
+                <section className="saas-hero">
+                  <h1>AI Agents That Work Across Voice, WhatsApp, and Your Systems</h1>
+                  <p className="hero-supporting">Veira agents handle sales, support, and operations across every channel your customers and team already use.</p>
+                  <div className="hero-actions">
+                    <button className="primary-btn" onClick={handleWhatsApp}>Talk to Veira Agents</button>
+                    <button className="secondary-btn" onClick={showPOS}>Book a Demo</button>
+                  </div>
+                </section>
+
+                <section className="agents-grid-container">
+                    <div className="section-header">
+                        <h2>The Specialized Agent Team</h2>
+                        <p>One AI system. Multiple specialized agents designed for real business work.</p>
+                    </div>
+                    <div className="agents-grid">
+                        {AGENT_DATA.map((agent) => (
+                            <div key={agent.name} className="agent-card">
+                                <div className="agent-header">
+                                    <div className="agent-meta">
+                                        <h3>{agent.name}</h3>
+                                        <span className="agent-role">{agent.role}</span>
+                                    </div>
+                                </div>
+                                <p className="agent-desc">{agent.description}</p>
+                                
+                                <div className="agent-capabilities">
+                                    <div className="cap-section">
+                                        <h5><ThinkingIcon /> Voice Capabilities</h5>
+                                        <ul>{agent.voice.map((v, i) => <li key={i}>{v}</li>)}</ul>
+                                    </div>
+                                    <div className="cap-section">
+                                        <h5><CodeIcon /> Text & Digital</h5>
+                                        <ul>{agent.text.map((t, i) => <li key={i}>{t}</li>)}</ul>
+                                    </div>
+                                </div>
+
+                                <div className="agent-triggers">
+                                    <h5>Triggers:</h5>
+                                    <div className="trigger-pills">
+                                        {agent.triggers.map((trig, i) => (
+                                            <span key={i} className="trigger-pill">"{trig}"</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                <section className="system-benefits reveal">
+                    <div className="benefits-card">
+                        <h3>Built for Scaling Businesses</h3>
+                        <ul className="benefits-list">
+                            <li>Works across voice, WhatsApp, social DMs, and internal tools</li>
+                            <li>Logs every action automatically in your central dashboard</li>
+                            <li>Escalates to humans seamlessly when complex issues arise</li>
+                            <li>Integrates directly with POS, CRM, and payment systems</li>
+                            <li>Native support for Kenyan business compliance workflows</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section className="primary-cta reveal">
+                  <h2>Start Automating Today</h2>
+                  <div className="cta-actions">
+                    <button className="primary-btn" onClick={handleWhatsApp}>Talk to Veira Agents</button>
+                    <button className="secondary-btn" onClick={resetToLanding}>Return Home</button>
+                  </div>
+                </section>
+              </div>
+            )}
+
             {view === 'tool' && activeTool && (
                 <section className="tool-view-container reveal">
                     <div className="tool-hero">
@@ -375,7 +488,7 @@ function App() {
                     <div className="footer-col">
                         <h4>Platform</h4>
                         <a href="#" onClick={(e) => { e.preventDefault(); showPOS(); }}>POS</a>
-                        <a href="#">Agents</a>
+                        <a href="#" onClick={(e) => { e.preventDefault(); showAgents(); }}>Agents</a>
                         <a href="#">Cloud</a>
                     </div>
                     <div className="footer-col">
