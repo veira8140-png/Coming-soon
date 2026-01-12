@@ -2,7 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://veirahq.com';
-  const routes = [
+  
+  const staticRoutes = [
     '',
     '/pos',
     '/agents',
@@ -12,10 +13,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/our-story',
     '/talk-to-us',
     '/pricing',
-    '/faq'
+    '/faq',
+    '/blog'
   ];
 
-  return routes.map((route) => ({
+  const blogPosts = [
+    '/blog/reconciliation-silent-killer',
+    '/blog/moving-from-cash-to-digital',
+    '/blog/ai-agents-customer-support-future'
+  ];
+
+  const allRoutes = [...staticRoutes, ...blogPosts];
+
+  return allRoutes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',

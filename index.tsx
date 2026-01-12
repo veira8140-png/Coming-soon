@@ -12,7 +12,8 @@ import DottedGlowBackground from './components/DottedGlowBackground';
 import OrganicOrbLogo from './components/OrganicOrbLogo';
 import { 
     MenuIcon,
-    XIcon
+    XIcon,
+    ArrowLeftIcon
 } from './components/Icons';
 
 const WHATSAPP_NUMBER = "+254755792377";
@@ -45,6 +46,36 @@ const USE_CASES = [
   { id: "payments", label: "Payment Collection" },
   { id: "internal-teams", label: "Internal Team Ops" }
 ];
+
+const BLOG_CONTENT = {
+  hero: {
+    headline: "Business Intelligence & Operational Strategy",
+    subheadline: "Insights on business automation, digital payments, and high-performance infrastructure for modern commerce."
+  },
+  posts: [
+    {
+      slug: "reconciliation-silent-killer",
+      title: "Why M-PESA reconciliation is the silent killer of SME time",
+      excerpt: "Manual verification of mobile money transactions is costing Kenyan businesses hours of productivity every single day.",
+      date: "May 12, 2024",
+      content: "The reality for most business owners in Nairobi is a cycle of checking phone messages, tallying figures on a piece of paper, and hoping the 'fake message' scams don't catch them. Veira's M-PESA integration automates this at the point of sale..."
+    },
+    {
+      slug: "moving-from-cash-to-digital",
+      title: "Moving from Cash to Digital: A guide for Kenyan retailers",
+      excerpt: "A structured approach to digitizing your storefront while maintaining speed and customer trust.",
+      date: "June 05, 2024",
+      content: "Switching from a cash-heavy operation to a digital-first one isn't just about getting a device; it's about shifting the workflow. Digital payments provide a paper trail that makes credit and scaling possible..."
+    },
+    {
+      slug: "ai-agents-customer-support-future",
+      title: "The future of AI agents in customer support",
+      excerpt: "How native WhatsApp automation is changing the way law firms and clinics handle initial client intake.",
+      date: "July 20, 2024",
+      content: "Customer support shouldn't mean a human being is tethered to a phone 24/7. AI agents like Glenn and Svan are now capable of handling complex bookings and FAQs directly where customers live: on WhatsApp."
+    }
+  ]
+};
 
 const AGENTS_CONTENT = {
   hero: {
@@ -187,7 +218,7 @@ const FAQ_CONTENT = {
 const CONTACT_PAGE_CONTENT = {
   hero: {
     headline: "Let's Talk About Your Business.",
-    body: "We prefer conversations over forms. Reach out via WhatsApp or email, and we'll help you find the right systems for your operations."
+    body: "We prefer conversations over some forms. Reach out via WhatsApp or email, and we'll help you find the right systems for your operations."
   },
   channels: [
     { name: "WhatsApp", value: "+254 755 792 377", actionLabel: "Chat Now", link: `https://wa.me/254755792377` },
@@ -195,7 +226,7 @@ const CONTACT_PAGE_CONTENT = {
   ]
 };
 
-type RouteKey = 'home' | 'pos' | 'agents' | 'cloud' | 'apps' | 'useCases' | 'ourStory' | 'talkToUs' | 'pricing' | 'faq';
+type RouteKey = 'home' | 'pos' | 'agents' | 'cloud' | 'apps' | 'useCases' | 'ourStory' | 'talkToUs' | 'pricing' | 'faq' | 'blog';
 
 const ROUTES: Record<RouteKey, { label: string; path: string }> = {
   home: { label: 'Veira', path: '/' },
@@ -207,13 +238,14 @@ const ROUTES: Record<RouteKey, { label: string; path: string }> = {
   ourStory: { label: 'Our Story', path: '/our-story' },
   talkToUs: { label: 'Talk to Us', path: '/talk-to-us' },
   pricing: { label: 'Pricing', path: '/pricing' },
-  faq: { label: 'FAQ', path: '/faq' }
+  faq: { label: 'FAQ', path: '/faq' },
+  blog: { label: 'Blog', path: '/blog' }
 };
 
-const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'pricing', 'faq', 'talkToUs'];
-const FOOTER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory', 'pricing', 'faq'];
+const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'blog', 'pricing', 'faq', 'talkToUs'];
+const FOOTER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'blog', 'useCases', 'ourStory', 'pricing', 'faq'];
 
-export default function App({ initialRoute = 'home', initialCompareSlug = null }: { initialRoute?: RouteKey, initialCompareSlug?: string | null }) {
+export default function App({ initialRoute = 'home', initialCompareSlug = null, initialBlogSlug = null }: { initialRoute?: RouteKey, initialCompareSlug?: string | null, initialBlogSlug?: string | null }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Determine active states for comparison UI based on URL slug if present
@@ -286,6 +318,50 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
       </section>
     </div>
   );
+
+  const renderBlogView = () => {
+    if (initialBlogSlug) {
+      const post = BLOG_CONTENT.posts.find(p => p.slug === initialBlogSlug);
+      if (post) {
+        return (
+          <div className="blog-post-page reveal">
+            <section className="saas-hero" style={{ minHeight: '40vh', alignItems: 'flex-start', textAlign: 'left', maxWidth: '800px' }}>
+              <Link href="/blog" className="secondary-btn" style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+                <ArrowLeftIcon /> Back to Blog
+              </Link>
+              <span className="category-tag">{post.date}</span>
+              <h1 style={{ fontSize: '3rem', margin: '1rem 0' }}>{post.title}</h1>
+            </section>
+            <section className="pos-content-section" style={{ maxWidth: '800px', margin: '0 auto' }}>
+              <p className="excerpt" style={{ fontSize: '1.2rem', color: 'var(--text-primary)', lineHeight: '1.8' }}>
+                {post.content}
+              </p>
+            </section>
+          </div>
+        );
+      }
+    }
+
+    return (
+      <div className="blog-index-page reveal">
+        <section className="saas-hero">
+          <h1>{BLOG_CONTENT.hero.headline}</h1>
+          <p className="hero-supporting">{BLOG_CONTENT.hero.subheadline}</p>
+        </section>
+        <section className="pos-content-section">
+          <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+            {BLOG_CONTENT.posts.map((post, i) => (
+              <Link key={i} href={`/blog/${post.slug}`} className="tool-card" style={{ textDecoration: 'none' }}>
+                <span className="category-tag">{post.date}</span>
+                <h3 style={{ color: '#fff', fontSize: '1.4rem', margin: '1rem 0' }}>{post.title}</h3>
+                <p className="excerpt">{post.excerpt}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </div>
+    );
+  };
 
   return (
     <div className="saas-container">
@@ -364,6 +440,25 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
                    </div>
                 </section>
 
+                <section id="latest-insights" className="reveal" style={{ padding: '6rem 1.5rem' }}>
+                   <div className="section-header">
+                      <span className="category-tag">Insights</span>
+                      <h2>Latest from the Blog.</h2>
+                   </div>
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
+                      {BLOG_CONTENT.posts.map((post, i) => (
+                        <Link key={i} href={`/blog/${post.slug}`} className="tool-card" style={{ textDecoration: 'none' }}>
+                           <span className="category-tag" style={{ fontSize: '0.6rem', opacity: 0.8 }}>{post.date}</span>
+                           <h4 style={{ marginTop: '0.5rem', color: '#fff' }}>{post.title}</h4>
+                           <p className="excerpt">{post.excerpt}</p>
+                        </Link>
+                      ))}
+                   </div>
+                   <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                      <Link href="/blog" className="secondary-btn" style={{ textDecoration: 'none' }}>View All Posts</Link>
+                   </div>
+                </section>
+
                 <section id="market-intelligence" className="journal-landing-preview reveal">
                   <div className="section-header">
                     <span className="category-tag">Older vs New</span>
@@ -382,6 +477,8 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
             )}
 
             {initialCompareSlug && renderComparisonView()}
+
+            {initialRoute === 'blog' && renderBlogView()}
 
             {initialRoute === 'pos' && (
               <div className="pos-page reveal">
