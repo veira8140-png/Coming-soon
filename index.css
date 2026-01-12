@@ -48,9 +48,9 @@ body {
 .saas-nav {
     height: var(--nav-height);
     padding: 0 clamp(1.5rem, 5vw, 4rem);
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
     background: rgba(3, 3, 3, 0.8); 
     backdrop-filter: blur(20px);
     z-index: 1000; 
@@ -64,6 +64,7 @@ body {
     align-items: center;
     gap: 12px;
     cursor: pointer;
+    justify-self: start;
 }
 
 /* Organic Orb Logo Styles */
@@ -106,12 +107,15 @@ body {
 }
 
 .nav-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
 }
 
-.nav-links { display: flex; gap: 1.5rem; }
+.nav-links { 
+    display: flex; 
+    gap: 0.5rem; 
+}
+
 .nav-links a { 
     text-decoration: none; 
     color: var(--text-secondary); 
@@ -119,9 +123,22 @@ body {
     font-weight: 600; 
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    transition: color 0.2s;
+    transition: all 0.2s;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
 }
-.nav-links a:hover { color: #fff; }
+
+.nav-links a:hover, .nav-links a.active { 
+    color: #fff; 
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    justify-self: end;
+}
 
 .primary-btn {
     background: #fff;

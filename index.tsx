@@ -1,3 +1,4 @@
+
 'use client';
 
 /**
@@ -7,7 +8,6 @@
 
 import React, { useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import Link from 'next/link';
 import DottedGlowBackground from './components/DottedGlowBackground';
 import OrganicOrbLogo from './components/OrganicOrbLogo';
 import { 
@@ -15,6 +15,22 @@ import {
     XIcon,
     ArrowLeftIcon
 } from './components/Icons';
+
+// Local Link component to avoid next/link dependency in non-Next environments
+const Link = ({ href, children, style, className, onClick, ...props }: any) => (
+  <a 
+    href={href} 
+    style={style} 
+    className={className} 
+    onClick={(e) => {
+        if (onClick) onClick(e);
+        // Let standard navigation happen as index.tsx serves as entry for multiple static paths
+    }} 
+    {...props}
+  >
+    {children}
+  </a>
+);
 
 const WHATSAPP_NUMBER = "+254755792377";
 const BASE_URL = "https://veirahq.com";
@@ -218,7 +234,7 @@ const FAQ_CONTENT = {
 const CONTACT_PAGE_CONTENT = {
   hero: {
     headline: "Let's Talk About Your Business.",
-    body: "We prefer conversations over some forms. Reach out via WhatsApp or email, and we'll help you find the right systems for your operations."
+    body: "We prefer conversations over forms. Reach out via WhatsApp or email, and we'll help you find the right systems for your operations."
   },
   channels: [
     { name: "WhatsApp", value: "+254 755 792 377", actionLabel: "Chat Now", link: `https://wa.me/254755792377` },
