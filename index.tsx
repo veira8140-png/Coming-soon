@@ -74,6 +74,45 @@ const AGENTS_CONTENT = {
   }
 };
 
+const POS_PAGE_CONTENT = {
+  hero: {
+    headline: "A POS that feels like it was built for you",
+    subheadline: "Veira POS helps you accept payments, track sales, stay compliant, and understand your business without spreadsheets, stress, or guesswork.",
+    primaryCTA: { label: "Talk to us", url: "/talk-to-us" },
+    secondaryCTA: { label: "See how it works", url: "/agents" }
+  },
+  body: [
+    { text: "Most POS systems were built for somewhere else. Different rules. Different businesses. Different realities. Veira POS is built for how businesses actually operate here. Simple where it should be simple. Powerful where it matters." },
+    { text: "Accept card payments, mobile money, and cash. Everything syncs to the cloud instantly. No missing sales. No end of day panic." },
+    { text: "Veira POS is fully eTIMS compliant. Tax reports are generated correctly, automatically, and on time. You do not need to think about compliance again." },
+    { text: "At the end of every day, you receive a clear sales summary on WhatsApp. No logging into dashboards. No chasing numbers. Just the truth, delivered." }
+  ],
+  features: [
+    { title: "Payments without friction", description: "Accept card payments, mobile money, and cash on one Android POS device. Fast checkout. Fewer errors." },
+    { title: "Built for compliance", description: "Veira POS is eTIMS compliant out of the box. Reports, receipts, and records handled correctly." },
+    { title: "Cloud by default", description: "All your data is securely stored in the cloud. Access it anywhere. Lose the device, not the business." },
+    { title: "Daily WhatsApp reports", description: "Sales summaries sent directly to you on WhatsApp every day. No dashboards required." },
+    { title: "AI built in", description: "Veira POS uses AI to flag unusual activity, prevent fraud, and surface insights you would normally miss." }
+  ],
+  whoItsFor: {
+    intro: "Veira POS works especially well for businesses that value clarity, speed, and control.",
+    list: ["Law firms", "Clinics and medical practices", "Bars and clubs", "Service businesses", "Retail stores and restaurants"]
+  },
+  pricingNote: {
+    text: "Veira charges a 1.5 percent processing fee to help you handle payments, prevent fraud, and keep the system running reliably."
+  },
+  closing: {
+    text: "A POS should not feel like a system you work around. It should feel like something that quietly works for you. That is what Veira POS does."
+  },
+  faq: [
+    { question: "Is Veira POS free?", answer: "Veira POS is available with no upfront software cost. A small processing fee applies to help manage payments, security, and infrastructure." },
+    { question: "Is Veira POS eTIMS compliant?", answer: "Yes. Veira POS is fully eTIMS compliant and handles tax reporting automatically." },
+    { question: "Does Veira POS work on Android hardware?", answer: "Yes. Veira POS runs on modern Android POS devices designed for reliability and speed." },
+    { question: "Do I get sales reports?", answer: "Yes. You receive daily sales summaries directly on WhatsApp." },
+    { question: "Can Veira POS work for service businesses?", answer: "Yes. Veira POS works well for law firms, clinics, service providers, and any business that needs clear records and simple payments." }
+  ]
+};
+
 const CLOUD_CONTENT = {
   opening: {
     headline: "Most Business Stress Comes From Not Knowing",
@@ -347,25 +386,81 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
             {initialRoute === 'pos' && (
               <div className="pos-page reveal">
                 <section className="saas-hero">
-                  <h1 style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>Veira POS</h1>
-                  <p className="hero-supporting" style={{ margin: '0 auto' }}>
-                    Point of sale built for modern businesses. Fast, offline-first, and fully integrated with digital payments.
+                  <h1 style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>{POS_PAGE_CONTENT.hero.headline}</h1>
+                  <p className="hero-supporting" style={{ margin: '0 auto 2.5rem' }}>
+                    {POS_PAGE_CONTENT.hero.subheadline}
                   </p>
+                  <div className="hero-actions">
+                    <Link href={POS_PAGE_CONTENT.hero.primaryCTA.url} className="primary-btn" style={{ textDecoration: 'none' }}>{POS_PAGE_CONTENT.hero.primaryCTA.label}</Link>
+                    <Link href={POS_PAGE_CONTENT.hero.secondaryCTA.url} className="secondary-btn" style={{ textDecoration: 'none' }}>{POS_PAGE_CONTENT.hero.secondaryCTA.label}</Link>
+                  </div>
                 </section>
+
+                <section className="pos-content-section reveal" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+                   {POS_PAGE_CONTENT.body.map((item, i) => (
+                     <p key={i} className="excerpt" style={{ fontSize: '1.2rem', marginBottom: '2rem', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                       {item.text}
+                     </p>
+                   ))}
+                </section>
+
                 <section className="pos-content-section reveal">
+                   <div className="section-header">
+                      <span className="category-tag">Core Features</span>
+                      <h2>Built for clarity and growth.</h2>
+                   </div>
                    <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                      <div className="tool-card">
-                         <h4>eTIMS Ready</h4>
-                         <p className="excerpt">Native integration with KRA eTIMS for effortless compliance with every sale.</p>
+                      {POS_PAGE_CONTENT.features.map((f, i) => (
+                        <div key={i} className="tool-card">
+                           <h4 style={{ color: '#fff', fontSize: '1.2rem', marginBottom: '0.8rem' }}>{f.title}</h4>
+                           <p className="excerpt">{f.description}</p>
+                        </div>
+                      ))}
+                   </div>
+                </section>
+
+                <section className="pos-content-section reveal" style={{ background: 'rgba(255,255,255,0.01)', borderY: '1px solid var(--border)' }}>
+                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))' }}>
+                      <div className="tool-card" style={{ background: 'transparent', borderColor: 'transparent', padding: '1rem' }}>
+                         <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#fff' }}>Who It's For</h3>
+                         <p className="excerpt" style={{ marginBottom: '2rem' }}>{POS_PAGE_CONTENT.whoItsFor.intro}</p>
+                         <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {POS_PAGE_CONTENT.whoItsFor.list.map((item, i) => (
+                              <li key={i} style={{ padding: '0.8rem 0', display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)', borderBottom: '1px solid var(--border)' }}>
+                                <span style={{ color: 'var(--status-green)' }}>✓</span> {item}
+                              </li>
+                            ))}
+                         </ul>
                       </div>
-                      <div className="tool-card">
-                         <h4>Offline First</h4>
-                         <p className="excerpt">Sales continue even when the internet doesn't. Data syncs automatically once back online.</p>
+                      <div className="tool-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'var(--bg-surface-elevated)' }}>
+                         <div style={{ padding: '2.5rem', borderRadius: '24px', textAlign: 'center' }}>
+                            <h4 style={{ marginBottom: '1.2rem', color: 'var(--orb-violet)', fontSize: '1.5rem' }}>Transparent Pricing</h4>
+                            <p className="excerpt" style={{ color: '#fff', fontSize: '1.1rem' }}>{POS_PAGE_CONTENT.pricingNote.text}</p>
+                         </div>
                       </div>
-                      <div className="tool-card">
-                         <h4>M-PESA Integrated</h4>
-                         <p className="excerpt">Instant payment verification at the counter. No more fake messages or manual checks.</p>
-                      </div>
+                   </div>
+                </section>
+
+                <section className="pos-content-section reveal" style={{ textAlign: 'center', padding: '8rem 1.5rem' }}>
+                   <h3 style={{ fontSize: '2.5rem', marginBottom: '2.5rem', color: '#fff', maxWidth: '800px', margin: '0 auto 3rem' }}>{POS_PAGE_CONTENT.closing.text}</h3>
+                   <div className="hero-actions" style={{ justifyContent: 'center' }}>
+                      <Link href="/talk-to-us" className="primary-btn" style={{ textDecoration: 'none' }}>Get Started with Veira POS</Link>
+                      <Link href="/agents" className="secondary-btn" style={{ textDecoration: 'none' }}>Explore AI Agents</Link>
+                   </div>
+                </section>
+
+                <section className="faq-section reveal">
+                   <div className="section-header">
+                      <span className="category-tag">Support</span>
+                      <h2>Common Questions</h2>
+                   </div>
+                   <div className="faq-container">
+                      {POS_PAGE_CONTENT.faq.map((item, i) => (
+                        <div key={i} className="faq-item">
+                           <h3>{item.question}</h3>
+                           <p>{item.answer}</p>
+                        </div>
+                      ))}
                    </div>
                 </section>
               </div>
