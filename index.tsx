@@ -5,8 +5,9 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
+import Link from 'next/link';
 import DottedGlowBackground from './components/DottedGlowBackground';
 import OrganicOrbLogo from './components/OrganicOrbLogo';
 import { 
@@ -174,77 +175,11 @@ const HEADER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'pricing', 'f
 const FOOTER_KEYS: RouteKey[] = ['pos', 'agents', 'cloud', 'apps', 'useCases', 'ourStory', 'pricing', 'faq'];
 
 export default function App({ initialRoute = 'home', initialCompareSlug = null }: { initialRoute?: RouteKey, initialCompareSlug?: string | null }) {
-  const [activeRoute, setActiveRoute] = useState<RouteKey>(initialRoute);
-  const [activeCompareSlug, setActiveCompareSlug] = useState<string | null>(initialCompareSlug);
-  
-  // Extract competitor ID from slug if it exists
-  const initialCompId = initialCompareSlug ? initialCompareSlug.split('-vs-')[0] : "chatgpt";
-  const [activeCompId, setActiveCompId] = useState(initialCompId);
-  const [activeContextId, setActiveContextId] = useState("whatsapp-business");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    // Sync route on popstate (browser back/forward)
-    const handlePopState = () => {
-      const path = window.location.pathname;
-      const hash = window.location.hash;
-
-      if (hash && path === '/') {
-          setActiveRoute('home');
-          setActiveCompareSlug(null);
-          const el = document.querySelector(hash);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-          return;
-      }
-
-      const compareMatch = path.match(/^\/compare\/(.+)$/);
-      
-      if (compareMatch) {
-        setActiveRoute('home');
-        setActiveCompareSlug(compareMatch[1]);
-        setActiveCompId(compareMatch[1].split('-vs-')[0]);
-      } else {
-        const routeKey = (Object.keys(ROUTES) as RouteKey[]).find(k => ROUTES[k].path === path) || 'home';
-        setActiveRoute(routeKey);
-        setActiveCompareSlug(null);
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
-  const navigate = (key: RouteKey, options?: { slug?: string; hash?: string }) => {
-    const { slug, hash } = options || {};
-    setActiveRoute(key);
-    setActiveCompareSlug(slug || null);
-    setIsMobileMenuOpen(false);
-    
-    if (typeof window !== 'undefined') {
-       let path = slug ? `/compare/${slug}` : ROUTES[key].path;
-       if (hash) path += hash;
-       
-       if (window.location.pathname + window.location.hash !== path) {
-         window.history.pushState({}, '', path);
-       }
-
-       if (hash) {
-           const el = document.querySelector(hash);
-           if (el) el.scrollIntoView({ behavior: 'smooth' });
-       } else {
-           window.scrollTo({ top: 0, behavior: 'smooth' });
-       }
-    }
-  };
-
-  const showCompare = (compId?: string, ctxId?: string) => {
-    const cid = compId || activeCompId;
-    const ctxid = ctxId || activeContextId;
-    setActiveCompId(cid);
-    setActiveContextId(ctxid);
-    const slug = `${cid}-vs-veira-for-${ctxid}`;
-    navigate('home', { slug });
-  };
+  // Determine active states for comparison UI based on URL slug if present
+  const activeCompId = initialCompareSlug ? initialCompareSlug.split('-vs-')[0] : "chatgpt";
+  const activeContextId = "whatsapp-business";
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent("Hi Veira, I'm interested in your business solutions.");
@@ -278,7 +213,9 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               <label>Select Competitor:</label>
               <div className="control-pills">
                   {COMPETITORS.slice(0, 8).map(c => (
-                      <button key={c.id} className={`pill ${activeCompId === c.id ? 'active' : ''}`} onClick={() => setActiveCompId(c.id)}>{c.name}</button>
+                      <Link key={c.id} href={`/compare/${c.id}-vs-veira-for-whatsapp-business`} className={`pill ${activeCompId === c.id ? 'active' : ''}`} style={{ textDecoration: 'none' }}>
+                        {c.name}
+                      </Link>
                   ))}
               </div>
           </div>
@@ -306,7 +243,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
         </div>
       </section>
       <section className="primary-cta reveal">
-        <button className="primary-btn" onClick={() => navigate('talkToUs')}>Contact Our Team</button>
+        <Link href="/talk-to-us" className="primary-btn" style={{ textDecoration: 'none' }}>Contact Our Team</Link>
       </section>
     </div>
   );
@@ -314,14 +251,20 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
   return (
     <div className="saas-container">
         <nav className="saas-nav">
-            <div className="logo-link-container" onClick={() => navigate('home')}>
+            <Link href="/" className="logo-link-container" style={{ textDecoration: 'none' }}>
                 <OrganicOrbLogo size={32} variant="nav" />
                 <span className="saas-logo">Veira</span>
-            </div>
+            </Link>
             <div className="nav-center">
                 <div className="nav-links">
                     {HEADER_KEYS.map(key => (
-                        <a key={key} href={ROUTES[key].path} onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                        <Link 
+                          key={key} 
+                          href={ROUTES[key].path} 
+                          className={initialRoute === key ? 'active' : ''}
+                        >
+                          {ROUTES[key].label}
+                        </Link>
                     ))}
                 </div>
             </div>
@@ -336,44 +279,49 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
         <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}>
             <div className="mobile-menu-links">
                 {HEADER_KEYS.map(key => (
-                    <a key={key} href={ROUTES[key].path} onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                    <Link key={key} href={ROUTES[key].path} onClick={() => setIsMobileMenuOpen(false)}>
+                      {ROUTES[key].label}
+                    </Link>
                 ))}
                 <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={handleWhatsApp}>Get Free POS</button>
+                <button className="mobile-toggle" style={{ position: 'absolute', top: '2rem', right: '2rem' }} onClick={() => setIsMobileMenuOpen(false)}>
+                  <XIcon />
+                </button>
             </div>
         </div>
 
         <main className="saas-main">
             <DottedGlowBackground gap={32} radius={0.5} color="rgba(255,255,255,0.03)" glowColor="rgba(255,255,255,0.08)" speedScale={0.1} />
 
-            {activeRoute === 'home' && !activeCompareSlug && (
+            {initialRoute === 'home' && !initialCompareSlug && (
               <>
                 <section id="hero" className="saas-hero reveal">
                   <h1>Infrastructure for Modern Business.</h1>
                   <p className="hero-supporting">Managed POS, AI Agents, and Digital Payments in one high-performance stack built for East African commerce.</p>
                   <div className="hero-actions">
-                    <button className="primary-btn" onClick={() => navigate('pos')}>Explore POS</button>
-                    <button className="secondary-btn" onClick={() => navigate('agents')}>Meet the Agents</button>
+                    <Link href="/pos" className="primary-btn" style={{ textDecoration: 'none' }}>Explore POS</Link>
+                    <Link href="/agents" className="secondary-btn" style={{ textDecoration: 'none' }}>Meet the Agents</Link>
                   </div>
                 </section>
 
-                <section id="infrastructure-stack" className="reveal" style={{ padding: '6rem 1.5rem', background: 'rgba(255,255,255,0.01)', borderY: '1px solid var(--border)' }}>
+                <section id="infrastructure-stack" className="reveal" style={{ padding: '6rem 1.5rem', background: 'rgba(255,255,255,0.01)' }}>
                    <div className="section-header">
                       <span className="category-tag">Integrated Stack</span>
                       <h2>Everything under one roof.</h2>
                    </div>
                    <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
-                      <div className="tool-card" onClick={() => navigate('pos')}>
+                      <Link href="/pos" className="tool-card" style={{ textDecoration: 'none' }}>
                          <h4>Cloud POS</h4>
                          <p className="excerpt">Free, eTIMS compliant point of sale that works offline and syncs instantly.</p>
-                      </div>
-                      <div className="tool-card" onClick={() => navigate('agents')}>
+                      </Link>
+                      <Link href="/agents" className="tool-card" style={{ textDecoration: 'none' }}>
                          <h4>AI Agents</h4>
                          <p className="excerpt">Assistants that handle your WhatsApp, calls, and daily ops automatically.</p>
-                      </div>
-                      <div className="tool-card" onClick={() => navigate('cloud')}>
+                      </Link>
+                      <Link href="/cloud" className="tool-card" style={{ textDecoration: 'none' }}>
                          <h4>Veira Cloud</h4>
                          <p className="excerpt">Centralized business intelligence and unified data for all your outlets.</p>
-                      </div>
+                      </Link>
                    </div>
                 </section>
 
@@ -384,19 +332,19 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
                   </div>
                   <div className="tools-grid" style={{ maxWidth: 'var(--container-width)', margin: '0 auto' }}>
                     {COMPETITORS.slice(0, 8).map(comp => (
-                        <div key={comp.id} className="tool-card" onClick={() => showCompare(comp.id, "whatsapp-business")}>
+                        <Link key={comp.id} href={`/compare/${comp.id}-vs-veira-for-whatsapp-business`} className="tool-card" style={{ textDecoration: 'none' }}>
                             <h4>Veira vs {comp.name}</h4>
                             <p className="excerpt">Comparison for WhatsApp Business optimization.</p>
-                        </div>
+                        </Link>
                     ))}
                   </div>
                 </section>
               </>
             )}
 
-            {activeCompareSlug && renderComparisonView()}
+            {initialCompareSlug && renderComparisonView()}
 
-            {activeRoute === 'pos' && (
+            {initialRoute === 'pos' && (
               <div className="pos-page reveal">
                 <section className="saas-hero">
                   <h1 style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>Veira POS</h1>
@@ -423,7 +371,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               </div>
             )}
 
-            {activeRoute === 'agents' && (
+            {initialRoute === 'agents' && (
               <div className="agents-page reveal">
                 <section className="saas-hero">
                   <h1>{AGENTS_CONTENT.hero.headline}</h1>
@@ -443,7 +391,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               </div>
             )}
 
-            {activeRoute === 'cloud' && (
+            {initialRoute === 'cloud' && (
               <div className="cloud-page reveal">
                 <section className="saas-hero">
                   <h1>{CLOUD_CONTENT.opening.headline}</h1>
@@ -459,7 +407,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               </div>
             )}
 
-            {activeRoute === 'apps' && (
+            {initialRoute === 'apps' && (
               <div className="apps-page reveal">
                 <section className="saas-hero">
                   <h1>{APPS_CONTENT.hero.headline}</h1>
@@ -469,13 +417,13 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
                    <div className="tool-card" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
                       <h3 style={{ color: '#fff', marginBottom: '1.5rem' }}>Custom Development</h3>
                       <p className="excerpt">We build bespoke applications for enterprises that need specific workflows, integrations, or interfaces that standard tools can't provide.</p>
-                      <button className="primary-btn" style={{ marginTop: '2rem' }} onClick={() => navigate('talkToUs')}>Inquire About Custom Apps</button>
+                      <Link href="/talk-to-us" className="primary-btn" style={{ marginTop: '2rem', textDecoration: 'none', display: 'inline-block' }}>Inquire About Custom Apps</Link>
                    </div>
                 </section>
               </div>
             )}
 
-            {activeRoute === 'pricing' && (
+            {initialRoute === 'pricing' && (
               <div className="pricing-page reveal">
                 <section className="saas-hero">
                   <h1>{PRICING_CONTENT.hero.headline}</h1>
@@ -502,7 +450,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               </div>
             )}
 
-            {activeRoute === 'faq' && (
+            {initialRoute === 'faq' && (
               <div className="faq-page reveal">
                 <section className="saas-hero">
                   <h1>{FAQ_CONTENT.hero.headline}</h1>
@@ -521,7 +469,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               </div>
             )}
 
-            {activeRoute === 'useCases' && (
+            {initialRoute === 'useCases' && (
               <div className="use-cases-page reveal">
                 <section className="saas-hero">
                   <h1>{USE_CASES_PAGE_CONTENT.hero.headline}</h1>
@@ -540,7 +488,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               </div>
             )}
 
-            {activeRoute === 'ourStory' && (
+            {initialRoute === 'ourStory' && (
               <div className="story-page reveal">
                 <section className="saas-hero">
                   <h1>{STORY_CONTENT.story.opening.headline}</h1>
@@ -555,7 +503,7 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
               </div>
             )}
 
-            {activeRoute === 'talkToUs' && (
+            {initialRoute === 'talkToUs' && (
               <div className="contact-page reveal">
                 <section className="saas-hero">
                   <h1>{CONTACT_PAGE_CONTENT.hero.headline}</h1>
@@ -586,18 +534,23 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
                 <div className="footer-col">
                     <h4>Solutions</h4>
                     {FOOTER_KEYS.map(key => (
-                        <a key={key} href={ROUTES[key].path} onClick={(e) => { e.preventDefault(); navigate(key); }}>{ROUTES[key].label}</a>
+                        <Link key={key} href={ROUTES[key].path}>{ROUTES[key].label}</Link>
                     ))}
                 </div>
                 <div className="footer-col">
                     <h4>Sections</h4>
-                    <a href="/#infrastructure-stack" onClick={(e) => { e.preventDefault(); navigate('home', { hash: '#infrastructure-stack' }); }}>Platform Stack</a>
-                    <a href="/#market-intelligence" onClick={(e) => { e.preventDefault(); navigate('home', { hash: '#market-intelligence' }); }}>Intelligence</a>
-                    <a href="/#hero" onClick={(e) => { e.preventDefault(); navigate('home', { hash: '#hero' }); }}>Hero</a>
+                    <Link href="/#infrastructure-stack">Platform Stack</Link>
+                    <Link href="/#market-intelligence">Intelligence</Link>
+                    <Link href="/#hero">Hero</Link>
                 </div>
                 <div className="footer-col">
                     <h4>Connect</h4>
-                    <a href="#" onClick={(e) => { e.preventDefault(); handleWhatsApp(); }}>WhatsApp</a>
+                    <button 
+                      style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: 0, marginBottom: '1rem', textAlign: 'left', display: 'block' }} 
+                      onClick={handleWhatsApp}
+                    >
+                      WhatsApp
+                    </button>
                     <a href="https://linkedin.com/company/veira" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 </div>
             </div>
@@ -607,8 +560,8 @@ export default function App({ initialRoute = 'home', initialCompareSlug = null }
   );
 }
 
-// Client-side Hydration logic restored for local preview support
-if (typeof window !== 'undefined' && document.getElementById('root')) {
+// Client-side Hydration logic for non-Next environments
+if (typeof window !== 'undefined' && document.getElementById('root') && !document.getElementById('root')?.innerHTML) {
   const root = ReactDOM.createRoot(document.getElementById('root')!);
   root.render(<React.StrictMode><App /></React.StrictMode>);
 }
